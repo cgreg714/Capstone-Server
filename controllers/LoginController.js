@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const zxcvbn = require('zxcvbn');
 const nodemailer = require('nodemailer');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
@@ -31,6 +32,12 @@ passport.use(
 
 exports.signup = async (req, res, next) => {
 	let user = new User(req.body);
+
+	const passwordStrength = zxcvbn(user.password);
+	if (passwordStrength.score < 3) {
+		return res.status(400).json({ message: 'Password is too weak' });
+	}
+
 	try {
 		const savedUser = await user.save();
 		res.json(savedUser);
