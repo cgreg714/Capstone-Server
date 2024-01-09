@@ -8,4 +8,5 @@ const errorResponse = (res, err) => {
 
 module.exports = {
     error: errorResponse,
+    // timeStamp: timeStamp
 }

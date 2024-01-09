@@ -7,11 +7,11 @@ router.post('/', async(req,res) => {
     try {
         //pull data
         const {
-            medName, frequency, quantity, dose, prescriber, timeOfDay, description
+            medName, frequency, quantity, dateAdded, dose, prescriber, timeOfDay, description
         } = req.body;
         //create new object
         const medication = new Medication({
-            medName, frequency, quantity, dose, prescriber, timeOfDay, description, //id: req.user._id
+            medName, frequency, quantity, dateAdded: new Date(), dose, prescriber, timeOfDay, description, //id: req.user._id
         });
         //save object to db
         const newMed = await medication.save();
@@ -85,6 +85,34 @@ router.delete('/:id', async(req,res) => {
         }):
         res.status(404).json({
             results:"No medication in collection"
+        });
+    } catch (err) {
+        error(res,err);
+    }
+})
+
+//toDo get by date/time Added
+router.get('/dateAdded/:dateAdded', async(req,res) => {
+    try {
+        const { dateAdded } =req.params;
+        const getByDate = await Medication.find({dateAdded: dateAdded});
+
+        if (getByDate.length === 0) throw new Error('No medication found');
+        res.status(200).json({
+            results: getByDate
+        });
+    } catch (err) {
+        error(res,err);
+    }
+})
+
+////toDo DELETE all
+router.delete('/clear', async(req,res) => {
+    console.log(req);
+    try {
+        const deleteAll = await Medication.deleteMany();
+        res.status(200).json({
+            message: "All meds cleared"
         });
     } catch (err) {
         error(res,err);
