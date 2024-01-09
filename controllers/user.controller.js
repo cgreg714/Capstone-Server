@@ -2,9 +2,10 @@ const router = require('express').Router();
 const User = require('../models/user.model');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const {error} = require('../helpers');
 const SECRET = process.env.JWT;
 
-// comment
+
 router.post('/signup', async (req,res) => {
     try{
         const user = new User({
@@ -20,11 +21,10 @@ router.post('/signup', async (req,res) => {
             token
         })
     } catch (err) {
-        res.status(500).json({
-            error:err.message
-        })
+        error(req,res)
+        }
     }
-})
+)
 
 router.post('/login', async(req,res) => {
     try{
@@ -41,9 +41,8 @@ router.post('/login', async(req,res) => {
             user, token
         })
     }catch (err) {
-        res.status(500).json({
-            error: err.message
-        })
+        error(req,res)
+        }
     }
-})
+);
 module.exports = router
