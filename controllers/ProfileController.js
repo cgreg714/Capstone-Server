@@ -54,14 +54,15 @@ router.get('/:id', async(req,res) => {
 
 // Patch Profile Information, awaiting validateSession
 router.patch('/:id', async(req,res) => {
+    console.log(req)
     try {
-        const {firstName,lastName,email,pharmacy,doctor,timezone} = req.body;
+        // const {firstName,lastName,email,pharmacy,doctor,timezone} = req.body;
 
-        const {profile} = req.params;
+        // const {profile} = req.params;
 
-        const profileCheck = await Profile.find({_id: profile});
+        // const profileCheck = await Profile.find({_id: profile});
 
-        if(!profileCheck) throw new Error('Profile not found.');
+        // if(!profileCheck) throw new Error('Profile not found.');
 
         const task = await Profile.findByIdAndUpdate(
             req.params.id,
@@ -69,18 +70,20 @@ router.patch('/:id', async(req,res) => {
             {new: true, runValidators: true}
         )
 
-        const newTask = await task.save();
+        res.send(task)
 
-        const forProfile = {
-            id: newTask._id
-        }
+        // const newTask = await task.save();
 
-        await Profile.findOneAndUpdate(
-            {_id: profile},
-            {$push: {tasks: forProfile}}
-        )
+        // const forProfile = {
+        //     id: newTask._id
+        // }
+
+        // await Profile.findOneAndUpdate(
+        //     {_id: profile},
+        //     {$push: {tasks: forProfile}}
+        // )
     } catch (err) {
-        error(res, err)
+        incomplete(res, err)
     }
 });
 
