@@ -14,11 +14,11 @@ const DoctorSchema = new mongoose.Schema({
 const ProfileSchema = new mongoose.Schema({
     firstName: {
         type: String,
-        required: true
+        required: false
     },
     lastName: {
         type: String,
-        required: true
+        required: false
     },
     email: {
         type: String
@@ -29,6 +29,10 @@ const ProfileSchema = new mongoose.Schema({
     doctor: [DoctorSchema],
     timezone: {
         type: String
+    },
+    profile_id: {
+        type: mongoose.Types.ObjectId,
+        ref: "profile"
     }
 });
 

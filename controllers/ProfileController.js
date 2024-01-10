@@ -4,24 +4,24 @@ const {error, success, incomplete} = require('../helpers');
 
 // CREATE
 router.post('/create', async(req,res) => {
+    
     try {
         const {
             firstName, lastName, email, pharmacy, doctor, timezone
-        } = req.body
+        } = req.body;
+        if(!firstName) throw new Error('Please input a first name.');
 
-        const profile = new Profile({
+        const profile = await new Profile({
             firstName, lastName, email, pharmacy, doctor, timezone
-        });
+        }).save();
 
-        const newProfile = await profile.save()
-
-        res.status(200).json({
-            message: `${newProfile.firstName}'s profile created!`
-        })
+        profile ?
+            success(res, profile) :
+            incomplete(res);
     } catch (err) {
         error(res, err)
     }
-})
+});
 
 // GET All Profiles
 router.get('/',async(req,res) => {
@@ -55,7 +55,30 @@ router.get('/:id', async(req,res) => {
 // Patch Profile Information, awaiting validateSession
 router.patch('/:id', async(req,res) => {
     try {
-    
+        const {firstName,lastName,email,pharmacy,doctor,timezone} = req.body;
+
+        const {profile} = req.params;
+
+        const profileCheck = await Profile.find({_id: profile});
+
+        if(!profileCheck) throw new Error('Profile not found.');
+
+        const task = await Profile.findByIdAndUpdate(
+            req.params.id,
+            req.body,
+            {new: true, runValidators: true}
+        )
+
+        const newTask = await task.save();
+
+        const forProfile = {
+            id: newTask._id
+        }
+
+        await Profile.findOneAndUpdate(
+            {_id: profile},
+            {$push: {tasks: forProfile}}
+        )
     } catch (err) {
         error(res, err)
     }
