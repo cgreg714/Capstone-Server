@@ -21,7 +21,7 @@ router.post('/signup', async (req,res) => {
             token
         })
     } catch (err) {
-        error(req,res)
+        error(req,err)
         }
     }
 )
@@ -30,18 +30,18 @@ router.post('/login', async(req,res) => {
     try{
         const {userName, password} = req.body;
         const user = await User.findOne ({userName: userName});
-        if(!userName) throw new Error ('Username or password does not match.');
+        if(!user) throw new Error ('Username or password does not match.');
 
         const passwordMatch = await bcrypt.compare(password, user.password);
         if(!passwordMatch) throw new Error ('Username or password does not match.');
-        const token = jwt.sign({id: newUser._id}, SECRET, {expiresIn: "1h"});
+        const token = jwt.sign({id: user._id}, SECRET, {expiresIn: "1h"});
         res.status(200).json({
-            user:user,
+            user: user,
             message: 'Success! User logged in!',
             user, token
         })
     }catch (err) {
-        error(req,res)
+        error(req,err)
         }
     }
 );

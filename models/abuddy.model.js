@@ -24,7 +24,7 @@ const aBuddySchema = new mongoose.Schema({
         required: true,
         unique: true,
     },
-    aBuddyphone: {
+    aBuddyNumber: {
         type: String,
         required: true,
     }
