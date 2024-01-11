@@ -9,9 +9,10 @@ const mongoose = require('mongoose');  // used from node_modules
 
 const PORT = process.env.PORT; 
 const MONGO = process.env.MONGODB;
+console.log(MONGO)
 const userController = require('./controllers/user.controller');
 const aBuddyController = require('./controllers/aBuddy.controller');
-mongoose.connect(`${MONGO}/users`);
+mongoose.connect(`${MONGO}/Doseminder`);
 
 const db = mongoose.connection; 
 

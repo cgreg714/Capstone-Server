@@ -9,8 +9,8 @@ const SECRET = process.env.JWT;
 router.post('/signup', async (req,res) => {
     try{
         const user = new User({
-            userName: req.body.user ? req.body.user : 'Please enter a valid user name.',
-            email: req.body.email,
+            userName: req.body.userName ? req.body.userName : 'Please enter a valid user name.',
+            email: req.body.email ? req.body.email : 'Please enter a valid email address',
             password: bcrypt.hashSync(req.body.password, 13)
         })
         const newUser = await user.save();
