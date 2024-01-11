@@ -1,14 +1,19 @@
-const router = require('express').Router();
-const Medication = require('../models/medication.model');
+const Medication = require('../models/MedicationModel');
 const error = require('../helpers/index');
+const router = require('express').Router();
+
+
 
 /////toDO Add
-router.post('/', async(req,res) => {
+exports.postMedication = async(req,res) => {
+    console.log(req);
     try {
         //pull data
-        const {
-            medName, frequency, quantity, dateAdded, dose, prescriber, timeOfDay, description
-        } = req.body;
+        // const {
+        //      medName, frequency, quantity, dateAdded, dose, prescriber, timeOfDay, description
+        // } = req.body;
+        const drugbankID = req.body.drugbank-id;
+        const { name, description, state, groups, indication, metabolism, absorption,   } = req.body;
         //create new object
         const medication = new Medication({
             medName, frequency, quantity, dateAdded: new Date(), dose, prescriber, timeOfDay, description, //id: req.user._id
@@ -23,9 +28,10 @@ router.post('/', async(req,res) => {
     } catch (err) {
         error(res,err);
     }
-})
+};
 /////toDo Get All
-router.get('/', async(req,res) => {
+exports.getMedication = async(req,res) => {
+    console.log(req);
     try {
         const allMeds = await Medication.find();
 
@@ -39,9 +45,9 @@ router.get('/', async(req,res) => {
     } catch (err) {
         error(res,err);
     }
-})
-/////toDo Get All By Prescriber Name
-router.get('/prescriber/:prescriber', async(req,res) => {
+};
+// /////toDo Get All By Prescriber Name
+exports.getByPrescriber = async(req,res) => {
     try {
         console.log('prescriber route');
         const { prescriber } = req.params;
@@ -55,9 +61,37 @@ router.get('/prescriber/:prescriber', async(req,res) => {
     } catch (err) {
         error(res,err);
     }
-})
-/////toDo Patch
-router.patch('/:id', async(req,res) => {
+};
+/////toDo Get One By ID
+exports.getByID = async(req,res) => {
+    try {
+        const { id } = req.params;
+        const getMed = await Medication.findOne({_id: id});
+        if(!getMed) throw new Error('no medication found');
+        res.status(200).json({
+            results: getMed
+        })
+    } catch (err) {
+        error(res,err);
+    }
+};
+// ////toDo Get by Medication Name
+exports.getByMedName = async(req,res) => {
+    try {
+        const { medName } =req.params;
+        const medicationName = await Medication.find({medName: medName});
+    
+        if (medicationName.length === 0) throw new Error('No medication found by that name');
+    
+        res.status(200).json({
+            results: medicationName
+        });
+    } catch (err) {
+        error(res,err);
+    }
+};
+// /////toDo Patch
+exports.patchByID = async(req,res) => {
     try {
         const filter = {
             _id: req.params.id
@@ -72,9 +106,9 @@ router.patch('/:id', async(req,res) => {
     } catch (err) {
         error(res,err);
     }
-})
-/////toDo Delete
-router.delete('/:id', async(req,res) => {
+};
+// /////toDo Delete
+exports.deleteByID = async(req,res) => {
     try {
         const { id } = req.params;
         const deleteMed = await Medication.deleteOne({_id: id});
@@ -89,10 +123,10 @@ router.delete('/:id', async(req,res) => {
     } catch (err) {
         error(res,err);
     }
-})
+};
 
-//toDo get by date/time Added
-router.get('/dateAdded/:dateAdded', async(req,res) => {
+// //toDo get by date/time Added
+exports.getByDate = async(req,res) => {
     try {
         const { dateAdded } =req.params;
         const getByDate = await Medication.find({dateAdded: dateAdded});
@@ -104,10 +138,10 @@ router.get('/dateAdded/:dateAdded', async(req,res) => {
     } catch (err) {
         error(res,err);
     }
-})
+};
 
-////toDo DELETE all
-router.delete('/clear', async(req,res) => {
+// ////toDo DELETE all
+exports.deleteAll = async(req,res) => {
     console.log(req);
     try {
         const deleteAll = await Medication.deleteMany();
@@ -117,6 +151,4 @@ router.delete('/clear', async(req,res) => {
     } catch (err) {
         error(res,err);
     }
-})
-
-module.exports = router;
+};
