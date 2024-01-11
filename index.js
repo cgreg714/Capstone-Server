@@ -1,13 +1,17 @@
 require('dotenv').config();
 const express = require('express');
+
 const mongoose = require('mongoose');
 // const cors = require('cors');
 const app = express();
 const BACKEND_PORT = process.env.PORT;
 const FRONTEND_PORT = process.env.FRONTEND_PORT;
 const IP = process.env.IP;
+const {db} = require('./db')
+const ProfileController = require('./controllers/ProfileController');
 const loginRoutes = require('./routes/LogoinRoutes');
 const errorHandler = require('./middlewares/errorHandler');
+
 
 mongoose
 	.connect(process.env.MONGODB_URL)
@@ -24,6 +28,7 @@ mongoose
 app.use(express.json());
 
 app.use('/', loginRoutes);
+app.use('/profile', ProfileController);
 
 app.use(errorHandler);
 
