@@ -1,22 +1,24 @@
 require('dotenv').config();
 const express = require('express');
-
 const mongoose = require('mongoose');
 // const cors = require('cors');
 const app = express();
 const BACKEND_PORT = process.env.PORT;
 const FRONTEND_PORT = process.env.FRONTEND_PORT;
 const IP = process.env.IP;
-const {db} = require('./db')
 const ProfileController = require('./controllers/ProfileController');
 const loginRoutes = require('./routes/LogoinRoutes');
+const drugRoutes = require('./routes/DrugRoutes');
 const errorHandler = require('./middlewares/errorHandler');
-
+const loadData = require('./drugDB/loadData'); // Import the loadData function
 
 mongoose
-	.connect(process.env.MONGODB_URL)
-	.then(() => console.log('MongoDB connected'))
-	.catch((err) => console.error(err));
+    .connect(process.env.MONGODB_URL)
+    .then(() => {
+        console.log('MongoDB connected');
+        loadData();
+    })
+    .catch((err) => console.error(err));
 
 // app.use(
 // 	cors({
@@ -29,7 +31,7 @@ app.use(express.json());
 
 app.use('/', loginRoutes);
 app.use('/profile', ProfileController);
-
+app.use('/drugs', drugRoutes);
 app.use(errorHandler);
 
 app.listen(BACKEND_PORT, () => {
