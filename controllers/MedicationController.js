@@ -12,17 +12,19 @@ exports.postMedication = async(req,res) => {
         // const {
         //      medName, frequency, quantity, dateAdded, dose, prescriber, timeOfDay, description
         // } = req.body;
-        const drugbankID = req.body.drugbank-id;
-        const { name, description, state, groups, indication, metabolism, absorption,   } = req.body;
+        const drugbankId = req.body.drugbank-id;
+        const foodInteractions = req.body.food-interactions;
+        const externalLinks = req.body.external-links;
+        const { name, description, unii, indication, products, dosages, frequency, quantity, dateAdded, prescriber, timeOfDay } = req.body;
         //create new object
         const medication = new Medication({
-            medName, frequency, quantity, dateAdded: new Date(), dose, prescriber, timeOfDay, description, //id: req.user._id
+            drugbankId, foodInteractions, externalLinks, name, description, unii, indication, products, dosages, frequency, quantity, dateAdded: new Date(), prescriber, timeOfDay, //id: req.user._id
         });
         //save object to db
         const newMed = await medication.save();
         //response
         res.status(200).json({
-            message: `${newMed.medName} added`,
+            message: `${newMed.name} added`,
             newMed
         })
     } catch (err) {
@@ -78,8 +80,8 @@ exports.getByID = async(req,res) => {
 // ////toDo Get by Medication Name
 exports.getByMedName = async(req,res) => {
     try {
-        const { medName } =req.params;
-        const medicationName = await Medication.find({medName: medName});
+        const { name } =req.params;
+        const medicationName = await Medication.find({name: name});
     
         if (medicationName.length === 0) throw new Error('No medication found by that name');
     

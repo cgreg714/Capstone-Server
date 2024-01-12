@@ -1,60 +1,54 @@
 const mongoose = require('mongoose');
 
 const MedicationSchema = new mongoose.Schema({
+    //this should be in drug schema
     "drugbank-id":{
-        type: Array
+        0: Number,
+        1: Number,
+        2: Number
     },
     name: {
         type:String,
         required: true
     },
+    //description will be in drug schema
     description: String,
-    "cas-number": String,
-    //unii: String,
-    state: String,
-    groups: String,
-    "general-references": String,
-   // "synthesis-references": String,
+    unii: Number,
     indication: String,
-    pharmacodynamics: String,
-    //"mechanism-of-action": String,
-    toxicity: String,
-    metabolism: String,
-    absorption: String,
-    //"half-life": String,
-    "protein-binding": String,
-    "route-of-elimination": String,
-    "volume-of-distribution": String,
-    clearance: String,
-    classifications: String,
-    //salts: String,
-    synonyms: String,
-    products: String,
-    "international-brands": String,
-    mixtures: String,
-    //packagers: String,
-    manufacturers: String,
-    //prices: Number,
-    categories: String,
-    "affected-organisms": String,
+    products: {
+        product: {
+            0: {
+                name: String,
+                labeller: String,
+                "dosage-form": String,
+                strength: String,
+                route: String,
+                country: String
+            },
+            1: {
+                name: String,
+                labeller: String,
+                "dosage-form": String,
+                strength: String,
+                route: String,
+                country: String
+            }
+        }
+    },
+    //*make the user to punch in the dosages
     dosages: String,
-    "atc-codes": String,
-    "ahfs-codes": String,
-    "pdb-entries": String,
-    "food-interactions": String,
-    "drug-interactions": String,
-    sequences: String,
-    "experimental-properties": String,
-    "external-identifiers": String,
-    "external-links": String,
-    pathways: String,
-    reactions: String,
-    "snp-effects": String,
-    "snp-adverse-drug-reactions": String,
-    targets: String,
-    enzymes: String,
-    carriers: String,
-    transporters: String,
+    //food interactions will be in drug schema
+    "food-interactions": {
+        "food-interaction": String
+    },
+    //food interactions and external links will be in drug schema
+    "drug-interactions": [Object],
+    "external-links": {
+        0: {
+            resource: String,
+            url: String
+        }
+    },
     frequency: {
         type: Number,
         required: true,
