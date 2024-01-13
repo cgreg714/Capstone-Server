@@ -16,7 +16,7 @@ router.get('/prescriber/:prescriber', medicationController.getByPrescriber);
 router.get('/find-one/:id', medicationController.getByID);
 
 //get by med name
-router.get('/medName/:medName', medicationController.getByMedName);
+router.get('/name/:name', medicationController.getByName);
 
 //patch by ID
 router.patch('/:id', medicationController.patchByID);

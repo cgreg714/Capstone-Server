@@ -74,7 +74,7 @@ exports.getByID = async(req,res) => {
     }
 };
 // ////toDo Get by Medication Name
-exports.getByMedName = async(req,res) => {
+exports.getByName = async(req,res) => {
     try {
         const { name } =req.params;
         const medicationName = await Medication.find({name: name});
