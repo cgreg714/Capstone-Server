@@ -9,16 +9,12 @@ exports.postMedication = async(req,res) => {
     console.log(req);
     try {
         //pull data
-        // const {
-        //      medName, frequency, quantity, dateAdded, dose, prescriber, timeOfDay, description
-        // } = req.body;
-        const drugbankId = req.body.drugbank-id;
-        const foodInteractions = req.body.food-interactions;
-        const externalLinks = req.body.external-links;
-        const { name, description, unii, indication, products, dosages, frequency, quantity, dateAdded, prescriber, timeOfDay } = req.body;
+         const {
+              name, description, dosages, frequency, quantity, dateAdded, prescriber, timeOfDay
+         } = req.body;
         //create new object
         const medication = new Medication({
-            drugbankId, foodInteractions, externalLinks, name, description, unii, indication, products, dosages, frequency, quantity, dateAdded: new Date(), prescriber, timeOfDay, //id: req.user._id
+            name, description, dosages, frequency, quantity, dateAdded: new Date(), prescriber, timeOfDay, //id: req.user._id
         });
         //save object to db
         const newMed = await medication.save();
