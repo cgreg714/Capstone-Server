@@ -5,7 +5,6 @@ const errorResponse = (res, err) => {
         )
     )
 }
-
 const successResponse = (res, results) => {
     return(
         res.status(200).json({
