@@ -1,29 +1,37 @@
-//Carlos' branch
-//?Dependencies
 require('dotenv').config();
 const express = require('express');
+
+const mongoose = require('mongoose');
+// const cors = require('cors');
 const app = express();
-const PORT = 4005; //process.env.PORT however my computer has trouble with this
-//?Imports
-const { db } = require('./db');
-//const medicationController = require('./controllers/medication.controller');
-const medicationRoutes = require('./routes/MedicationRoutes');
-
-//?Middleware
-app.use(express.static(`${__dirname}/public`)); // links to public/index.html file.
-app.use(express.json()); // allows server to accept json as data to process.
-app.use(express.urlencoded({extended: true})); // allows us to send data back to the browser.
-
-//?Routes
-//app.use('/medication', medicationController);
-app.use('/medication', medicationRoutes);
-
-//?Connection
-const server = async () => {
-    db();
+const BACKEND_PORT = process.env.PORT;
+const FRONTEND_PORT = process.env.FRONTEND_PORT;
+const IP = process.env.IP;
+const {db} = require('./db')
+const ProfileController = require('./controllers/ProfileController');
+const loginRoutes = require('./routes/LogoinRoutes');
+const errorHandler = require('./middlewares/errorHandler');
 
 
-    app.listen(PORT, () => console.log(`Server Running: ${PORT}`));
-}
+mongoose
+	.connect(process.env.MONGODB_URL)
+	.then(() => console.log('MongoDB connected'))
+	.catch((err) => console.error(err));
 
-server();
+// app.use(
+// 	cors({
+// 		origin: `${IP}:${FRONTEND_PORT}`,
+// 		credentials: true,
+// 	})
+// );
+
+app.use(express.json());
+
+app.use('/', loginRoutes);
+app.use('/profile', ProfileController);
+
+app.use(errorHandler);
+
+app.listen(BACKEND_PORT, () => {
+	console.log(`Server is running on ${IP}:${BACKEND_PORT}`);
+});

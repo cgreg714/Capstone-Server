@@ -5,8 +5,24 @@ const errorResponse = (res, err) => {
         )
     )
 }
+const successResponse = (res, results) => {
+    return(
+        res.status(200).json({
+            results
+        })
+    )
+}
+
+const incompleteResponse = res => {
+    return(
+        res.status(404).send(
+            console.log(error)
+        )
+    )
+}
 
 module.exports = {
     error: errorResponse,
-    // timeStamp: timeStamp
+    success: successResponse,
+    incomplete: incompleteResponse
 }
