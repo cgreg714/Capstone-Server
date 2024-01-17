@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const aBuddy = require('../models/aBuddy.model');
+const aBuddy = require('../models/abuddy.model');
 const jwt = require('jsonwebtoken');
 const {error} = require('../helpers');
 const SECRET = process.env.JWT;
