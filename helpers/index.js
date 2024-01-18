@@ -5,6 +5,7 @@ const errorResponse = (res, err) => {
         )
     )
 }
+
 const successResponse = (res, results) => {
     return(
         res.status(200).json({
@@ -13,10 +14,11 @@ const successResponse = (res, results) => {
     )
 }
 
-const incompleteResponse = res => {
+const incompleteResponse = (res) => {
     return(
         res.status(404).send(
             console.log(error)
+            "New data (user, medication, etc.) was unable to be added to the server."
         )
     )
 }
