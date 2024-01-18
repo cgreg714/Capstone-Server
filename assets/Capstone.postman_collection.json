@@ -1,0 +1,159 @@
+{
+	"info": {
+		"_postman_id": "0650eb12-9ab4-4578-95fa-2f30d86f552c",
+		"name": "Capstone",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31439439"
+	},
+	"item": [
+		{
+			"name": "Doseminder - server",
+			"item": [
+				{
+					"name": "add med",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"medName\": \"timestamp test 2\",\n    \"frequency\": 1,\n    \"quantity\": 10,\n    \"dateAdded\": \"1/7/24\",\n    \"dose\": \"10mg\",\n    \"prescriber\": \"test\",\n    \"timeOfDay\": \"test\",\n    \"description\": \"test\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{PORT}}/medication",
+							"host": [
+								"{{PORT}}"
+							],
+							"path": [
+								"medication"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all meds",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{PORT}}/medication",
+							"host": [
+								"{{PORT}}"
+							],
+							"path": [
+								"medication"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all by prescriber",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{PORT}}/medication/prescriber/{{prescriber}}",
+							"host": [
+								"{{PORT}}"
+							],
+							"path": [
+								"medication",
+								"prescriber",
+								"{{prescriber}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all by date added",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{PORT}}/medication/dateAdded/{{date}}",
+							"host": [
+								"{{PORT}}"
+							],
+							"path": [
+								"medication",
+								"dateAdded",
+								"{{date}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "patch by ID",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"dateAdded\": \"01/07/2024\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{PORT}}/medication/{{medID}}",
+							"host": [
+								"{{PORT}}"
+							],
+							"path": [
+								"medication",
+								"{{medID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete by ID",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{PORT}}/medication/{{toDelete}}",
+							"host": [
+								"{{PORT}}"
+							],
+							"path": [
+								"medication",
+								"{{toDelete}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete all",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{PORT}}/medication/clear",
+							"host": [
+								"{{PORT}}"
+							],
+							"path": [
+								"medication",
+								"clear"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
