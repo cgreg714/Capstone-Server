@@ -1,12 +1,10 @@
-const router = require('express').Router();
-const User = require('../models/user.model');
+const { User } = require('../models/databaseModel');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const {error} = require('../helpers');
 const SECRET = process.env.JWT;
 
-
-router.post('/signup', async (req,res) => {
+exports.signup = async (req,res) => {
     try{
         const user = new User({
             userName: req.body.userName ? req.body.userName : 'Please enter a valid user name.',
@@ -22,11 +20,10 @@ router.post('/signup', async (req,res) => {
         })
     } catch (err) {
         error(req,err)
-        }
     }
-)
+}
 
-router.post('/login', async(req,res) => {
+exports.login = async(req,res) => {
     try{
         const {userName, password} = req.body;
         const user = await User.findOne ({userName: userName});
@@ -42,7 +39,5 @@ router.post('/login', async(req,res) => {
         })
     }catch (err) {
         error(req,err)
-        }
     }
-);
-module.exports = router;
+};
