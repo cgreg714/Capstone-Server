@@ -1,4 +1,4 @@
-const Medication = require('../models/MedicationModel');
+const Medication = require('../models/medicationModel');
 const error = require('../helpers/index');
 const router = require('express').Router();
 
