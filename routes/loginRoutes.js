@@ -1,5 +1,4 @@
-const express = require('express');
-const router = express.Router();
+const router = require('express').Router();
 const LoginController = require('../controllers/loginController');
 
 router.post('/signup', (req, res, next) => {

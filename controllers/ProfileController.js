@@ -1,4 +1,4 @@
-const Profile = require('../models/profileModel');
+const { Profile } = require('../models/databaseModel');
 const { error, success, incomplete } = require('../helpers/errorResponse');
 
 // CREATE
