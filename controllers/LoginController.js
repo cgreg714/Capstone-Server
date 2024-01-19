@@ -3,7 +3,7 @@ const zxcvbn = require('zxcvbn');
 const nodemailer = require('nodemailer');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-const { User } = require('../models/DatabaseModel');
+const { User } = require('../models/databaseModel');
 const FRONTENDPORT = process.env.FRONTEND_PORT;
 const IP = process.env.IP;
 

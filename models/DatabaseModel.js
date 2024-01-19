@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
-const { User } = require('../models/UserModel');
-const { Profile } = require('../models/ProfileModel');
-const { Drug } = require('../models/DrugModel');
+const { User } = require('./UserModel');
+const { Profile } = require('./profileModel');
+const { Drug } = require('./drugModel');
 // const { Medication } = require('../models/MedicationModel');
 require('dotenv').config();
 

@@ -1,4 +1,4 @@
-const Drug = require('../models/DrugModel');
+const Drug = require('../models/drugModel');
 
 exports.getDrugByDrugbankId = async (req, res) => {
     try {

@@ -6,9 +6,9 @@ const app = express();
 const BACKEND_PORT = process.env.PORT;
 const FRONTEND_PORT = process.env.FRONTEND_PORT;
 const IP = process.env.IP;
-const ProfileController = require('./controllers/ProfileController');
-const loginRoutes = require('./routes/LogoinRoutes');
-const drugRoutes = require('./routes/DrugRoutes');
+const ProfileController = require('./controllers/profileController');
+const loginRoutes = require('./routes/loginRoutes');
+// const drugRoutes = require('./routes/drugRoutes');
 const errorHandler = require('./middlewares/errorHandler');
 const loadData = require('./drugDB/loadData'); // Import the loadData function
 

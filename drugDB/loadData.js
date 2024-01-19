@@ -1,5 +1,5 @@
 const fs = require('fs');
-const Drug = require('../models/DrugModel');
+const Drug = require('../models/drugModel');
 
 async function loadData() {
     try {
