@@ -9,21 +9,24 @@ const BACKEND_PORT = process.env.PORT;
 const FRONTEND_PORT = process.env.FRONTEND_PORT;
 const IP = process.env.IP;
 
-const {db} = require('./db')
 
-const ProfileController = require('./controllers/ProfileController');
-const loginRoutes = require('./routes/LogoinRoutes');
+const ProfileController = require('./controllers/profileController');
+const loginRoutes = require('./routes/loginRoutes');
+// const drugRoutes = require('./routes/drugRoutes');
 const errorHandler = require('./middlewares/errorHandler');
-const userController = require('./controllers/user.controller');
+const loadData = require('./drugDB/loadData'); // Import the loadData functionconst userController = require('./controllers/user.controller');
 const aBuddyController = require('./controllers/aBuddy.controller');
 
 const db = mongoose.connection; 
 db.once("open", () => console.log(`Connected: ${MONGO}/users`)) //shows notification we are connected to the database
 
 mongoose
-	.connect(`${MONGO}/DoseMinder`)
-	.then(() => console.log('MongoDB connected'))
-	.catch((err) => console.error(err));
+    .connect(`${MONGO}/DoseMinder`)
+    .then(() => {
+        console.log('MongoDB connected');
+        loadData();
+    })
+    .catch((err) => console.error(err));
 
 // app.use(
 // 	cors({
@@ -36,7 +39,7 @@ app.use(express.json());
 
 app.use('/', loginRoutes);
 app.use('/profile', ProfileController);
-
+app.use('/drugs', drugRoutes);
 app.use('/user', userController);
 //app.use(validateSession); // all routes below require validation when used this way.
 app.use('/myBuddy', aBuddyController);

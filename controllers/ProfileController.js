@@ -1,90 +1,78 @@
-const router = require('express').Router();
-const Profile = require('../models/ProfileModel');
-const {error, success, incomplete} = require('../helpers');
+const Profile = require('../models/profileModel');
+const { error, success, incomplete } = require('../helpers/errorResponse');
 
 // CREATE
-router.post('/create', async(req,res) => {
-    
-    try {
-        const {
-            firstName, lastName, email, pharmacy, doctor, timezone
-        } = req.body;
-        if(!firstName) throw new Error('Please input a first name.');
+exports.createProfile = async (req, res) => {
+	try {
+		const { firstName, lastName, email, pharmacy, doctor, timezone } = req.body;
+		if (!firstName) throw new Error('Please input a first name.');
 
-        const profile = await new Profile({
-            firstName, lastName, email, pharmacy, doctor, timezone
-        }).save();
+		const profile = await new Profile({
+			firstName,
+			lastName,
+			email,
+			pharmacy,
+			doctor,
+			timezone,
+		}).save();
 
-        profile ?
-            success(res, profile) :
-            incomplete(res);
-    } catch (err) {
-        error(res, err)
-    }
-});
+		profile ? success(res, profile) : incomplete(res);
+	} catch (err) {
+		error(res, err);
+	}
+};
 
 // GET All Profiles
-router.get('/',async(req,res) => {
-    try {
-        const allProfiles = await Profile.find();
+exports.getAllProfiles = async (req, res) => {
+	try {
+		const allProfiles = await Profile.find();
 
-        allProfiles ?
-            success(res, allProfiles) :
-            incomplete(res);
-    } catch (err) {
-        error(res, err)
-    }
-});
+		allProfiles ? success(res, allProfiles) : incomplete(res);
+	} catch (err) {
+		error(res, err);
+	}
+};
 
 // GET One Profile, awaiting validateSession
-router.get('/:id', async(req,res) => {
-    try {
-        const {id} = req.params;
-        const getProfile = await Profile.findOne({_id: id});
+exports.getProfile = async (req, res) => {
+	try {
+		const { id } = req.params;
+		const getProfile = await Profile.findOne({ _id: id });
 
-        if (!getProfile) throw new Error('No profile found');
+		if (!getProfile) throw new Error('No profile found');
 
-        getProfile ?
-            success(res,getProfile) :
-            incomplete(res);
-    } catch (error) {
-        error(res, err)
-    }
-});
+		getProfile ? success(res, getProfile) : incomplete(res);
+	} catch (error) {
+		error(res, err);
+	}
+};
 
 // Patch Profile Information, awaiting validateSession
-router.patch('/:id', async(req,res) => {
-    console.log(req)
-    try {
-        // const {firstName,lastName,email,pharmacy,doctor,timezone} = req.body;
+exports.updateProfile = async (req, res) => {
+	try {
+		// const {firstName,lastName,email,pharmacy,doctor,timezone} = req.body;
 
-        // const {profile} = req.params;
+		// const {profile} = req.params;
 
-        // const profileCheck = await Profile.find({_id: profile});
+		// const profileCheck = await Profile.find({_id: profile});
 
-        // if(!profileCheck) throw new Error('Profile not found.');
+		// if(!profileCheck) throw new Error('Profile not found.');
 
-        const task = await Profile.findByIdAndUpdate(
-            req.params.id,
-            req.body,
-            {new: true, runValidators: true}
-        )
+		const task = await Profile.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
 
-        res.send(task)
+		res.send(task);
 
-        // const newTask = await task.save();
+		// const newTask = await task.save();
 
-        // const forProfile = {
-        //     id: newTask._id
-        // }
+		// const forProfile = {
+		//     id: newTask._id
+		// }
 
-        // await Profile.findOneAndUpdate(
-        //     {_id: profile},
-        //     {$push: {tasks: forProfile}}
-        // )
-    } catch (err) {
-        incomplete(res, err)
-    }
-});
-
-module.exports = router;
+		// await Profile.findOneAndUpdate(
+		//     {_id: profile},
+		//     {$push: {tasks: forProfile}}
+		// )
+	} catch (err) {
+		incomplete(res, err);
+	}
+};
