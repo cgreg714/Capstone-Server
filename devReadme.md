@@ -5,7 +5,7 @@
     ```env
     IP=http://localhost
     PORT=3009
-    MONGODB_URL=mongodb://localhost:27017
+    MONGODB=mongodb://localhost:27017
     DB_NAME=DoseMinder
     ```
 
