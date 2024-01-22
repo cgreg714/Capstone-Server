@@ -22,9 +22,10 @@ const MedicationSchema = new mongoose.Schema({
     },
     prescriber: String,
     timeOfDay: String,
-    associatedDrug: [Object]
+    associatedDrug: { type: Schema.Types.ObjectId, ref: 'Drug' }
 });
 
 const Medication = mongoose.model('Medication', MedicationSchema, 'medications');
 
-module.exports = Medication;
+
+module.exports = { Medication, MedicationSchema };
