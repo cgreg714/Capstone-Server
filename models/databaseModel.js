@@ -6,7 +6,7 @@ const Drug = require('./drugModel');
 const Medication = require('./medicationModel');
 require('dotenv').config();
 
-const db = mongoose.createConnection(process.env.MONGODB_URL);
+const db = mongoose.createConnection(process.env.MONGODB + '/' + process.env.DB_NAME);
 
 const models = {
     User: User,

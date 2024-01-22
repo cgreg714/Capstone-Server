@@ -6,6 +6,8 @@ const app = express();
 // Configuration
 const BACKEND_PORT = process.env.PORT;
 const IP = process.env.IP;
+const { MONGODB, DB_NAME } = process.env;
+
 
 // Data loading
 const loadData = require('./drugDB/loadData');
@@ -22,10 +24,11 @@ const aBuddyRoutes = require('./controllers/abuddyController');
 const errorHandler = require('./middlewares/errorHandler');
 
 // Database connection
-const { db } = require('./helpers/db');
+const db = require('./helpers/db');
 
 db()
     .then(() => {
+        console.log(`Database connected to: ${process.env.MONGODB}/${process.env.DB_NAME}`);
         loadData();
     })
     .catch((err) => console.error(err));
