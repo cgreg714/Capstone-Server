@@ -41,7 +41,7 @@ exports.deleteUser = async (req, res, next) => {
         //     return next(new Error('Insufficient permissions'));
         // }
 
-        await user.remove();
+        await user.deleteOne();
         res.json({ message: 'User deleted successfully' });
     } catch (err) {
         next(err);
