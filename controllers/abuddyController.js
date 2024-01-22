@@ -5,7 +5,7 @@ const {error} = require('../helpers/errorResponse');
 const SECRET = process.env.JWT;
 
 
-router.post('/buddy', async (req,res) => {
+exports.abuddyController = async (req,res) => {
     try{
         const aBuddy = new aBuddy({
             aBuddyFirstName: req.body.aBuddyFirstName ? req.body.aBuddyFirstName : 'Please enter a first name.',
@@ -25,8 +25,7 @@ router.post('/buddy', async (req,res) => {
     } catch (err) {
         error(req,err)
         }
-    }
-)
+};
 
 
 module.exports = router;
