@@ -1,8 +1,5 @@
-const { Medication } = require('../models/databaseModel');
-const error = require('../helpers/index');
-const router = require('express').Router();
-
-
+const Medication = require('../models/medicationModel');
+const helpers = require('../helpers/errorResponse');
 
 /////toDO Add
 exports.postMedication = async(req,res) => {
@@ -24,7 +21,7 @@ exports.postMedication = async(req,res) => {
             newMed
         })
     } catch (err) {
-        error(res,err);
+        helpers.error(res,err);
     }
 };
 /////toDo Get All
@@ -41,7 +38,7 @@ exports.getMedication = async(req,res) => {
             result:"No medications found"
         })
     } catch (err) {
-        error(res,err);
+        helpers.error(res,err);
     }
 };
 // /////toDo Get All By Prescriber Name
@@ -57,7 +54,7 @@ exports.getByPrescriber = async(req,res) => {
             results: medPrescriber
         });
     } catch (err) {
-        error(res,err);
+        helpers.error(res,err);
     }
 };
 /////toDo Get One By ID
@@ -70,7 +67,7 @@ exports.getByID = async(req,res) => {
             results: getMed
         })
     } catch (err) {
-        error(res,err);
+        helpers.error(res,err);
     }
 };
 // ////toDo Get by Medication Name
@@ -85,7 +82,7 @@ exports.getByName = async(req,res) => {
             results: medicationName
         });
     } catch (err) {
-        error(res,err);
+        helpers.error(res,err);
     }
 };
 // /////toDo Patch
@@ -102,7 +99,7 @@ exports.patchByID = async(req,res) => {
             message:"medication updated"
         });
     } catch (err) {
-        error(res,err);
+        helpers.error(res,err);
     }
 };
 // /////toDo Delete
@@ -119,7 +116,7 @@ exports.deleteByID = async(req,res) => {
             results:"No medication in collection"
         });
     } catch (err) {
-        error(res,err);
+        helpers.error(res,err);
     }
 };
 
@@ -134,7 +131,7 @@ exports.getByDate = async(req,res) => {
             results: getByDate
         });
     } catch (err) {
-        error(res,err);
+        helpers.error(res,err);
     }
 };
 
@@ -147,6 +144,6 @@ exports.deleteAll = async(req,res) => {
             message: "All meds cleared"
         });
     } catch (err) {
-        error(res,err);
+        helpers.error(res,err);
     }
 };

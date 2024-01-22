@@ -1,51 +1,50 @@
 require('dotenv').config();
 const express = require('express');
-const mongoose = require('mongoose');
-// const cors = require('cors');
+
 const app = express();
 
-const MONGO = process.env.MONGODB_URL;
+// Configuration
 const BACKEND_PORT = process.env.PORT;
-const FRONTEND_PORT = process.env.FRONTEND_PORT;
 const IP = process.env.IP;
 
+// Data loading
+const loadData = require('./drugDB/loadData');
 
-const ProfileController = require('./controllers/profileController');
+// Routes
 const loginRoutes = require('./routes/loginRoutes');
-// const drugRoutes = require('./routes/drugRoutes');
+const userRoutes = require('./routes/userRoutes');
+const profileRoutes = require('./routes/profileRoutes');
+const medicationRoutes = require('./routes/medicationRoutes');
+const drugRoutes = require('./routes/drugRoutes');
+const aBuddyRoutes = require('./controllers/abuddyController');
+
+// Middlewares
 const errorHandler = require('./middlewares/errorHandler');
-const loadData = require('./drugDB/loadData'); // Import the loadData functionconst userController = require('./controllers/user.controller');
-const aBuddyController = require('./controllers/aBuddy.controller');
 
-const db = mongoose.connection; 
-db.once("open", () => console.log(`Connected: ${MONGO}/users`)) //shows notification we are connected to the database
+// Database connection
+const { db } = require('./helpers/db');
 
-mongoose
-    .connect(`${MONGO}/DoseMinder`)
+db()
     .then(() => {
-        console.log('MongoDB connected');
         loadData();
     })
     .catch((err) => console.error(err));
 
-// app.use(
-// 	cors({
-// 		origin: `${IP}:${FRONTEND_PORT}`,
-// 		credentials: true,
-// 	})
-// );
-
+// Middleware setup
 app.use(express.json());
 
+// Route setup
 app.use('/', loginRoutes);
-app.use('/profile', ProfileController);
+app.use('/user', userRoutes);
+app.use('/profile', profileRoutes);
+app.use('/aBuddy', aBuddyRoutes);
 app.use('/drugs', drugRoutes);
-app.use('/user', userController);
-//app.use(validateSession); // all routes below require validation when used this way.
-app.use('/myBuddy', aBuddyController);
+app.use('/medication', medicationRoutes);
 
+// Error handling
 app.use(errorHandler);
 
+// Server setup
 app.listen(BACKEND_PORT, () => {
-	console.log(`Server is running on ${IP}:${BACKEND_PORT}`);
+    console.log(`Server is running on ${IP}:${BACKEND_PORT}`);
 });

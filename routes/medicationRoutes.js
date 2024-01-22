@@ -1,6 +1,6 @@
-const router = require('express').Router();
-const medicationController = require('../controllers/medicationController');
-const error = require('../helpers/index');
+const express = require('express');
+const router = express.Router();
+const medicationController = require('../controllers/MedicationController');
 
 //add medication
 router.post('/', medicationController.postMedication);

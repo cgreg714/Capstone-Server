@@ -36,11 +36,11 @@ const DrugSchema = new mongoose.Schema({
     indication: String,
     'mechanism-of-action': String,
     products: [DrugProductSchema],
-    'food-interactions': { type: Map, of: DrugFoodInteractionSchema },
+    'food-interactions': [DrugFoodInteractionSchema],
     'drug-interactions': { type: Map, of: DrugInteractionSchema },
     "external-links": { type: Map, of: DrugExternalLinkSchema },
 });
 
 const Drug = mongoose.model('Drug', DrugSchema, 'drugDB');
 
-module.exports = { Drug, DrugSchema };
+module.exports = Drug;
