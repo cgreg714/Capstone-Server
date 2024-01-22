@@ -7,6 +7,8 @@
     PORT=3009
     MONGODB=mongodb://localhost:27017
     DB_NAME=DoseMinder
+
+    JWT_SECRET=secret
     ```
 
 ## db.js
