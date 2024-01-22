@@ -28,7 +28,7 @@ const db = require('./helpers/db');
 
 db()
     .then(() => {
-        console.log(`Database connected to: ${process.env.MONGODB}/${process.env.DB_NAME}`);
+        console.log(`Database connected to: ${MONGODB}/${DB_NAME}`);
         loadData();
     })
     .catch((err) => console.error(err));
