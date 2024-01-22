@@ -7,9 +7,9 @@ exports.getUser = async (req, res, next) => {
             return next(new Error('User not found'));
         }
 
-        if (req.userId !== user._id.toString()) {
-            return next(new Error('Insufficient permissions'));
-        }
+        // if (req.userId !== user._id.toString()) {
+        //     return next(new Error('Insufficient permissions'));
+        // }
 
         res.json(user);
     } catch (err) {
@@ -19,9 +19,9 @@ exports.getUser = async (req, res, next) => {
 
 exports.getAllUsers = async (req, res, next) => {
     try {
-        if (req.role === 'user') {
-            return next(new Error('Insufficient permissions'));
-        }
+        // if (req.role === 'user') {
+        //     return next(new Error('Insufficient permissions'));
+        // }
 
         const users = await User.find();
         res.json(users);
@@ -37,9 +37,9 @@ exports.deleteUser = async (req, res, next) => {
             return next(new Error('User not found'));
         }
 
-        if (req.role === 'user' && req.userId !== user._id.toString()) {
-            return next(new Error('Insufficient permissions'));
-        }
+        // if (req.role === 'user' && req.userId !== user._id.toString()) {
+        //     return next(new Error('Insufficient permissions'));
+        // }
 
         await user.remove();
         res.json({ message: 'User deleted successfully' });

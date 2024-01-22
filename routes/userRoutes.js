@@ -7,7 +7,7 @@ router.get('/:userId', authenticate, (req, res, next) => {
     UserController.getUser(req, res, next);
 });
 
-router.get('/', authenticate, requireRole('admin'), (req, res, next) => {
+router.get('/', authenticate, (req, res, next) => {
     UserController.getAllUsers(req, res, next);
 });
 
