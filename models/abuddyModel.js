@@ -1,7 +1,5 @@
 const mongoose = require('mongoose');
 
-
-
 const aBuddySchema = new mongoose.Schema({
     
     aBuddyFirstName: {
@@ -30,4 +28,6 @@ const aBuddySchema = new mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model('aBuddy', aBuddySchema);
+const aBuddy = mongoose.model('aBuddy', aBuddySchema, 'aBuddy');
+
+module.exports = aBuddy;

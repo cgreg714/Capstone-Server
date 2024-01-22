@@ -18,7 +18,6 @@ const incompleteResponse = (res) => {
     return(
         res.status(404).send(
             console.log(error)
-            "New data (user, medication, etc.) was unable to be added to the server."
         )
     )
 }

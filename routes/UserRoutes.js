@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const UserController = require('./UserController');
+const UserController = require('../controllers/userController');
 const { authenticate, requireRole } = require('../middlewares/auth');
 
 router.get('/:userId', authenticate, (req, res, next) => {
