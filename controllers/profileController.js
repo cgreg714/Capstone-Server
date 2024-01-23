@@ -42,7 +42,7 @@ exports.getProfile = async (req, res) => {
 		if (!getProfile) throw new Error('Profile not found');
 
 		getProfile ? success(res, getProfile) : incomplete(res);
-	} catch (error) {
+	} catch (err) {
 		error(res, err);
 	}
 };

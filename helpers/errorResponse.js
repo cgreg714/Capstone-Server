@@ -1,25 +1,13 @@
 const errorResponse = (res, err) => {
-    return(
-        res.status(500).send(
-            `Error: ${err.message}`
-        )
-    )
+    return res.status(500).send(`Error: ${err.message}`);
 }
 
-const successResponse = (res, results) => {
-    return(
-        res.status(200).json({
-            results
-        })
-    )
+const successResponse = (res, data) => {
+    return res.status(200).json(data);
 }
 
 const incompleteResponse = (res) => {
-    return(
-        res.status(404).send(
-            console.log(error)
-        )
-    )
+    return res.status(404).send(console.log(error));
 }
 
 module.exports = {

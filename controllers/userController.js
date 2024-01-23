@@ -30,6 +30,31 @@ exports.getAllUsers = async (req, res, next) => {
     }
 };
 
+exports.updateUser = async (req, res, next) => {
+    const { username, email } = req.body;
+    const { userId } = req.params;
+
+    try {
+        const user = await User.findById(userId);
+        if (!user) {
+            return next(new Error('User not found'));
+        }
+
+        // if (req.role === 'user' && req.userId !== user._id.toString()) {
+        //     return next(new Error('Insufficient permissions'));
+        // }
+
+        user.username = username || user.username;
+        user.email = email || user.email;
+
+        await user.save();
+
+        res.status(200).json({ message: 'User updated successfully' });
+    } catch (err) {
+        next(err);
+    }
+};
+
 exports.deleteUser = async (req, res, next) => {
     try {
         const user = await User.findById(req.params.userId);

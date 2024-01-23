@@ -2,31 +2,33 @@ const mongoose = require('mongoose');
 
 const aBuddySchema = new mongoose.Schema({
     
-    aBuddyFirstName: {
+    firstName: {
         type: String,
         required: true,
         unique: true, 
     },
-    aBuddyLastName: {
+    lastName: {
         type: String,
         required: true,
         unique: true, 
     },
-    aBuddyRelation: {
+    relation: {
         type: String,
         required: true,
         unique: true,
     },
-    aBuddyEmail: {
+    email: {
         type: String,
         required: true,
         unique: true,
     },
-    aBuddyNumber: {
+    phoneNumber: {
         type: String,
         required: true,
     }
 });
+
+aBuddySchema.index({ firstName: 1, lastName: 1, email: 1}, { unique: true });
 
 const aBuddy = mongoose.model('aBuddy', aBuddySchema, 'aBuddy');
 

@@ -20,6 +20,7 @@ const UserSchema = new mongoose.Schema({
     avatar: String,
     resetPasswordToken: String,
     resetPasswordExpires: Date,
+    profiles: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Profile' }]
 });
 
 UserSchema.pre('save', async function (next) {
