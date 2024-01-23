@@ -1,13 +1,20 @@
 const router = require('express').Router();
-const ProfileController = require('../controllers/profileController');
+const profileController = require('../controllers/profileController');
 
 router.route('/')
-    .get(ProfileController.getAllProfiles)
-    .post(ProfileController.createProfile);
+    .get(profileController.getAllProfiles)
+    .post(profileController.createProfile);
 
 router.route('/:id')
-    .get(ProfileController.getProfile)
-    .patch(ProfileController.updateProfile)
-    .delete(ProfileController.deleteProfile);
+    .get(profileController.getProfile)
+    .patch(profileController.updateProfile)
+    .delete(profileController.deleteProfile);
 
+    
+router.post('/:profileId/doctors', profileController.addDoctorToProfile);
+router.delete('/:profileId/doctors/:doctorId', profileController.removeDoctorFromProfile);
+
+router.post('/:profileId/meds', profileController.addMedsToProfile);
+router.delete('/:profileId/meds/:medId', profileController.removeMedsFromProfile);
+    
 module.exports = router;

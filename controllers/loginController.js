@@ -3,14 +3,14 @@ const zxcvbn = require('zxcvbn');
 const nodemailer = require('nodemailer');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-const { User } = require('../models/databaseModel');
+const models = require('../models/databaseModel');
 const FRONTENDPORT = process.env.FRONTEND_PORT;
 const IP = process.env.IP;
 
 passport.use(
 	new LocalStrategy({ usernameField: 'identifier' }, async (identifier, password, done) => {
 		try {
-			const user = await User.findOne({
+			const user = await models.User.findOne({
 				$or: [{ username: identifier }, { email: identifier }],
 			});
 
@@ -31,7 +31,7 @@ passport.use(
 );
 
 exports.signup = async (req, res, next) => {
-	let user = new User(req.body);
+	let user = new models.User(req.body);
 
 	const passwordStrength = zxcvbn(user.password);
 	if (passwordStrength.score < 3) {
@@ -69,7 +69,7 @@ exports.sendPasswordResetEmail = async (req, res) => {
 	const { email } = req.body;
 
 	// Look up the user in your database using the email
-	const user = await User.findOne({ email });
+	const user = await models.User.findOne({ email });
 
 	if (!user) {
 		return res.status(400).json({ message: 'User with this email does not exist' });
@@ -115,7 +115,7 @@ exports.resetPassword = async (req, res) => {
 	const { password } = req.body;
 
 	// Find the user with the reset token and make sure the token hasn't expired
-	const user = await User.findOne({
+	const user = await models.User.findOne({
 		resetPasswordToken: token,
 		resetPasswordExpires: { $gt: Date.now() },
 	});

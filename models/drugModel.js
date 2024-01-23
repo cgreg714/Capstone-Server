@@ -37,7 +37,7 @@ const DrugSchema = new mongoose.Schema({
     'mechanism-of-action': String,
     products: [DrugProductSchema],
     'food-interactions': [DrugFoodInteractionSchema],
-    'drug-interactions': { type: Map, of: DrugInteractionSchema },
+    'drug-interactions': [DrugInteractionSchema],
     "external-links": { type: Map, of: DrugExternalLinkSchema },
 });
 

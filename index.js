@@ -40,7 +40,7 @@ app.use(express.json());
 app.use('/', loginRoutes);
 app.use('/user', userRoutes);
 app.use('/profile', profileRoutes);
-app.use('/aBuddy', aBuddyRoutes);
+app.use('/profile/:profileId/aBuddy', aBuddyRoutes);
 app.use('/drugs', drugRoutes);
 app.use('/medication', medicationRoutes);
 

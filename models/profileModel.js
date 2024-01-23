@@ -28,14 +28,17 @@ const ProfileSchema = new mongoose.Schema({
     pharmacy: {
         type: String
     },
-    doctor: [DoctorSchema],
     timezone: {
         type: String
     },
-    user: {
+    users: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
-    },
+    }],
+    doctors: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Doctor'
+    }],
     medications: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Medication'
@@ -49,5 +52,6 @@ const ProfileSchema = new mongoose.Schema({
 ProfileSchema.index({ firstName: 1, lastName: 1 }, { unique: true });
 
 const Profile = mongoose.model('Profile', ProfileSchema, 'profiles');
+const Doctor = mongoose.model('Doctor', DoctorSchema, 'doctors');
 
-module.exports = Profile;
+module.exports = { Profile, Doctor };

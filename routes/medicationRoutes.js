@@ -21,4 +21,8 @@ router.route('/name/:name')
 router.route('/dateAdded/:dateAdded')
     .get(medicationController.getByDate);
 
+router.post('/:medicationId/addDrug/:drugId', medicationController.addDrugToMedication);
+
+router.post('/:medicationId/removeDrug', medicationController.removeDrugFromMedication);
+
 module.exports = router;

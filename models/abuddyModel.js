@@ -25,7 +25,8 @@ const aBuddySchema = new mongoose.Schema({
     phoneNumber: {
         type: String,
         required: true,
-    }
+    },
+    profiles: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Profile' }],
 });
 
 aBuddySchema.index({ firstName: 1, lastName: 1, email: 1}, { unique: true });

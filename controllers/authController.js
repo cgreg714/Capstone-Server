@@ -1,4 +1,4 @@
-const { User } = require('../models/databaseModel');
+const models = require('../models/databaseModel');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const {error} = require('../helpers');
@@ -6,7 +6,7 @@ const SECRET = process.env.JWT;
 
 exports.signup = async (req,res) => {
     try{
-        const user = new User({
+        const user = new models.User({
             userName: req.body.userName ? req.body.userName : 'Please enter a valid user name.',
             email: req.body.email ? req.body.email : 'Please enter a valid email address',
             password: bcrypt.hashSync(req.body.password, 13)
@@ -26,7 +26,7 @@ exports.signup = async (req,res) => {
 exports.login = async(req,res) => {
     try{
         const {userName, password} = req.body;
-        const user = await User.findOne ({userName: userName});
+        const user = await models.User.findOne ({userName: userName});
         if(!user) throw new Error ('Username or password does not match.');
 
         const passwordMatch = await bcrypt.compare(password, user.password);

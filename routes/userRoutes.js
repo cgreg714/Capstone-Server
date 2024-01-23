@@ -14,4 +14,7 @@ router.route('/')
 router.route('/changeUserRole')
     .patch(authenticate, requireRole('root'), UserController.changeUserRole);
 
+router.post('/:userId/addProfile/:profileId', authenticate, UserController.addProfileToUser);
+router.post('/:userId/removeProfile/:profileId', authenticate, UserController.removeProfileFromUser);
+
 module.exports = router;

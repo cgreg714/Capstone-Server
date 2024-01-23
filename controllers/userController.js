@@ -1,15 +1,11 @@
-const { User } = require('../models/databaseModel');
+const models = require('../models/databaseModel');
 
 exports.getUser = async (req, res, next) => {
     try {
-        const user = await User.findById(req.params.userId);
+        const user = await models.User.findById(req.params.userId)
         if (!user) {
             return next(new Error('User not found'));
         }
-
-        // if (req.userId !== user._id.toString()) {
-        //     return next(new Error('Insufficient permissions'));
-        // }
 
         res.json(user);
     } catch (err) {
@@ -23,7 +19,7 @@ exports.getAllUsers = async (req, res, next) => {
         //     return next(new Error('Insufficient permissions'));
         // }
 
-        const users = await User.find();
+        const users = await models.User.find().populate('profiles');
         res.json(users);
     } catch (err) {
         next(err);
@@ -35,7 +31,7 @@ exports.updateUser = async (req, res, next) => {
     const { userId } = req.params;
 
     try {
-        const user = await User.findById(userId);
+        const user = await models.User.findById(userId);
         if (!user) {
             return next(new Error('User not found'));
         }
@@ -57,7 +53,7 @@ exports.updateUser = async (req, res, next) => {
 
 exports.deleteUser = async (req, res, next) => {
     try {
-        const user = await User.findById(req.params.userId);
+        const user = await models.User.findById(req.params.userId);
         if (!user) {
             return next(new Error('User not found'));
         }
@@ -83,7 +79,7 @@ exports.changeUserRole = async (req, res, next) => {
     }
 
     try {
-        const user = await User.findById(userId);
+        const user = await models.User.findById(userId);
         if (!user) {
             return next(new Error('User not found'));
         }
@@ -96,6 +92,58 @@ exports.changeUserRole = async (req, res, next) => {
         await user.save();
 
         res.status(200).json({ message: 'User role updated successfully' });
+    } catch (err) {
+        next(err);
+    }
+};
+
+exports.addProfileToUser = async (req, res, next) => {
+    const { userId, profileId } = req.params;
+
+    try {
+        const user = await models.User.findById(userId);
+        if (!user) {
+            return next(new Error('User not found'));
+        }
+
+        const profile = await models.Profile.findById(profileId);
+        if (!profile) {
+            return next(new Error('Profile not found'));
+        }
+
+        // Add the profile to the user and the user to the profile
+        user.profiles.push(profileId);
+        profile.users.push(userId);
+        await user.save();
+        await profile.save();
+
+        res.status(200).json({ message: 'Profile added to user successfully' });
+    } catch (err) {
+        next(err);
+    }
+};
+
+exports.removeProfileFromUser = async (req, res, next) => {
+    const { userId, profileId } = req.params;
+
+    try {
+        const user = await models.User.findById(userId);
+        if (!user) {
+            return next(new Error('User not found'));
+        }
+
+        const profile = await models.Profile.findById(profileId);
+        if (!profile) {
+            return next(new Error('Profile not found'));
+        }
+
+        // Remove the profile from the user and the user from the profile
+        user.profiles = user.profiles.filter(id => id.toString() !== profileId);
+        profile.users = profile.users.filter(id => id.toString() !== userId);
+        await user.save();
+        await profile.save();
+
+        res.status(200).json({ message: 'Profile removed from user successfully' });
     } catch (err) {
         next(err);
     }
