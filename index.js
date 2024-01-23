@@ -18,7 +18,7 @@ const userRoutes = require('./routes/userRoutes');
 const profileRoutes = require('./routes/profileRoutes');
 const medicationRoutes = require('./routes/medicationRoutes');
 const drugRoutes = require('./routes/drugRoutes');
-const aBuddyRoutes = require('./controllers/abuddyController');
+const aBuddyRoutes = require('./routes/aBuddyRoutes');
 
 // Middlewares
 const errorHandler = require('./middlewares/errorHandler');
