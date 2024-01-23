@@ -3,24 +3,15 @@ const router = express.Router();
 const UserController = require('../controllers/userController');
 const { authenticate, requireRole } = require('../middlewares/auth');
 
-router.get('/:userId', authenticate, (req, res, next) => {
-    UserController.getUser(req, res, next);
-});
+router.route('/:userId')
+    .get(authenticate, UserController.getUser)
+    .put(authenticate, UserController.updateUser)
+    .delete(authenticate, UserController.deleteUser);
 
-router.get('/', authenticate, (req, res, next) => {
-    UserController.getAllUsers(req, res, next);
-});
+router.route('/')
+    .get(authenticate, UserController.getAllUsers);
 
-router.put('/:userId', authenticate, (req, res, next) => {
-    UserController.updateUser(req, res, next);
-});
-
-router.delete('/:userId', authenticate, (req, res, next) => {
-    UserController.deleteUser(req, res, next);
-});
-
-router.patch('/changeUserRole', authenticate, requireRole('root'), (req, res, next) => {
-    UserController.changeUserRole(req, res, next);
-});
+router.route('/changeUserRole')
+    .patch(authenticate, requireRole('root'), UserController.changeUserRole);
 
 module.exports = router;

@@ -11,6 +11,8 @@ const DoctorSchema = new mongoose.Schema({
     }
 })
 
+DoctorSchema.index({ firstName: 1, lastName: 1 }, { unique: true });
+
 const ProfileSchema = new mongoose.Schema({
     firstName: {
         type: String,
@@ -30,11 +32,21 @@ const ProfileSchema = new mongoose.Schema({
     timezone: {
         type: String
     },
-    profile_id: {
-        type: mongoose.Types.ObjectId,
-        ref: "profile"
-    }
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    },
+    medications: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Medication'
+    }],
+    abuddies: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'ABuddy'
+    }]
 });
+
+ProfileSchema.index({ firstName: 1, lastName: 1 }, { unique: true });
 
 const Profile = mongoose.model('Profile', ProfileSchema, 'profiles');
 
