@@ -11,6 +11,10 @@ router.get('/', authenticate, (req, res, next) => {
     UserController.getAllUsers(req, res, next);
 });
 
+router.put('/:userId', authenticate, (req, res, next) => {
+    UserController.updateUser(req, res, next);
+});
+
 router.delete('/:userId', authenticate, (req, res, next) => {
     UserController.deleteUser(req, res, next);
 });
