@@ -1,8 +1,13 @@
 const router = require('express').Router();
-const abuddyController = require('./abuddyController');
+const abuddyController = require('../controllers/abuddyController');
 
-router.post('/buddy', async (req,res) => {
-    abuddyController.buddy(req, res, next);
-});
+router.route('/')
+    .post(abuddyController.create)
+    .get(abuddyController.getAll);
+
+router.route('/:id')
+    .get(abuddyController.getOne)
+    .put(abuddyController.update)
+    .delete(abuddyController.delete);
 
 module.exports = router;
