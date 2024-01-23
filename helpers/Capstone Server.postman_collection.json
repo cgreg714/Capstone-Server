@@ -11,13 +11,13 @@
 			"name": "Authentication",
 			"item": [
 				{
-					"name": "register",
+					"name": "signup",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"test\",\r\n    \"password\": \"test\"\r\n}",
+							"raw": "{\r\n    \"email\": \"tester@ymail.com\",\r\n    \"username\": \"test\",\r\n    \"password\": \"securePa$$word!\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -25,28 +25,37 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/auth/register",
-							"protocol": "http",
+							"raw": "{{IP}}:{{PORTB}}/signup",
 							"host": [
-								"localhost"
+								"{{IP}}"
 							],
-							"port": "3000",
+							"port": "{{PORTB}}",
 							"path": [
-								"auth",
-								"register"
+								"signup"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "webauthn register",
+					"name": "email login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"postman.setEnvironmentVariable(\"authToken\", responseBody);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"test\",\r\n    \"password\": \"test\"\r\n}",
+							"raw": "{\r\n    \"identifier\": \"tester@ymail.com\",\r\n    \"password\": \"securePa$$word!\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -54,12 +63,76 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/auth/webauthn/login",
-							"protocol": "http",
+							"raw": "{{IP}}:{{PORTB}}/login",
 							"host": [
-								"localhost"
+								"{{IP}}"
 							],
-							"port": "3000",
+							"port": "{{PORTB}}",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "username login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"postman.setEnvironmentVariable(\"authToken\", responseBody);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"identifier\": \"test\",\r\n    \"password\": \"securePa$$word!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{IP}}:{{PORTB}}/login",
+							"host": [
+								"{{IP}}"
+							],
+							"port": "{{PORTB}}",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "webauthn login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"test\",\r\n    \"password\": \"securePa$$word!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{IP}}:{{PORTB}}/auth/webauthn/login",
+							"host": [
+								"{{IP}}"
+							],
+							"port": "{{PORTB}}",
 							"path": [
 								"auth",
 								"webauthn",
@@ -70,113 +143,16 @@
 					"response": []
 				},
 				{
-					"name": "signup",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"tester@ymail.com\",\r\n    \"username\": \"test\",\r\n    \"password\": \"test\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:3009/signup",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3009",
-							"path": [
-								"signup"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "email login",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"identifier\": \"tester@ymail.com\",\r\n    \"password\": \"test\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:3009/login",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3009",
-							"path": [
-								"login"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "username login",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"identifier\": \"test\",\r\n    \"password\": \"test\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:3009/login",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3009",
-							"path": [
-								"login"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "logout",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
 						"url": {
-							"raw": "http://localhost:3009/logout",
-							"protocol": "http",
+							"raw": "{{IP}}:{{PORTB}}/logout",
 							"host": [
-								"localhost"
+								"{{IP}}"
 							],
-							"port": "3009",
+							"port": "{{PORTB}}",
 							"path": [
 								"logout"
 							]
@@ -191,17 +167,45 @@
 			"item": [
 				{
 					"name": "getAll Users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"userId\", jsonData[0]._id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "auth-token",
+								"value": "{{authToken}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "{{IP}}:{{PORTB}}/users",
+							"raw": "{{IP}}:{{PORTB}}/user",
 							"host": [
 								"{{IP}}"
 							],
 							"port": "{{PORTB}}",
 							"path": [
-								"users"
+								"user"
 							]
 						}
 					},
@@ -210,56 +214,33 @@
 				{
 					"name": "getOne User",
 					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{IP}}:{{PORTB}}/users/{{userId}}",
-							"host": [
-								"{{IP}}"
-							],
-							"port": "{{PORTB}}",
-							"path": [
-								"users",
-								"{{userId}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "create User",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var jsonData = JSON.parse(responseBody);\r",
-									"postman.setEnvironmentVariable(\"userId\", jsonData._id);"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"userId\": \"userId\",\r\n    \"newRole\": \"admin\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
 								}
-							}
+							]
 						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "auth-token",
+								"value": "{{authToken}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "{{IP}}:{{PORTB}}/users",
+							"raw": "{{IP}}:{{PORTB}}/user/{{userId}}",
 							"host": [
 								"{{IP}}"
 							],
 							"port": "{{PORTB}}",
 							"path": [
-								"users"
+								"user",
+								"{{userId}}"
 							]
 						}
 					},
@@ -269,15 +250,30 @@
 					"name": "update User",
 					"request": {
 						"method": "PUT",
-						"header": [],
+						"header": [
+							{
+								"key": "auth-token",
+								"value": "{{authToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"Max\",\r\n    \"email\": \"madmax@ymail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "{{IP}}:{{PORTB}}/users/{{userId}}",
+							"raw": "{{IP}}:{{PORTB}}/user/{{userId}}",
 							"host": [
 								"{{IP}}"
 							],
 							"port": "{{PORTB}}",
 							"path": [
-								"users",
+								"user",
 								"{{userId}}"
 							]
 						}
@@ -288,15 +284,21 @@
 					"name": "delete User",
 					"request": {
 						"method": "DELETE",
-						"header": [],
+						"header": [
+							{
+								"key": "auth-token",
+								"value": "{{authToken}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "{{IP}}:{{PORTB}}/users/{{userId}}",
+							"raw": "{{IP}}:{{PORTB}}/user/{{userId}}",
 							"host": [
 								"{{IP}}"
 							],
 							"port": "{{PORTB}}",
 							"path": [
-								"users",
+								"user",
 								"{{userId}}"
 							]
 						}
@@ -314,13 +316,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{IP}}:{{PORTB}}/profiles",
+							"raw": "{{IP}}:{{PORTB}}/profile",
 							"host": [
 								"{{IP}}"
 							],
 							"port": "{{PORTB}}",
 							"path": [
-								"profiles"
+								"profile"
 							]
 						}
 					},
@@ -332,13 +334,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{IP}}:{{PORTB}}/profiles/{{profileId}}",
+							"raw": "{{IP}}:{{PORTB}}/profile/{{profileId}}",
 							"host": [
 								"{{IP}}"
 							],
 							"port": "{{PORTB}}",
 							"path": [
-								"profiles",
+								"profile",
 								"{{profileId}}"
 							]
 						}
@@ -364,7 +366,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"firstName\": \"John\",\r\n    \"lastName\": \"Doe\",\r\n    \"email\": \"john.doe@example.com\",\r\n    \"pharmacy\": \"Pharmacy Name\",\r\n    \"doctor\": \"Doctor Name\",\r\n    \"timezone\": \"EST\"\r\n}",
+							"raw": "{\r\n    \"firstName\": \"Hank\",\r\n    \"lastName\": \"Doe\",\r\n    \"email\": \"jane.doe@example.com\",\r\n    \"pharmacy\": \"Pharmacy Name\",\r\n    \"doctor\": {\r\n        \"firstName\": \"Dr\",\r\n        \"lastName\": \"Doctor\"\r\n    },\r\n    \"timezone\": \"EST\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -372,13 +374,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{IP}}:{{PORTB}}/profiles",
+							"raw": "{{IP}}:{{PORTB}}/profile",
 							"host": [
 								"{{IP}}"
 							],
 							"port": "{{PORTB}}",
 							"path": [
-								"profiles"
+								"profile"
 							]
 						}
 					},
@@ -387,16 +389,25 @@
 				{
 					"name": "update Profile",
 					"request": {
-						"method": "PUT",
+						"method": "PATCH",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"hank.doe@example.com\",\r\n    \"doctor\": {\r\n        \"firstName\": \"Dr\",\r\n        \"lastName\": \"Medicine\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "{{IP}}:{{PORTB}}/profiles/{{profileId}}",
+							"raw": "{{IP}}:{{PORTB}}/profile/{{profileId}}",
 							"host": [
 								"{{IP}}"
 							],
 							"port": "{{PORTB}}",
 							"path": [
-								"profiles",
+								"profile",
 								"{{profileId}}"
 							]
 						}
@@ -409,13 +420,13 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{IP}}:{{PORTB}}/profiles/{{profileId}}",
+							"raw": "{{IP}}:{{PORTB}}/profile/{{profileId}}",
 							"host": [
 								"{{IP}}"
 							],
 							"port": "{{PORTB}}",
 							"path": [
-								"profiles",
+								"profile",
 								"{{profileId}}"
 							]
 						}
@@ -433,13 +444,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{IP}}:{{PORTB}}/buddies",
+							"raw": "{{IP}}:{{PORTB}}/aBuddy",
 							"host": [
 								"{{IP}}"
 							],
 							"port": "{{PORTB}}",
 							"path": [
-								"buddies"
+								"aBuddy"
 							]
 						}
 					},
@@ -451,13 +462,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{IP}}:{{PORTB}}/buddies/{{buddyId}}",
+							"raw": "{{IP}}:{{PORTB}}/aBuddy/{{buddyId}}",
 							"host": [
 								"{{IP}}"
 							],
 							"port": "{{PORTB}}",
 							"path": [
-								"buddies",
+								"aBuddy",
 								"{{buddyId}}"
 							]
 						}
@@ -483,7 +494,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"aBuddyFirstName\": \"John\",\r\n    \"aBuddyLastName\": \"Doe\",\r\n    \"aBuddyRelation\": \"Friend\",\r\n    \"aBuddyEmail\": \"john.doe@example.com\",\r\n    \"aBuddyNumber\": \"1234567890\"\r\n}",
+							"raw": "{\r\n  \"firstName\": \"John\",\r\n  \"lastName\": \"Doe\",\r\n  \"relation\": \"Friend\",\r\n  \"email\": \"john.doe@example.com\",\r\n  \"phoneNumber\": \"1234567890\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -491,13 +502,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{IP}}:{{PORTB}}/buddy",
+							"raw": "{{IP}}:{{PORTB}}/aBuddy",
 							"host": [
 								"{{IP}}"
 							],
 							"port": "{{PORTB}}",
 							"path": [
-								"buddy"
+								"aBuddy"
 							]
 						}
 					},
@@ -506,16 +517,25 @@
 				{
 					"name": "update Buddy",
 					"request": {
-						"method": "PUT",
+						"method": "PATCH",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"relation\": \"Best Friend\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "{{IP}}:{{PORTB}}/buddies/{{buddyId}}",
+							"raw": "{{IP}}:{{PORTB}}/aBuddy/{{buddyId}}",
 							"host": [
 								"{{IP}}"
 							],
 							"port": "{{PORTB}}",
 							"path": [
-								"buddies",
+								"aBuddy",
 								"{{buddyId}}"
 							]
 						}
@@ -528,13 +548,13 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{IP}}:{{PORTB}}/buddies/{{buddyId}}",
+							"raw": "{{IP}}:{{PORTB}}/aBuddy/{{buddyId}}",
 							"host": [
 								"{{IP}}"
 							],
 							"port": "{{PORTB}}",
 							"path": [
-								"buddies",
+								"aBuddy",
 								"{{buddyId}}"
 							]
 						}
@@ -636,12 +656,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:{{BPORT}}/drugs/DB00001/interactions/DB06605",
+							"raw": "http://localhost:{{PORTB}}/drugs/DB00001/interactions/DB06605",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "{{BPORT}}",
+							"port": "{{PORTB}}",
 							"path": [
 								"drugs",
 								"DB00001",
@@ -658,12 +678,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:{{BPORT}}/drugs/drugbank-id/DB00001",
+							"raw": "http://localhost:{{PORTB}}/drugs/drugbank-id/DB00001",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "{{BPORT}}",
+							"port": "{{PORTB}}",
 							"path": [
 								"drugs",
 								"drugbank-id",
@@ -679,12 +699,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:{{BPORT}}/drugs/unii/Y43GF64R34",
+							"raw": "http://localhost:{{PORTB}}/drugs/unii/Y43GF64R34",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "{{BPORT}}",
+							"port": "{{PORTB}}",
 							"path": [
 								"drugs",
 								"unii",
@@ -705,13 +725,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{IP}}:{{PORTB}}/medications",
+							"raw": "{{IP}}:{{PORTB}}/medication",
 							"host": [
 								"{{IP}}"
 							],
 							"port": "{{PORTB}}",
 							"path": [
-								"medications"
+								"medication"
 							]
 						}
 					},
@@ -723,13 +743,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{IP}}:{{PORTB}}/medications/{{medId}}",
+							"raw": "{{IP}}:{{PORTB}}/medication/{{medId}}",
 							"host": [
 								"{{IP}}"
 							],
 							"port": "{{PORTB}}",
 							"path": [
-								"medications",
+								"medication",
 								"{{medId}}"
 							]
 						}
@@ -755,7 +775,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Medication Name\",\r\n    \"description\": \"Medication Description\",\r\n    \"dosages\": \"Dosages\",\r\n    \"frequency\": \"Frequency\",\r\n    \"quantity\": \"Quantity\",\r\n    \"dateAdded\": \"Date Added\",\r\n    \"prescriber\": \"Prescriber\",\r\n    \"timeOfDay\": \"Time of Day\"\r\n}",
+							"raw": "{\r\n    \"name\": \"Medication Name\",\r\n    \"description\": \"Medication Description\",\r\n    \"dosages\": \"Dosages Information\",\r\n    \"frequency\": 3,\r\n    \"quantity\": 10,\r\n    \"prescriber\": \"Prescriber Name\",\r\n    \"timeOfDay\": \"Morning\",\r\n    \"associatedDrug\": \"60d5f9a6c765b35d1f8261f2\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -763,13 +783,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{IP}}:{{PORTB}}/medications",
+							"raw": "{{IP}}:{{PORTB}}/medication/",
 							"host": [
 								"{{IP}}"
 							],
 							"port": "{{PORTB}}",
 							"path": [
-								"medications"
+								"medication",
+								""
 							]
 						}
 					},
@@ -778,16 +799,25 @@
 				{
 					"name": "update Med",
 					"request": {
-						"method": "PUT",
+						"method": "PATCH",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"timeOfDay\": \"Evening\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "{{IP}}:{{PORTB}}/medications/{{medId}}",
+							"raw": "{{IP}}:{{PORTB}}/medication/{{medId}}",
 							"host": [
 								"{{IP}}"
 							],
 							"port": "{{PORTB}}",
 							"path": [
-								"medications",
+								"medication",
 								"{{medId}}"
 							]
 						}
@@ -800,13 +830,13 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{IP}}:{{PORTB}}/medications/{{medId}}",
+							"raw": "{{IP}}:{{PORTB}}/medication/{{medId}}",
 							"host": [
 								"{{IP}}"
 							],
 							"port": "{{PORTB}}",
 							"path": [
-								"medications",
+								"medication",
 								"{{medId}}"
 							]
 						}
