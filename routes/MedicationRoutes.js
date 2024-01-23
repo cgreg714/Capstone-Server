@@ -30,4 +30,10 @@ router.get('/dateAdded/:dateAdded', medicationController.getByDate);
 //delete all
 router.delete('/clear', medicationController.deleteAll);
 
+//get by time of day
+router.get('/time-of-day/:timeOfDay', medicationController.getByTimeOfDay);
+
+//get by day of the week
+router.get('/day-of-the-week/:dayOfTheWeek', medicationController.getByDayOfTheWeek);
+
 module.exports = router;

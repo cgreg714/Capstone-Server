@@ -4,17 +4,18 @@ const router = require('express').Router();
 
 
 
-/////toDO Add
+//toDo test creating new med with timeOfDay and dayOfTheWeek(boolean values)
+//*add medication
 exports.postMedication = async(req,res) => {
     console.log(req);
     try {
         //pull data
          const {
-              name, description, dosages, frequency, quantity, dateAdded, prescriber, timeOfDay
+              name, description, dosages, frequency, quantity, dateAdded, prescriber, timeOfDay, dayOfTheWeek
          } = req.body;
         //create new object
         const medication = new Medication({
-            name, description, dosages, frequency, quantity, dateAdded: new Date(), prescriber, timeOfDay, //id: req.user._id
+            name, description, dosages, frequency, quantity, dateAdded: new Date(), prescriber, timeOfDay, dayOfTheWeek //id: req.user._id
         });
         //save object to db
         const newMed = await medication.save();
@@ -27,7 +28,7 @@ exports.postMedication = async(req,res) => {
         error(res,err);
     }
 };
-/////toDo Get All
+//* get all medication
 exports.getMedication = async(req,res) => {
     console.log(req);
     try {
@@ -44,7 +45,7 @@ exports.getMedication = async(req,res) => {
         error(res,err);
     }
 };
-// /////toDo Get All By Prescriber Name
+//*get by prescriber
 exports.getByPrescriber = async(req,res) => {
     try {
         console.log('prescriber route');
@@ -60,7 +61,7 @@ exports.getByPrescriber = async(req,res) => {
         error(res,err);
     }
 };
-/////toDo Get One By ID
+//*get by ID
 exports.getByID = async(req,res) => {
     try {
         const { id } = req.params;
@@ -73,7 +74,8 @@ exports.getByID = async(req,res) => {
         error(res,err);
     }
 };
-// ////toDo Get by Medication Name
+//*get by medication name
+// ////toDo Get by Medication Name -- spell check/auto complete
 exports.getByName = async(req,res) => {
     try {
         const { name } =req.params;
@@ -88,7 +90,7 @@ exports.getByName = async(req,res) => {
         error(res,err);
     }
 };
-// /////toDo Patch
+//*patch/edit medication by ID
 exports.patchByID = async(req,res) => {
     try {
         const filter = {
@@ -105,7 +107,7 @@ exports.patchByID = async(req,res) => {
         error(res,err);
     }
 };
-// /////toDo Delete
+//*delete one by ID
 exports.deleteByID = async(req,res) => {
     try {
         const { id } = req.params;
@@ -123,7 +125,7 @@ exports.deleteByID = async(req,res) => {
     }
 };
 
-// //toDo get by date/time Added
+//*get medications by date added
 exports.getByDate = async(req,res) => {
     try {
         const { dateAdded } =req.params;
@@ -138,7 +140,7 @@ exports.getByDate = async(req,res) => {
     }
 };
 
-// ////toDo DELETE all
+//*delete/clear all medications
 exports.deleteAll = async(req,res) => {
     console.log(req);
     try {
@@ -147,6 +149,38 @@ exports.deleteAll = async(req,res) => {
             message: "All meds cleared"
         });
     } catch (err) {
+        error(res,err);
+    }
+};
+
+//*get by time of day
+//toDo test
+exports.getByTimeOfDay = async(req,res) => {
+    console.log(req);
+    try {
+        const { timeOfDay } = req.params;
+        const medicationTimeOfDay = await Medication.find({timeOfDay: timeOfDay});
+        if (medicationTimeOfDay === undefined) throw new Error ('Medication Not Found');
+        res.status(200).json({
+            results: medicationTimeOfDay
+        }); 
+    } catch (error) {
+        error(res,err);
+    }
+};
+
+//toDo test
+//*get all by day of the week
+exports.getByDayOfTheWeek = async(req,res) => {
+    console.log(req);
+    try {
+        const { dayOfTheWeek } = req.params;
+        const medicationDayOfTheWeek = await Medication.find({dayOfTheWeek: dayOfTheWeek});
+        if (medicationDayOfTheWeek === undefined) throw new Error ('Medication Not Found');
+        res.status(200).json({
+            results: medicationDayOfTheWeek
+        });
+    } catch (error) {
         error(res,err);
     }
 };
