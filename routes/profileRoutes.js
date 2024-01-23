@@ -7,7 +7,7 @@ router.route('/')
 
 router.route('/:id')
     .get(ProfileController.getProfile)
-    .put(ProfileController.updateProfile)
+    .patch(ProfileController.updateProfile)
     .delete(ProfileController.deleteProfile);
 
 module.exports = router;

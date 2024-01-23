@@ -7,7 +7,7 @@ router.route('/')
 
 router.route('/:id')
     .get(abuddyController.getOne)
-    .put(abuddyController.update)
+    .patch(abuddyController.update)
     .delete(abuddyController.delete);
 
 module.exports = router;
