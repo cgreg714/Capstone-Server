@@ -1,0 +1,819 @@
+{
+	"info": {
+		"_postman_id": "2b2dbb2f-c1b8-4986-97ff-70db7c8facb8",
+		"name": "Capstone Server",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31439256",
+		"_collection_link": "https://lively-water-708061.postman.co/workspace/DoseMinder-Workspace~950d54d5-5a70-4826-8a50-258625b41eab/collection/31436664-2b2dbb2f-c1b8-4986-97ff-70db7c8facb8?action=share&source=collection_link&creator=31439256"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"test\",\r\n    \"password\": \"test\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/auth/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "webauthn register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"test\",\r\n    \"password\": \"test\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/auth/webauthn/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"auth",
+								"webauthn",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "signup",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"tester@ymail.com\",\r\n    \"username\": \"test\",\r\n    \"password\": \"test\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3009/signup",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3009",
+							"path": [
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "email login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"identifier\": \"tester@ymail.com\",\r\n    \"password\": \"test\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3009/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3009",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "username login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"identifier\": \"test\",\r\n    \"password\": \"test\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3009/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3009",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "logout",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3009/logout",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3009",
+							"path": [
+								"logout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "getAll Users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{IP}}:{{PORTB}}/users",
+							"host": [
+								"{{IP}}"
+							],
+							"port": "{{PORTB}}",
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getOne User",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{IP}}:{{PORTB}}/users/{{userId}}",
+							"host": [
+								"{{IP}}"
+							],
+							"port": "{{PORTB}}",
+							"path": [
+								"users",
+								"{{userId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"userId\", jsonData._id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userId\": \"userId\",\r\n    \"newRole\": \"admin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{IP}}:{{PORTB}}/users",
+							"host": [
+								"{{IP}}"
+							],
+							"port": "{{PORTB}}",
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update User",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{IP}}:{{PORTB}}/users/{{userId}}",
+							"host": [
+								"{{IP}}"
+							],
+							"port": "{{PORTB}}",
+							"path": [
+								"users",
+								"{{userId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete User",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{IP}}:{{PORTB}}/users/{{userId}}",
+							"host": [
+								"{{IP}}"
+							],
+							"port": "{{PORTB}}",
+							"path": [
+								"users",
+								"{{userId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Profiles",
+			"item": [
+				{
+					"name": "getAll Profiles",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{IP}}:{{PORTB}}/profiles",
+							"host": [
+								"{{IP}}"
+							],
+							"port": "{{PORTB}}",
+							"path": [
+								"profiles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getOne Profile",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{IP}}:{{PORTB}}/profiles/{{profileId}}",
+							"host": [
+								"{{IP}}"
+							],
+							"port": "{{PORTB}}",
+							"path": [
+								"profiles",
+								"{{profileId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create Profile",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"profileId\", jsonData._id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"John\",\r\n    \"lastName\": \"Doe\",\r\n    \"email\": \"john.doe@example.com\",\r\n    \"pharmacy\": \"Pharmacy Name\",\r\n    \"doctor\": \"Doctor Name\",\r\n    \"timezone\": \"EST\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{IP}}:{{PORTB}}/profiles",
+							"host": [
+								"{{IP}}"
+							],
+							"port": "{{PORTB}}",
+							"path": [
+								"profiles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update Profile",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{IP}}:{{PORTB}}/profiles/{{profileId}}",
+							"host": [
+								"{{IP}}"
+							],
+							"port": "{{PORTB}}",
+							"path": [
+								"profiles",
+								"{{profileId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete Profile",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{IP}}:{{PORTB}}/profiles/{{profileId}}",
+							"host": [
+								"{{IP}}"
+							],
+							"port": "{{PORTB}}",
+							"path": [
+								"profiles",
+								"{{profileId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "aBuddy",
+			"item": [
+				{
+					"name": "getAll Buddies",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{IP}}:{{PORTB}}/buddies",
+							"host": [
+								"{{IP}}"
+							],
+							"port": "{{PORTB}}",
+							"path": [
+								"buddies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getOne Buddy",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{IP}}:{{PORTB}}/buddies/{{buddyId}}",
+							"host": [
+								"{{IP}}"
+							],
+							"port": "{{PORTB}}",
+							"path": [
+								"buddies",
+								"{{buddyId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create Buddy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"buddyId\", jsonData._id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"aBuddyFirstName\": \"John\",\r\n    \"aBuddyLastName\": \"Doe\",\r\n    \"aBuddyRelation\": \"Friend\",\r\n    \"aBuddyEmail\": \"john.doe@example.com\",\r\n    \"aBuddyNumber\": \"1234567890\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{IP}}:{{PORTB}}/buddy",
+							"host": [
+								"{{IP}}"
+							],
+							"port": "{{PORTB}}",
+							"path": [
+								"buddy"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update Buddy",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{IP}}:{{PORTB}}/buddies/{{buddyId}}",
+							"host": [
+								"{{IP}}"
+							],
+							"port": "{{PORTB}}",
+							"path": [
+								"buddies",
+								"{{buddyId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete Buddy",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{IP}}:{{PORTB}}/buddies/{{buddyId}}",
+							"host": [
+								"{{IP}}"
+							],
+							"port": "{{PORTB}}",
+							"path": [
+								"buddies",
+								"{{buddyId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Drugs",
+			"item": [
+				{
+					"name": "getDrug",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.fda.gov/drug/label.json?api_key={{FDA.API}}&search=drug_interactions:caffeine&limit=5",
+							"protocol": "https",
+							"host": [
+								"api",
+								"fda",
+								"gov"
+							],
+							"path": [
+								"drug",
+								"label.json"
+							],
+							"query": [
+								{
+									"key": "api_key",
+									"value": "{{FDA.API}}"
+								},
+								{
+									"key": "search",
+									"value": "drug_interactions:caffeine"
+								},
+								{
+									"key": "limit",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getDrug brandname",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.fda.gov/drug/label.json?api_key={{FDA.API}}&search=product_ndc:50580-226-51",
+							"protocol": "https",
+							"host": [
+								"api",
+								"fda",
+								"gov"
+							],
+							"path": [
+								"drug",
+								"label.json"
+							],
+							"query": [
+								{
+									"key": "api_key",
+									"value": "{{FDA.API}}"
+								},
+								{
+									"key": "search",
+									"value": "product_ndc:50580-226-51"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getDrugs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{IP}}:{{PORTB}}/drugs",
+							"host": [
+								"{{IP}}"
+							],
+							"port": "{{PORTB}}",
+							"path": [
+								"drugs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getDrugInteractions",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{BPORT}}/drugs/DB00001/interactions/DB06605",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{BPORT}}",
+							"path": [
+								"drugs",
+								"DB00001",
+								"interactions",
+								"DB06605"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getDrugByDrugbankId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{BPORT}}/drugs/drugbank-id/DB00001",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{BPORT}}",
+							"path": [
+								"drugs",
+								"drugbank-id",
+								"DB00001"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getDrugByUnii",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{BPORT}}/drugs/unii/Y43GF64R34",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{BPORT}}",
+							"path": [
+								"drugs",
+								"unii",
+								"Y43GF64R34"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Medications",
+			"item": [
+				{
+					"name": "getAll Meds",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{IP}}:{{PORTB}}/medications",
+							"host": [
+								"{{IP}}"
+							],
+							"port": "{{PORTB}}",
+							"path": [
+								"medications"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getOne Med",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{IP}}:{{PORTB}}/medications/{{medId}}",
+							"host": [
+								"{{IP}}"
+							],
+							"port": "{{PORTB}}",
+							"path": [
+								"medications",
+								"{{medId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create Med",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"medId\", jsonData._id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Medication Name\",\r\n    \"description\": \"Medication Description\",\r\n    \"dosages\": \"Dosages\",\r\n    \"frequency\": \"Frequency\",\r\n    \"quantity\": \"Quantity\",\r\n    \"dateAdded\": \"Date Added\",\r\n    \"prescriber\": \"Prescriber\",\r\n    \"timeOfDay\": \"Time of Day\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{IP}}:{{PORTB}}/medications",
+							"host": [
+								"{{IP}}"
+							],
+							"port": "{{PORTB}}",
+							"path": [
+								"medications"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update Med",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{IP}}:{{PORTB}}/medications/{{medId}}",
+							"host": [
+								"{{IP}}"
+							],
+							"port": "{{PORTB}}",
+							"path": [
+								"medications",
+								"{{medId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete Med",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{IP}}:{{PORTB}}/medications/{{medId}}",
+							"host": [
+								"{{IP}}"
+							],
+							"port": "{{PORTB}}",
+							"path": [
+								"medications",
+								"{{medId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
