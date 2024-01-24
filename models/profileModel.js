@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const ABuddySchema = require('./abuddyModel');
-const MedicationSchema = require('./medicationModel');
+const { MedicationSchema } = require('./medicationModel');
 
 const AddressSchema = new mongoose.Schema({
     street: String,
