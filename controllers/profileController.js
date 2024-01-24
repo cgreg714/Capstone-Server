@@ -1,22 +1,16 @@
-const { Profile } = require('../models/databaseModel');
-const { error, success, incomplete } = require('../helpers/errorResponse');
+const models = require('../models/databaseModel');
+const { error, success, incomplete } = require('../helpers/response');
 
 // CREATE
 exports.createProfile = async (req, res) => {
 	try {
-		const { firstName, lastName, email, pharmacy, doctor, timezone } = req.body;
-		if (!firstName) throw new Error('Please input a first name.');
+		const { firstName, lastName, email } = req.body;
+		if (!firstName || !lastName || !email) throw new Error('Please input a first name, last name, and email.');
 
-		const profile = await new Profile({
-			firstName,
-			lastName,
-			email,
-			pharmacy,
-			doctor,
-			timezone,
-		}).save();
+		const profileData = { ...req.body };
+		const profile = await new models.Profile(profileData).save();
 
-		profile ? success(res, profile) : incomplete(res);
+		profile ? success(res, profile) : incomplete(res, 'Profile creation failed');
 	} catch (err) {
 		error(res, err);
 	}
@@ -25,9 +19,9 @@ exports.createProfile = async (req, res) => {
 // GET All Profiles
 exports.getAllProfiles = async (req, res) => {
 	try {
-		const allProfiles = await Profile.find();
+		const allProfiles = await models.Profile.find();
 
-		allProfiles ? success(res, allProfiles) : incomplete(res);
+		allProfiles ? success(res, allProfiles) : incomplete(res, 'No profiles found');
 	} catch (err) {
 		error(res, err);
 	}
@@ -37,11 +31,11 @@ exports.getAllProfiles = async (req, res) => {
 exports.getProfile = async (req, res) => {
 	try {
 		const { id } = req.params;
-		const getProfile = await Profile.findOne({ _id: id });
+		const getProfile = await models.Profile.findOne({ _id: id });
 
 		if (!getProfile) throw new Error('Profile not found');
 
-		getProfile ? success(res, getProfile) : incomplete(res);
+		getProfile ? success(res, getProfile) : incomplete(res, 'Profile not found');
 	} catch (err) {
 		error(res, err);
 	}
@@ -50,24 +44,24 @@ exports.getProfile = async (req, res) => {
 // Patch Profile Information
 exports.updateProfile = async (req, res) => {
 	try {
-		const task = await Profile.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+		const task = await models.Profile.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
 
-		res.send(task);
+		task ? success(res, task) : incomplete(res, 'Update failed');
 	} catch (err) {
-		incomplete(res, err);
+		error(res, err);
 	}
 };
 
 // Delete Profile
 exports.deleteProfile = async (req, res) => {
 	try {
-        const user = await Profile.findById(req.params.id);
-        if (!user) {
-            return next(new Error('Profile not found'));
-        }
-        await user.deleteOne();
-        res.json({ message: 'Profile deleted successfully' });
-    } catch (err) {
-        error(res, err);
-    }
+		const user = await models.Profile.findById(req.params.id);
+		if (!user) {
+			return incomplete(res, 'Profile not found');
+		}
+		await user.deleteOne();
+		success(res, { message: 'Profile deleted successfully' });
+	} catch (err) {
+		error(res, err);
+	}
 }

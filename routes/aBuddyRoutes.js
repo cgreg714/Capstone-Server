@@ -1,13 +1,13 @@
-const router = require('express').Router();
+const router = require('express').Router({ mergeParams: true });
 const abuddyController = require('../controllers/abuddyController');
 
 router.route('/')
-    .post(abuddyController.create)
-    .get(abuddyController.getAll);
+    .post(abuddyController.createABuddy)
+    .get(abuddyController.getAllABuddies);
 
-router.route('/:id')
-    .get(abuddyController.getOne)
-    .patch(abuddyController.update)
-    .delete(abuddyController.delete);
+router.route('/:buddyId')
+    .get(abuddyController.getOneABuddy)
+    .patch(abuddyController.updateABuddy)
+    .delete(abuddyController.deleteABuddy);
 
 module.exports = router;

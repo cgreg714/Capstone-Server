@@ -7,7 +7,11 @@ async function loadData() {
         if (count === 0) {
             const data = fs.readFileSync('./drugDB/twoDrugs.json', 'utf8');
             const jsonData = JSON.parse(data);
-            const drugs = Object.values(jsonData.drug);
+            const drugs = Object.values(jsonData.drug).map(drug => ({
+                ...drug,
+                'drug-interactions': Object.values(drug['drug-interactions']['drug-interaction']),
+                'food-interactions': [drug['food-interactions']],
+            }));
             await Drug.insertMany(drugs);
             console.log('Data loaded successfully');
         } else {

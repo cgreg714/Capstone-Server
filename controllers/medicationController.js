@@ -1,63 +1,105 @@
-const Medication = require('../models/medicationModel');
-const helpers = require('../helpers/errorResponse');
+const models = require('../models/databaseModel');
+const helpers = require('../helpers/response');
 
-exports.postMedication = async(req,res) => {
+exports.createMedication = async (req, res) => {
     try {
-        const { name, description, dosages, frequency, quantity, dateAdded, prescriber, timeOfDay } = req.body;
-        const medication = new Medication({ name, description, dosages, frequency, quantity, dateAdded: new Date(), prescriber, timeOfDay });
-        const newMed = await medication.save();
-        res.status(200).json(newMed);
+        const { name, description, dosages, dose, frequency, quantity, dateAdded, prescriber, timeOfDay } = req.body;
+
+        const profile = await models.Profile.findById(req.params.profileId);
+        if (!profile) {
+            return helpers.incomplete(res, 'Profile not found');
+        }
+
+        const existingMedication = profile.medications.find(med => med.name === name);
+        if (existingMedication) {
+            return helpers.incomplete(res, 'A medication with the same name already exists in the profile');
+        }
+
+        const newMedication = { name, description, dosages, dose, frequency, quantity, dateAdded: new Date(), prescriber, timeOfDay };
+        const medicationDoc = profile.medications.create(newMedication);
+        profile.medications.push(medicationDoc);
+        await profile.save();
+
+        helpers.success(res, medicationDoc);
     } catch (err) {
         helpers.error(res, err);
     }
 };
 
-exports.getMedication = async(req,res) => {
+exports.getAllMedications = async(req,res) => {
     try {
-        const allMeds = await Medication.find();
-        res.status(200).json(allMeds.length > 0 ? allMeds : "No medications found");
+        const { profileId } = req.params;
+        const profile = await models.Profile.findById(profileId);
+        
+        if (!profile) {
+            return helpers.incomplete(res, 'Profile not found');
+        }
+
+        helpers.success(res, profile.medications);
     } catch (err) {
         helpers.error(res,err);
     }
 };
 
-exports.getByPrescriber = async(req,res) => {
+exports.deleteAllMedications = async(req,res) => {
     try {
-        const { prescriber } = req.params;
-        const medPrescriber = await Medication.find({prescriber: prescriber});
-        res.status(200).json(medPrescriber.length > 0 ? medPrescriber : "No prescriber found");
+        const { profileId } = req.params;
+        const profile = await models.Profile.findById(profileId);
+
+        if (!profile) {
+            return res.status(404).json({ message: 'Profile not found' });
+        }
+
+        profile.medications = [];
+
+        await profile.save();
+        success(res, { message: 'All meds cleared' });
     } catch (err) {
         helpers.error(res,err);
     }
 };
 
-exports.getByID = async(req,res) => {
+exports.getMedicationById = async(req,res) => {
     try {
-        const { id } = req.params;
-        const getMed = await Medication.findOne({_id: id});
-        res.status(200).json(getMed ? getMed : "No medication found");
+        const { profileId, medId } = req.params;
+        const profile = await models.Profile.findById(profileId);
+
+        if (!profile) {
+            return res.status(404).json({ message: 'Profile not found' });
+        }
+
+        const medication = profile.medications.id(medId);
+
+        if (!medication) {
+            return res.status(404).json({ message: 'Medication not found' });
+        }
+
+        helpers.success(res, medication);
     } catch (err) {
         helpers.error(res,err);
     }
 };
 
-exports.getByName = async(req,res) => {
+exports.updateMedication = async(req,res) => {
     try {
-        const { name } =req.params;
-        const medicationName = await Medication.find({name: name});
-        res.status(200).json(medicationName.length > 0 ? medicationName : "No medication found by that name");
-    } catch (err) {
-        helpers.error(res,err);
-    }
-};
+        const { profileId, medId } = req.params;
+        const updates = req.body;
+        const profile = await models.Profile.findById(profileId);
 
-exports.patchByID = async(req,res) => {
-    try {
-        const filter = { _id: req.params.id };
-        const info = req.body;
-        const returnOption = {new: true};
-        const updated = await Medication.findByIdAndUpdate(filter, info, returnOption);
-        res.status(200).json(updated ? updated : "No medication found to update");
+        if (!profile) {
+            return res.status(404).json({ message: 'Profile not found' });
+        }
+        const medication = profile.medications.id(medId);
+
+        if (!medication) {
+            return res.status(404).json({ message: 'Medication not found' });
+        }
+        for (let key in updates) {
+            medication[key] = updates[key];
+        }
+
+        await profile.save();
+        helpers.success(res, medication);
     } catch (err) {
         helpers.error(res,err);
     }
@@ -65,9 +107,53 @@ exports.patchByID = async(req,res) => {
 
 exports.deleteByID = async(req,res) => {
     try {
-        const { id } = req.params;
-        const deleteMed = await Medication.deleteOne({_id: id});
-        res.status(200).json(deleteMed.deletedCount ? 'Medication Deleted' : "No medication in collection");
+        const { profileId, medId } = req.params;
+        const profile = await models.Profile.findById(profileId);
+
+        if (!profile) {
+            return res.status(404).json({ message: 'Profile not found' });
+        }
+        const medication = profile.medications.id(medId);
+
+        if (!medication) {
+            return res.status(404).json({ message: 'Medication not found' });
+        }
+        profile.medications.pull(medId);
+        await profile.save();
+
+        success(res, { message: 'Medication Deleted' });
+    } catch (err) {
+        helpers.error(res,err);
+    }
+};
+
+exports.getByPrescriber = async(req,res) => {
+    try {
+        const { profileId, prescriber } = req.params;
+        const profile = await models.Profile.findById(profileId);
+
+        if (!profile) {
+            return res.status(404).json({ message: 'Profile not found' });
+        }
+        const medications = profile.medications.filter(med => med.prescriber === prescriber);
+
+        helpers.success(res, medications);
+    } catch (err) {
+        helpers.error(res,err);
+    }
+};
+
+exports.getByName = async(req,res) => {
+    try {
+        const { profileId, name } =req.params;
+        const profile = await models.Profile.findById(profileId);
+
+        if (!profile) {
+            return res.status(404).json({ message: 'Profile not found' });
+        }
+        const medications = profile.medications.filter(med => med.name === name);
+        
+        helpers.success(res, medications);
     } catch (err) {
         helpers.error(res,err);
     }
@@ -75,19 +161,179 @@ exports.deleteByID = async(req,res) => {
 
 exports.getByDate = async(req,res) => {
     try {
-        const { dateAdded } =req.params;
-        const getByDate = await Medication.find({dateAdded: dateAdded});
-        res.status(200).json(getByDate.length > 0 ? getByDate : "No medication found");
+        const { profileId, dateAdded } =req.params;
+        const profile = await models.Profile.findById(profileId);
+
+        if (!profile) {
+            return res.status(404).json({ message: 'Profile not found' });
+        }
+
+        const medications = profile.medications.filter(med => med.dateAdded === dateAdded);
+        
+        helpers.success(res, medications);
     } catch (err) {
         helpers.error(res,err);
     }
 };
 
-exports.deleteAll = async(req,res) => {
+exports.addDrugToMedication = async (req, res) => {
     try {
-        const deleteAll = await Medication.deleteMany();
-        res.status(200).json("All meds cleared");
+        const { profileId, medId, drugId } = req.params;
+        const profile = await models.Profile.findById(profileId);
+
+        if (!profile) {
+            return res.status(404).json({ message: 'Profile not found' });
+        }
+
+        const medication = profile.medications.id(medId);
+
+        if (!medication) {
+            return res.status(404).json({ message: 'Medication not found' });
+        }
+
+        const drug = await models.Drug.findById(drugId);
+
+        if (!drug) {
+            return res.status(404).json({ message: 'Drug not found' });
+        } else if (medication.associatedDrug) {
+            return res.status(400).json({ message: 'Medication already has an associated drug' });
+        }
+
+
+        medication.associatedDrug = drugId;
+        medication.description = drug.description;
+
+        await profile.save();
+        helpers.success(res, medication);
     } catch (err) {
-        helpers.error(res,err);
+        helpers.error(res, err);
+    }
+};
+
+exports.removeDrugFromMedication = async (req, res) => {
+    try {
+        const { profileId, medId, drugId } = req.params;
+        const profile = await models.Profile.findById(profileId);
+
+        if (!profile) {
+            return res.status(404).json({ message: 'Profile not found' });
+        }
+
+        const medication = profile.medications.id(medId);
+
+        if (!medication) {
+            return res.status(404).json({ message: 'Medication not found' });
+        }
+        if (medication.associatedDrug.toString() !== drugId) {
+            return res.status(400).json({ message: 'Drug not associated with this medication' });
+        }
+
+        medication.associatedDrug = undefined;
+        medication.description = undefined;
+
+        await profile.save();
+        helpers.success(res, medication);
+    } catch (err) {
+        helpers.error(res, err);
+    }
+};
+
+// Medication intake
+exports.createIntake = async (req, res) => {
+    try {
+        const { takenAt } = req.body;
+        const profile = await models.Profile.findById(req.params.profileId);
+        const medId = req.params.medId;
+        const medication = profile.medications.id(medId);
+
+        if (!medication) {
+            return helpers.error(res, { message: 'Medication not found' });
+        }
+
+        const newMedicationIntake = new models.MedicationIntake({ takenAt, medication: medication._id, profile: profile._id });
+        await newMedicationIntake.save();
+
+        medication.medicationIntakes.push(newMedicationIntake._id);
+        await profile.save();
+
+        helpers.success(res, newMedicationIntake);
+    } catch (err) {
+        helpers.error(res, err);
+    }
+};
+
+exports.getAllIntakes = async (req, res) => {
+    try {
+        const profile = await models.Profile.findById(req.params.profileId).populate('medications.medicationIntakes');
+        const medication = profile.medications.id(req.params.medId);
+
+        if (!medication) {
+            return helpers.error(res, { message: 'Medication not found' });
+        }
+
+        helpers.success(res, medication.medicationIntakes);
+    } catch (err) {
+        helpers.error(res, err);
+    }
+};
+
+exports.deleteAllIntakes = async (req, res) => {
+    try {
+        const profile = await models.Profile.findById(req.params.profileId);
+        const medication = profile.medications.id(req.params.medId);
+
+        medication.medicationIntakes = [];
+        await profile.save();
+        helpers.success(res, { message: 'All medication intakes cleared' });
+    } catch (err) {
+        helpers.error(res, err);
+    }
+};
+
+exports.getIntake = async (req, res) => {
+    try {
+        const medId = req.params.medId;
+        const medicationIntake = await models.MedicationIntake.findOne({ _id: req.params.intakeId, medication: medId });
+        if (!medicationIntake) {
+            return helpers.error(res, { message: 'Medication intake not found' });
+        }
+
+        helpers.success(res, medicationIntake);
+    } catch (err) {
+        helpers.error(res, err);
+    }
+};
+
+exports.updateIntake = async (req, res) => {
+    try {
+        const updates = req.body;
+        const medicationIntake = await models.MedicationIntake.findById(req.params.intakeId);
+        if (!medicationIntake) {
+            return helpers.error(res, { message: 'Medication intake not found' });
+        }
+
+        for (let key in updates) {
+            medicationIntake[key] = updates[key];
+        }
+
+        await medicationIntake.save();
+        helpers.success(res, medicationIntake);
+    } catch (err) {
+        helpers.error(res, err);
+    }
+};
+
+exports.deleteIntake = async (req, res) => {
+    try {
+        await models.MedicationIntake.findByIdAndDelete(req.params.intakeId);
+
+        await models.Profile.updateOne(
+            { _id: req.params.profileId, "medications._id": req.params.medId },
+            { $pull: { "medications.$.medicationIntakes": req.params.intakeId } }
+        );
+
+        helpers.success(res, { message: 'Medication intake deleted' });
+    } catch (err) {
+        helpers.error(res, err);
     }
 };

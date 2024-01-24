@@ -1,56 +1,82 @@
-const aBuddy = require('../models/abuddyModel');
-const {error} = require('../helpers/errorResponse');
+const models = require('../models/databaseModel');
+const { error, success, incomplete } = require('../helpers/response');
 
-exports.getAll = async (req, res) => {
+exports.createABuddy = async (req, res) => {
     try {
-        const buddies = await aBuddy.find();
-        res.status(200).json(buddies);
+        const profile = await models.Profile.findById(req.params.profileId);
+        if (!profile) throw new Error('Profile not found');
+
+        const newBuddy = { ...req.body };
+        const buddyDoc = profile.abuddies.create(newBuddy);
+        profile.abuddies.push(buddyDoc);
+        await profile.save();
+
+        success(res, buddyDoc);
     } catch (err) {
         error(res, err);
     }
 };
 
-exports.getOne = async (req, res) => {
+exports.getAllABuddies = async (req, res) => {
     try {
-        const buddy = await aBuddy.findById(req.params.id);
+        const profile = await models.Profile.findById(req.params.profileId);
+        if (!profile) throw new Error('Profile not found');
+
+        success(res, profile.abuddies);
+    } catch (err) {
+        error(res, err);
+    }
+};
+
+exports.getOneABuddy = async (req, res) => {
+    try {
+        const profile = await models.Profile.findById(req.params.profileId);
+        if (!profile) throw new Error('Profile not found');
+
+        const buddy = profile.abuddies.id(req.params.buddyId);
         if (!buddy) {
-            return res.status(404).json({ message: 'Buddy not found' });
+            return incomplete(res, 'Buddy not found');
         }
-        res.status(200).json(buddy);
+
+        success(res, buddy);
     } catch (err) {
         error(res, err);
     }
 };
 
-exports.create = async (req, res) => {
+exports.updateABuddy = async (req, res) => {
     try {
-        const newBuddy = new aBuddy(req.body);
-        const savedBuddy = await newBuddy.save();
-        res.status(200).json(savedBuddy);
+        const profile = await models.Profile.findById(req.params.profileId);
+        if (!profile) throw new Error('Profile not found');
+
+        const buddy = profile.abuddies.id(req.params.buddyId);
+        if (!buddy) {
+            return incomplete(res, 'Buddy not found');
+        }
+
+        buddy.set(req.body);
+        await profile.save();
+
+        success(res, buddy);
     } catch (err) {
         error(res, err);
     }
 };
 
-exports.update = async (req, res) => {
+exports.deleteABuddy = async (req, res) => {
     try {
-        const updatedBuddy = await aBuddy.findByIdAndUpdate(req.params.id, req.body, { new: true });
-        if (!updatedBuddy) {
-            return res.status(404).json({ message: 'Buddy not found' });
-        }
-        res.status(200).json(updatedBuddy);
-    } catch (err) {
-        error(res, err);
-    }
-};
+        const profile = await models.Profile.findById(req.params.profileId);
+        if (!profile) throw new Error('Profile not found');
 
-exports.delete = async (req, res) => {
-    try {
-        const deletedBuddy = await aBuddy.findByIdAndDelete(req.params.id);
-        if (!deletedBuddy) {
-            return res.status(404).json({ message: 'Buddy not found' });
+        const buddy = profile.abuddies.id(req.params.buddyId);
+        if (!buddy) {
+            return incomplete(res, 'Buddy not found');
         }
-        res.status(200).json({ message: 'Buddy deleted' });
+
+        profile.abuddies.pull(buddy);
+        await profile.save();
+
+        success(res, { message: 'Buddy deleted' });
     } catch (err) {
         error(res, err);
     }
