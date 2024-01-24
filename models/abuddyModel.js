@@ -5,17 +5,14 @@ const aBuddySchema = new mongoose.Schema({
     firstName: {
         type: String,
         required: true,
-        unique: true, 
     },
     lastName: {
         type: String,
         required: true,
-        unique: true, 
     },
     relation: {
         type: String,
         required: true,
-        unique: true,
     },
     email: {
         type: String,
@@ -26,11 +23,6 @@ const aBuddySchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    profiles: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Profile' }],
 });
 
-aBuddySchema.index({ firstName: 1, lastName: 1, email: 1}, { unique: true });
-
-const aBuddy = mongoose.model('aBuddy', aBuddySchema, 'aBuddy');
-
-module.exports = aBuddy;
+module.exports = aBuddySchema;

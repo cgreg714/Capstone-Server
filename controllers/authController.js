@@ -1,7 +1,7 @@
 const models = require('../models/databaseModel');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const {error} = require('../helpers');
+const { error, success } = require('../helpers/response');
 const SECRET = process.env.JWT;
 
 exports.signup = async (req,res) => {
@@ -13,13 +13,13 @@ exports.signup = async (req,res) => {
         })
         const newUser = await user.save();
         const token = jwt.sign({id: newUser._id}, SECRET, {expiresIn: "1h"})
-        res.status(200).json({
+        success(res, {
             user: newUser,
             message: 'Success! DoseMinder account created!',
             token
-        })
+        });
     } catch (err) {
-        error(req,err)
+        error(res, err);
     }
 }
 
@@ -32,12 +32,12 @@ exports.login = async(req,res) => {
         const passwordMatch = await bcrypt.compare(password, user.password);
         if(!passwordMatch) throw new Error ('Username or password does not match.');
         const token = jwt.sign({id: user._id}, SECRET, {expiresIn: "1h"});
-        res.status(200).json({
+        success(res, {
             user: user,
             message: 'Success! User logged in!',
             user, token
-        })
+        });
     }catch (err) {
-        error(req,err)
+        error(res, err);
     }
 };

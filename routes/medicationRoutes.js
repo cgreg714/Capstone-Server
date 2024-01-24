@@ -1,15 +1,15 @@
 const express = require('express');
-const router = express.Router();
+const router = express.Router({ mergeParams: true });
 const medicationController = require('../controllers/medicationController');
 
 router.route('/')
-    .post(medicationController.postMedication)
-    .get(medicationController.getMedication)
-    .delete(medicationController.deleteAll);
+    .get(medicationController.getAllMedications)
+    .post(medicationController.createMedication)
+    .delete(medicationController.deleteAllMedications);
 
-router.route('/:id')
-    .get(medicationController.getByID)
-    .patch(medicationController.patchByID)
+router.route('/:medId')
+    .get(medicationController.getMedicationById)
+    .patch(medicationController.updateMedication)
     .delete(medicationController.deleteByID);
 
 router.route('/prescriber/:prescriber')
@@ -18,11 +18,11 @@ router.route('/prescriber/:prescriber')
 router.route('/name/:name')
     .get(medicationController.getByName);
 
-router.route('/dateAdded/:dateAdded')
+router.route('/date/:dateAdded')
     .get(medicationController.getByDate);
 
-router.post('/:medicationId/addDrug/:drugId', medicationController.addDrugToMedication);
-
-router.post('/:medicationId/removeDrug', medicationController.removeDrugFromMedication);
+router.route('/:medId/drugs/:drugId')
+    .post(medicationController.addDrugToMedication)
+    .delete(medicationController.removeDrugFromMedication);
 
 module.exports = router;

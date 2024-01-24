@@ -1,4 +1,13 @@
 const mongoose = require('mongoose');
+const ABuddySchema = require('./abuddyModel');
+const MedicationSchema = require('./medicationModel');
+
+const AddressSchema = new mongoose.Schema({
+    street: String,
+    cityOrTown: String,
+    state: String,
+    zip: String,
+});
 
 const DoctorSchema = new mongoose.Schema({
     firstName: {
@@ -8,10 +17,10 @@ const DoctorSchema = new mongoose.Schema({
     lastName: {
         type: String,
         required: true
-    }
-})
-
-DoctorSchema.index({ firstName: 1, lastName: 1 }, { unique: true });
+    },
+    address: AddressSchema,
+    phoneNumber: String,
+});
 
 const ProfileSchema = new mongoose.Schema({
     firstName: {
@@ -35,23 +44,13 @@ const ProfileSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     }],
-    doctors: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Doctor'
-    }],
-    medications: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Medication'
-    }],
-    abuddies: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'ABuddy'
-    }]
+    doctors: [DoctorSchema],
+    medications: [MedicationSchema],
+    abuddies: [ABuddySchema]
 });
 
-ProfileSchema.index({ firstName: 1, lastName: 1 }, { unique: true });
+ProfileSchema.index({ firstName: 1, lastName: 1, email: 1 }, { unique: true });
 
 const Profile = mongoose.model('Profile', ProfileSchema, 'profiles');
-const Doctor = mongoose.model('Doctor', DoctorSchema, 'doctors');
 
-module.exports = { Profile, Doctor };
+module.exports = Profile ;

@@ -6,8 +6,9 @@ const successResponse = (res, data) => {
     return res.status(200).json(data);
 }
 
-const incompleteResponse = (res) => {
-    return res.status(404).send(console.log(error));
+const incompleteResponse = (res, message) => {
+    console.log(message);
+    return res.status(404).send(message);
 }
 
 module.exports = {

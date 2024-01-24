@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const profileController = require('../controllers/profileController');
+const doctorController = require('../controllers/doctorController');
 
 router.route('/')
     .get(profileController.getAllProfiles)
@@ -10,11 +11,14 @@ router.route('/:id')
     .patch(profileController.updateProfile)
     .delete(profileController.deleteProfile);
 
-    
-router.post('/:profileId/doctors', profileController.addDoctorToProfile);
-router.delete('/:profileId/doctors/:doctorId', profileController.removeDoctorFromProfile);
+// Doctors
+router.route('/:profileId/doctors')
+    .get(doctorController.getAllDoctors)
+    .post(doctorController.createDoctor);
 
-router.post('/:profileId/meds', profileController.addMedsToProfile);
-router.delete('/:profileId/meds/:medId', profileController.removeMedsFromProfile);
-    
+router.route('/:profileId/doctors/:doctorId')
+    .get(doctorController.getOneDoctor)
+    .patch(doctorController.updateDoctor)
+    .delete(doctorController.deleteDoctor);
+
 module.exports = router;

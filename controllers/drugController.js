@@ -1,29 +1,30 @@
 const models = require('../models/databaseModel');
+const { error, success, incomplete } = require('../helpers/response');
+
+exports.getAllDrugs = async (req, res) => {
+    try {
+        const drugs = await models.Drug.find();
+        success(res, drugs);
+    } catch (err) {
+        error(res, err);
+    }
+};
 
 exports.getDrugByDrugbankId = async (req, res) => {
     try {
         const drug = await models.Drug.findOne({ 'drugbank-id.0': req.params.id });
-        res.json(drug);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
+        success(res, drug);
+    } catch (err) {
+        error(res, err);
     }
 };
 
 exports.getDrugByUnii = async (req, res) => {
     try {
         const drug = await models.Drug.findOne({ unii: req.params.unii });
-        res.json(drug);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-};
-
-exports.getAllDrugs = async (req, res) => {
-    try {
-        const drugs = await models.Drug.find();
-        res.json(drugs);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
+        success(res, drug);
+    } catch (err) {
+        error(res, err);
     }
 };
 
@@ -31,11 +32,11 @@ exports.getSpecificDrugInteractionByDrugbankId = async (req, res) => {
     try {
         const drug = await models.Drug.findOne({ 'drugbank-id.0': req.params.id });
         if (!drug) {
-            return res.status(404).json({ message: 'Drug not found' });
+            return incomplete(res, 'Drug not found');
         }
 
         if (!Array.isArray(drug['drug-interactions'])) {
-            return res.status(404).json({ message: 'Interactions not found' });
+            return incomplete(res, 'Interactions not found');
         }
 
         const interactions = drug['drug-interactions'];
@@ -45,11 +46,21 @@ exports.getSpecificDrugInteractionByDrugbankId = async (req, res) => {
         );
 
         if (!interaction) {
-            return res.status(404).json({ message: 'Interaction not found' });
+            return incomplete(res, 'Interaction not found');
         }
 
-        res.json(interaction);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
+        success(res, interaction);
+    } catch (err) {
+        error(res, err);
+    }
+};
+
+exports.searchDrugs = async (req, res) => {
+    try {
+        const searchQuery = req.query.q;
+        const drugs = await models.Drug.find({ name: new RegExp(searchQuery, 'i') });
+        success(res, drugs);
+    } catch (err) {
+        error(res, err);
     }
 };

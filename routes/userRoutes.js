@@ -4,7 +4,7 @@ const UserController = require('../controllers/userController');
 const { authenticate, requireRole } = require('../middlewares/auth');
 
 router.route('/:userId')
-    .get(authenticate, UserController.getUser)
+    .get(authenticate, UserController.getOneUser)
     .put(authenticate, UserController.updateUser)
     .delete(authenticate, UserController.deleteUser);
 
