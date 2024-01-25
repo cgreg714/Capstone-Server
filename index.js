@@ -33,6 +33,14 @@ db()
     })
     .catch((err) => console.error(err));
 
+// CORS
+app.use(
+	cors({
+		origin: `${IP}:${FPORT}`,
+		credentials: true,
+	})
+);
+
 // Middleware setup
 app.use(express.json());
 
