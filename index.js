@@ -11,6 +11,7 @@ const {db} = require('./db')
 const ProfileController = require('./controllers/ProfileController');
 const loginRoutes = require('./routes/LogoinRoutes');
 const errorHandler = require('./middlewares/errorHandler');
+const MedicationRoutes = require('./routes/MedicationRoutes');
 
 
 mongoose
@@ -29,6 +30,7 @@ app.use(express.json());
 
 app.use('/', loginRoutes);
 app.use('/profile', ProfileController);
+app.use('/medication', MedicationRoutes);
 
 app.use(errorHandler);
 

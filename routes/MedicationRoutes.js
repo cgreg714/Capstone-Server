@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const medicationController = require('../controllers/MedicationController');
-const error = require('../helpers/index');
 
 //add medication
 router.post('/', medicationController.postMedication);
@@ -31,7 +30,7 @@ router.get('/dateAdded/:dateAdded', medicationController.getByDate);
 router.delete('/clear', medicationController.deleteAll);
 
 //get by time of day
-router.get('/time-of-day/:timeOfDay', medicationController.getByTimeOfDay);
+router.post('/time-of-day/:timeOfDay', medicationController.getByTimeOfDay);
 
 //get by day of the week
 router.get('/day-of-the-week/:dayOfTheWeek', medicationController.getByDayOfTheWeek);

@@ -1,21 +1,19 @@
-const Medication = require('../models/MedicationModel');
-const error = require('../helpers/index');
-const router = require('express').Router();
-
+const { Medication } = require ('../models/MedicationModel');
+const { error } = require('../helpers/index');
 
 
 //toDo test creating new med with timeOfDay and dayOfTheWeek(boolean values)
 //*add medication
 exports.postMedication = async(req,res) => {
-    console.log(req);
+    console.log(req.body);
     try {
         //pull data
          const {
-              name, description, dosages, frequency, quantity, dateAdded, prescriber, timeOfDay, dayOfTheWeek
+              name, description, dosages, dose, frequency, quantity, dateAdded, prescriber
          } = req.body;
         //create new object
         const medication = new Medication({
-            name, description, dosages, frequency, quantity, dateAdded: new Date(), prescriber, timeOfDay, dayOfTheWeek //id: req.user._id
+            name, description, dosages, dose, frequency, quantity, dateAdded: new Date(), prescriber //id: req.user._id
         });
         //save object to db
         const newMed = await medication.save();
@@ -25,12 +23,13 @@ exports.postMedication = async(req,res) => {
             newMed
         })
     } catch (err) {
-        error(res,err);
+        // error(res,err);
+        console.error(err.message);
     }
 };
 //* get all medication
 exports.getMedication = async(req,res) => {
-    console.log(req);
+    console.log(req.body);
     try {
         const allMeds = await Medication.find();
 
@@ -47,6 +46,7 @@ exports.getMedication = async(req,res) => {
 };
 //*get by prescriber
 exports.getByPrescriber = async(req,res) => {
+    console.log(req.body);
     try {
         console.log('prescriber route');
         const { prescriber } = req.params;
@@ -63,6 +63,7 @@ exports.getByPrescriber = async(req,res) => {
 };
 //*get by ID
 exports.getByID = async(req,res) => {
+    console.log(req.body);
     try {
         const { id } = req.params;
         const getMed = await Medication.findOne({_id: id});
@@ -77,6 +78,7 @@ exports.getByID = async(req,res) => {
 //*get by medication name
 // ////toDo Get by Medication Name -- spell check/auto complete
 exports.getByName = async(req,res) => {
+    console.log(req.body);
     try {
         const { name } =req.params;
         const medicationName = await Medication.find({name: name});
@@ -92,6 +94,7 @@ exports.getByName = async(req,res) => {
 };
 //*patch/edit medication by ID
 exports.patchByID = async(req,res) => {
+    console.log(req.body);
     try {
         const filter = {
             _id: req.params.id
@@ -109,6 +112,7 @@ exports.patchByID = async(req,res) => {
 };
 //*delete one by ID
 exports.deleteByID = async(req,res) => {
+    console.log(req.body);
     try {
         const { id } = req.params;
         const deleteMed = await Medication.deleteOne({_id: id});
@@ -127,6 +131,7 @@ exports.deleteByID = async(req,res) => {
 
 //*get medications by date added
 exports.getByDate = async(req,res) => {
+    console.log(req.body);
     try {
         const { dateAdded } =req.params;
         const getByDate = await Medication.find({dateAdded: dateAdded});
@@ -156,15 +161,18 @@ exports.deleteAll = async(req,res) => {
 //*get by time of day
 //toDo test
 exports.getByTimeOfDay = async(req,res) => {
-    console.log(req);
+    console.log(req.body);
+    console.log('time of day route');
+    // console.log(req);
     try {
-        const { timeOfDay } = req.params;
+        const { timeOfDay } = req.body;
+        console.log(timeOfDay);
         const medicationTimeOfDay = await Medication.find({timeOfDay: timeOfDay});
-        if (medicationTimeOfDay === undefined) throw new Error ('Medication Not Found');
+        if (medicationTimeOfDay === false) throw new Error ('Medication Not Found');
         res.status(200).json({
             results: medicationTimeOfDay
         }); 
-    } catch (error) {
+    } catch (err) {
         error(res,err);
     }
 };
@@ -172,7 +180,7 @@ exports.getByTimeOfDay = async(req,res) => {
 //toDo test
 //*get all by day of the week
 exports.getByDayOfTheWeek = async(req,res) => {
-    console.log(req);
+    console.log(req.body);
     try {
         const { dayOfTheWeek } = req.params;
         const medicationDayOfTheWeek = await Medication.find({dayOfTheWeek: dayOfTheWeek});
@@ -180,7 +188,7 @@ exports.getByDayOfTheWeek = async(req,res) => {
         res.status(200).json({
             results: medicationDayOfTheWeek
         });
-    } catch (error) {
+    } catch (err) {
         error(res,err);
     }
 };
