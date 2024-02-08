@@ -6,7 +6,7 @@ router.route('/')
     .get(profileController.getAllProfiles)
     .post(profileController.createProfile);
 
-router.route('/:id')
+router.route('/:profileId')
     .get(profileController.getProfile)
     .patch(profileController.updateProfile)
     .delete(profileController.deleteProfile);

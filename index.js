@@ -1,10 +1,11 @@
 require('dotenv').config();
 const express = require('express');
-
+const cors = require('cors');
 const app = express();
 
 // Configuration
 const BACKEND_PORT = process.env.PORT;
+const FPORT = process.env.FPORT;
 const IP = process.env.IP;
 const { MONGODB, DB_NAME } = process.env;
 
@@ -46,11 +47,11 @@ app.use(express.json());
 
 // Route setup
 app.use('/', loginRoutes);
-app.use('/user', userRoutes);
-app.use('/profile', profileRoutes);
-app.use('/profile/:profileId/medications', medicationRoutes);
-app.use('/profile/:profileId/aBuddy', aBuddyRoutes);
 app.use('/drugs', drugRoutes);
+app.use('/user', userRoutes);
+app.use('/user/:userId/profile', profileRoutes);
+app.use('/user/:userId/profile/:profileId/medications', medicationRoutes);
+app.use('/user/:userId/profile/:profileId/aBuddy', aBuddyRoutes);
 
 // Error handling
 app.use(errorHandler);

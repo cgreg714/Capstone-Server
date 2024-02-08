@@ -5,7 +5,7 @@ router.route('/')
     .post(abuddyController.createABuddy)
     .get(abuddyController.getAllABuddies);
 
-router.route('/:buddyId')
+router.route('/:aBuddyId')
     .get(abuddyController.getOneABuddy)
     .patch(abuddyController.updateABuddy)
     .delete(abuddyController.deleteABuddy);

@@ -14,7 +14,7 @@ const MedicationSchema = new Schema({
 		unique: true,
 	},
 	description: String,
-	dosages: String,
+	unitOfMeasurement: String,
 	dose: {
 		type: Number,
 		required: true,

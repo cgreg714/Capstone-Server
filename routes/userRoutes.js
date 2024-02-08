@@ -11,7 +11,7 @@ router.route('/:userId')
 router.route('/')
     .get(authenticate, UserController.getAllUsers);
 
-router.route('/changeUserRole')
+router.route('/:userId/changeUserRole')
     .patch(authenticate, requireRole('root'), UserController.changeUserRole);
 
 router.post('/:userId/addProfile/:profileId', authenticate, UserController.addProfileToUser);

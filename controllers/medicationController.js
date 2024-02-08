@@ -337,3 +337,51 @@ exports.deleteIntake = async (req, res) => {
         helpers.error(res, err);
     }
 };
+
+exports.toggleField = async (req, res) => {
+    try {
+        const { profileId, medId, field } = req.params;
+
+        const fieldParts = field.split('.');
+        const mainField = fieldParts[0];
+        const subField = fieldParts[1];
+
+        const profile = await models.Profile.findById(profileId);
+
+        // Find the correct medication
+        const medication = profile.medications.find(med => med._id.toString() === medId);
+
+        if (!medication) {
+            throw new Error(`Medication with id ${medId} does not exist`);
+        }
+
+        // Check if the field exists before toggling
+        if (subField) {
+            // The field is a subfield of timeOfDay or dayOfTheWeek
+            if (medication.frequency[mainField] && medication.frequency[mainField][subField] !== undefined) {
+                medication.frequency[mainField][subField] = !medication.frequency[mainField][subField];
+                console.log(`Toggled ${mainField}.${subField} to ${medication.frequency[mainField][subField]}`);
+            } else {
+                throw new Error(`Field ${mainField}.${subField} does not exist`);
+            }
+        } else {
+            // The field is daily, weekly, biWeekly, or monthly
+            if (medication.frequency[mainField] !== undefined) {
+                medication.frequency[mainField] = !medication.frequency[mainField];
+                console.log(`Toggled ${mainField} to ${medication.frequency[mainField]}`);
+            } else {
+                throw new Error(`Field ${mainField} does not exist`);
+            }
+        }
+
+        // Mark the medications array as modified
+        profile.markModified('medications');
+
+        await profile.save();
+        console.log('Saved profile');
+
+        helpers.success(res, medication);
+    } catch (err) {
+        helpers.error(res, err);
+    }
+};
