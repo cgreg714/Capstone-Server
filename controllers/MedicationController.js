@@ -9,11 +9,11 @@ exports.postMedication = async(req,res) => {
     try {
         //pull data
          const {
-              name, description, dosages, dose, frequency, quantity, dateAdded, prescriber
+              name, description, unitOfMeasurement, dose, frequency, quantity, dateAdded, prescriber
          } = req.body;
         //create new object
         const medication = new Medication({
-            name, description, dosages, dose, frequency, quantity, dateAdded: new Date(), prescriber //id: req.user._id
+            name, description, unitOfMeasurement, dose, frequency, quantity, dateAdded: new Date(), prescriber //id: req.user._id
         });
         //save object to db
         const newMed = await medication.save();
@@ -160,29 +160,68 @@ exports.deleteAll = async(req,res) => {
 
 //*get by time of day
 //toDo test
-exports.getByTimeOfDay = async(req,res) => {
-    console.log(req.body);
-    console.log('time of day route');
-    // console.log(req);
+// exports.getByTimeOfDay = async(req,res) => {
+//     console.log(req.body);
+//     console.log('time of day route');
+//     // console.log(req);
+//     try {
+//         const { timeOfDay } = req.params;
+//         console.log(timeOfDay);
+//         const medicationTimeOfDay = await Medication.find({timeOfDay: timeOfDay});
+//         if (medicationTimeOfDay === false) throw new Error ('Medication Not Found');
+//         res.status(200).json({
+//             results: medicationTimeOfDay
+//         }); 
+//     } catch (err) {
+//         error(res,err);
+//     }
+// };
+
+
+exports.toggleField = async (req, res) => {
     try {
-        const { timeOfDay } = req.body;
-        console.log(timeOfDay);
-        const medicationTimeOfDay = await Medication.find({timeOfDay: timeOfDay});
-        if (medicationTimeOfDay === false) throw new Error ('Medication Not Found');
-        res.status(200).json({
-            results: medicationTimeOfDay
-        }); 
+        const { profileId, medId, field } = req.params;
+
+        const fieldParts = field.split('.');
+        const mainField = fieldParts[0];
+        const subField = fieldParts[1];
+
+        const profile = await models.Profile.findById(profileId);
+
+        // Find the correct medication
+        const medication = profile.medications.find(med => med._id.toString() === medId);
+
+        if (!medication) {
+            throw new Error(`Medication with id ${medId} does not exist`);
+        }
+
+        // Check if the field exists before toggling
+        if (medication.frequency[mainField] && medication.frequency[mainField][subField] !== undefined) {
+            medication.frequency[mainField][subField] = !medication.frequency[mainField][subField];
+            console.log(`Toggled ${mainField}.${subField} to ${medication.frequency[mainField][subField]}`);
+        } else {
+            throw new Error(`Field ${mainField}.${subField} does not exist`);
+        }
+
+        // Mark the medications array as modified
+        profile.markModified('medications');
+
+        await profile.save();
+        console.log('Saved profile');
+
+        helpers.success(res, medication);
     } catch (err) {
-        error(res,err);
+        helpers.error(res, err);
     }
 };
+
 
 //toDo test
 //*get all by day of the week
 exports.getByDayOfTheWeek = async(req,res) => {
-    console.log(req.body);
     try {
         const { dayOfTheWeek } = req.params;
+        console.log(req.dayOfTheWeek);
         const medicationDayOfTheWeek = await Medication.find({dayOfTheWeek: dayOfTheWeek});
         if (medicationDayOfTheWeek === undefined) throw new Error ('Medication Not Found');
         res.status(200).json({

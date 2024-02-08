@@ -30,8 +30,9 @@ router.get('/dateAdded/:dateAdded', medicationController.getByDate);
 router.delete('/clear', medicationController.deleteAll);
 
 //get by time of day
-router.post('/time-of-day/:timeOfDay', medicationController.getByTimeOfDay);
-
+// router.get('/time-of-day/:timeOfDay', medicationController.getByTimeOfDay);
+router.route('/:medId/toggle/:field')
+    .patch(medicationController.toggleField);
 //get by day of the week
 router.get('/day-of-the-week/:dayOfTheWeek', medicationController.getByDayOfTheWeek);
 
