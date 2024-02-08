@@ -11,6 +11,7 @@ async function loadData() {
                 ...drug,
                 'drug-interactions': Object.values(drug['drug-interactions']['drug-interaction']),
                 'food-interactions': [drug['food-interactions']],
+                'products': Object.values(drug['products']['product']),
             }));
             await Drug.insertMany(drugs);
             console.log('Data loaded successfully');

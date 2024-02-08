@@ -28,9 +28,10 @@ exports.getDrugByUnii = async (req, res, next) => {
     }
 };
 
-exports.getSpecificDrugInteractionByDrugbankId = async (req, res, next) => {
+exports.getInteractionBetweenTwoDrugs = async (req, res, next) => {
+    console.log("🚀 ~ file: drugController.js:32 ~ exports.getInteractionBetweenTwoDrugs= ~ req:", req.params)
     try {
-        const drug = await models.Drug.findOne({ 'drugbank-id.0': req.params.id });
+        const drug = await models.Drug.findOne({ 'drugbank-id.0': req.params.drugId1 });
         if (!drug) {
             return incomplete(res, 'Drug not found');
         }
@@ -42,7 +43,7 @@ exports.getSpecificDrugInteractionByDrugbankId = async (req, res, next) => {
         const interactions = drug['drug-interactions'];
 
         const interaction = interactions.find(
-            interaction => interaction['drugbank-id'] === req.params.interactionId
+            interaction => interaction['drugbank-id'] === req.params.drugId2
         );
 
         if (!interaction) {
@@ -55,10 +56,20 @@ exports.getSpecificDrugInteractionByDrugbankId = async (req, res, next) => {
     }
 };
 
-exports.searchDrugs = async (req, res, next) => {
+exports.searchDrugsByName = async (req, res, next) => {
     try {
         const searchQuery = req.query.q;
         const drugs = await models.Drug.find({ name: new RegExp(searchQuery, 'i') });
+        success(res, drugs);
+    } catch (err) {
+        next(err);
+    }
+};
+
+exports.searchDrugsByProductName = async (req, res, next) => {
+    try {
+        const searchQuery = req.query.q;
+        const drugs = await models.Drug.find({ 'products.name': new RegExp(searchQuery, 'i') }).limit(10);
         success(res, drugs);
     } catch (err) {
         next(err);

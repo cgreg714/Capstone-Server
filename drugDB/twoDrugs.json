@@ -3603,6 +3603,11 @@
             "drugbank-id": "DB17472",
             "name": "Pirtobrutinib",
             "description": "The risk or severity of bleeding can be increased when Lepirudin is combined with Pirtobrutinib."
+          },
+          "651": {
+            "drugbank-id": "DB00002",
+            "name": "Cetuximab",
+            "description": "TEST! The risk of boredom is increased when Lepirudin is combined with Cetuximab."
           }
         }
       },

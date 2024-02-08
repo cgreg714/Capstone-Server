@@ -5,8 +5,8 @@ const app = express();
 
 // Configuration
 const BACKEND_PORT = process.env.PORT;
-const FPORT = process.env.FPORT;
 const IP = process.env.IP;
+const FPORT = process.env.FPORT;
 const { MONGODB, DB_NAME } = process.env;
 
 
@@ -42,16 +42,16 @@ app.use(
 	})
 );
 
-// Middleware setup
+// Middleware setupgit checkout -- .
 app.use(express.json());
 
 // Route setup
 app.use('/', loginRoutes);
-app.use('/drugs', drugRoutes);
 app.use('/user', userRoutes);
-app.use('/user/:userId/profile', profileRoutes);
-app.use('/user/:userId/profile/:profileId/medications', medicationRoutes);
-app.use('/user/:userId/profile/:profileId/aBuddy', aBuddyRoutes);
+app.use('/profile', profileRoutes);
+app.use('/profile/:profileId/medications', medicationRoutes);
+app.use('/profile/:profileId/aBuddy', aBuddyRoutes);
+app.use('/drugs', drugRoutes);
 
 // Error handling
 app.use(errorHandler);
