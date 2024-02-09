@@ -40,7 +40,6 @@ exports.getInteractionBetweenTwoDrugs = async (req, res, next) => {
         }
 
         const interactions = drug['drug-interactions'];
-
         const interaction = interactions.find(
             interaction => interaction['drugbank-id'] === req.params.drugId2
         );

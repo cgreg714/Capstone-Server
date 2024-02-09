@@ -29,7 +29,6 @@ exports.getAllProfiles = async (req, res) => {
 
 // GET One Profile
 exports.getProfile = async (req, res) => {
-	console.log("🚀 ~ file: profileController.js:34 ~ exports.getProfile= ~ req.params:", req.params)
 	try {
 		const { profileId } = req.params;
 		const getProfile = await models.Profile.findOne({ _id: profileId });
