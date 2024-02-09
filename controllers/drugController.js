@@ -1,36 +1,36 @@
 const models = require('../models/databaseModel');
 const { error, success, incomplete } = require('../helpers/response');
 
-exports.getAllDrugs = async (req, res) => {
+exports.getAllDrugs = async (req, res, next) => {
     try {
         const drugs = await models.Drug.find();
         success(res, drugs);
     } catch (err) {
-        error(res, err);
+        next(err);
     }
 };
 
-exports.getDrugByDrugbankId = async (req, res) => {
+exports.getDrugByDrugbankId = async (req, res, next) => {
     try {
         const drug = await models.Drug.findOne({ 'drugbank-id.0': req.params.id });
         success(res, drug);
     } catch (err) {
-        error(res, err);
+        next(err);
     }
 };
 
-exports.getDrugByUnii = async (req, res) => {
+exports.getDrugByUnii = async (req, res, next) => {
     try {
         const drug = await models.Drug.findOne({ unii: req.params.unii });
         success(res, drug);
     } catch (err) {
-        error(res, err);
+        next(err);
     }
 };
 
-exports.getSpecificDrugInteractionByDrugbankId = async (req, res) => {
+exports.getInteractionBetweenTwoDrugs = async (req, res, next) => {
     try {
-        const drug = await models.Drug.findOne({ 'drugbank-id.0': req.params.id });
+        const drug = await models.Drug.findOne({ 'drugbank-id.0': req.params.drugId1 });
         if (!drug) {
             return incomplete(res, 'Drug not found');
         }
@@ -42,7 +42,7 @@ exports.getSpecificDrugInteractionByDrugbankId = async (req, res) => {
         const interactions = drug['drug-interactions'];
 
         const interaction = interactions.find(
-            interaction => interaction['drugbank-id'] === req.params.interactionId
+            interaction => interaction['drugbank-id'] === req.params.drugId2
         );
 
         if (!interaction) {
@@ -51,16 +51,26 @@ exports.getSpecificDrugInteractionByDrugbankId = async (req, res) => {
 
         success(res, interaction);
     } catch (err) {
-        error(res, err);
+        next(err);
     }
 };
 
-exports.searchDrugs = async (req, res) => {
+exports.searchDrugsByName = async (req, res, next) => {
     try {
         const searchQuery = req.query.q;
         const drugs = await models.Drug.find({ name: new RegExp(searchQuery, 'i') });
         success(res, drugs);
     } catch (err) {
-        error(res, err);
+        next(err);
+    }
+};
+
+exports.searchDrugsByProductName = async (req, res, next) => {
+    try {
+        const searchQuery = req.query.q;
+        const drugs = await models.Drug.find({ 'products.name': new RegExp(searchQuery, 'i') }).limit(10);
+        success(res, drugs);
+    } catch (err) {
+        next(err);
     }
 };

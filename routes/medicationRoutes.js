@@ -36,4 +36,7 @@ router.route('/:medId/intake/:intakeId')
     .patch(medicationController.updateIntake)
     .delete(medicationController.deleteIntake);
 
+router.route('/:medId/toggle/:field')
+    .patch(medicationController.toggleField);
+
 module.exports = router;

@@ -31,30 +31,31 @@ passport.use(
 	})
 );
 
-exports.signup = async (req, res) => {
+exports.signup = async (req, res, next) => {
+	console.log("🚀 ~ file: loginController.js:35 ~ exports.signup= ~ req:", req.body)
 	let user = new models.User(req.body);
 
 	const passwordStrength = zxcvbn(user.password);
 	if (passwordStrength.score < 3) {
-		return error(res, 'Password is too weak');
+		return next(new Error('Password is too weak'));
 	}
 
 	try {
 		const savedUser = await user.save();
 		success(res, savedUser);
 	} catch (err) {
-		error(res, err);
+		next(err);
 	}
 };
 
 exports.login = (req, res, next) => {
 	passport.authenticate('local', (err, user, info) => {
 		if (err) {
-			return error(res, err);
+			return next(err);
 		}
 
 		if (!user) {
-			return error(res, info.message);
+			return next(new Error(info.message));
 		}
 
 		const token = jwt.sign({ _id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
@@ -67,14 +68,14 @@ exports.logout = (req, res) => {
 	success(res, 'Logged out');
 };
 
-exports.sendPasswordResetEmail = async (req, res) => {
+exports.sendPasswordResetEmail = async (req, res, next) => {
 	const { email } = req.body;
 
 	// Look up the user in your database using the email
 	const user = await models.User.findOne({ email });
 
 	if (!user) {
-		return error(res, 'User with this email does not exist');
+		return next(new Error('User with this email does not exist'));
 	}
 
 	// Generate a password reset token
@@ -107,11 +108,11 @@ exports.sendPasswordResetEmail = async (req, res) => {
 		await transporter.sendMail(mailOptions);
 		success(res, 'Password reset link sent');
 	} catch (error) {
-		error(res, 'Failed to send password reset email');
+		next(error);
 	}
 };
 
-exports.resetPassword = async (req, res) => {
+exports.resetPassword = async (req, res, next) => {
 	const { token } = req.params;
 	const { password } = req.body;
 
@@ -122,7 +123,7 @@ exports.resetPassword = async (req, res) => {
 	});
 
 	if (!user) {
-		return error(res, 'Invalid or expired reset token');
+		return next(new Error('Invalid or expired reset token'));
 	}
 
 	// Hash the new password and save it to the user

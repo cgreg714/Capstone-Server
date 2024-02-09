@@ -29,11 +29,12 @@ exports.getAllABuddies = async (req, res) => {
 };
 
 exports.getOneABuddy = async (req, res) => {
+    console.log("🚀 ~ file: abuddyController.js:32 ~ exports.getOneABuddy= ~ req:", req.params)
     try {
         const profile = await models.Profile.findById(req.params.profileId);
         if (!profile) throw new Error('Profile not found');
 
-        const buddy = profile.abuddies.id(req.params.buddyId);
+        const buddy = profile.abuddies.id(req.params.aBuddyId);
         if (!buddy) {
             return incomplete(res, 'Buddy not found');
         }
@@ -49,7 +50,7 @@ exports.updateABuddy = async (req, res) => {
         const profile = await models.Profile.findById(req.params.profileId);
         if (!profile) throw new Error('Profile not found');
 
-        const buddy = profile.abuddies.id(req.params.buddyId);
+        const buddy = profile.abuddies.id(req.params.aBuddyId);
         if (!buddy) {
             return incomplete(res, 'Buddy not found');
         }
@@ -68,7 +69,7 @@ exports.deleteABuddy = async (req, res) => {
         const profile = await models.Profile.findById(req.params.profileId);
         if (!profile) throw new Error('Profile not found');
 
-        const buddy = profile.abuddies.id(req.params.buddyId);
+        const buddy = profile.abuddies.id(req.params.aBuddyId);
         if (!buddy) {
             return incomplete(res, 'Buddy not found');
         }

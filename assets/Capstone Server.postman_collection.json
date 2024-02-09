@@ -104,7 +104,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"identifier\": \"testuser\",\r\n    \"password\": \"securePa$$word!\"\r\n}",
+							"raw": "{\r\n    \"identifier\": \"demouser\",\r\n    \"password\": \"demouser12#$\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -316,7 +316,7 @@
 					"response": []
 				},
 				{
-					"name": "createProfile",
+					"name": "addProfile",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -383,12 +383,14 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{IP}}:{{PORTB}}/profile",
+									"raw": "{{IP}}:{{PORTB}}/user/{{userId}}/profile",
 									"host": [
 										"{{IP}}"
 									],
 									"port": "{{PORTB}}",
 									"path": [
+										"user",
+										"{{userId}}",
 										"profile"
 									]
 								}
@@ -401,12 +403,14 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{IP}}:{{PORTB}}/profile/{{profileId}}",
+									"raw": "{{IP}}:{{PORTB}}/user/{{userId}}/profile/{{profileId}}",
 									"host": [
 										"{{IP}}"
 									],
 									"port": "{{PORTB}}",
 									"path": [
+										"user",
+										"{{userId}}",
 										"profile",
 										"{{profileId}}"
 									]
@@ -441,12 +445,14 @@
 									}
 								},
 								"url": {
-									"raw": "{{IP}}:{{PORTB}}/profile",
+									"raw": "{{IP}}:{{PORTB}}/user/{{userId}}/profile",
 									"host": [
 										"{{IP}}"
 									],
 									"port": "{{PORTB}}",
 									"path": [
+										"user",
+										"{{userId}}",
 										"profile"
 									]
 								}
@@ -456,7 +462,7 @@
 						{
 							"name": "update Profile",
 							"request": {
-								"method": "PATCH",
+								"method": "PUT",
 								"header": [],
 								"body": {
 									"mode": "raw",
@@ -468,12 +474,14 @@
 									}
 								},
 								"url": {
-									"raw": "{{IP}}:{{PORTB}}/profile/{{profileId}}",
+									"raw": "{{IP}}:{{PORTB}}/user/{{userId}}/profile/{{profileId}}",
 									"host": [
 										"{{IP}}"
 									],
 									"port": "{{PORTB}}",
 									"path": [
+										"user",
+										"{{userId}}",
 										"profile",
 										"{{profileId}}"
 									]
@@ -487,12 +495,14 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{IP}}:{{PORTB}}/profile/{{profileId}}",
+									"raw": "{{IP}}:{{PORTB}}/user/{{userId}}/profile/{{profileId}}",
 									"host": [
 										"{{IP}}"
 									],
 									"port": "{{PORTB}}",
 									"path": [
+										"user",
+										"{{userId}}",
 										"profile",
 										"{{profileId}}"
 									]
@@ -511,12 +521,14 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{IP}}:{{PORTB}}/profile/{{profileId}}/aBuddy",
+									"raw": "{{IP}}:{{PORTB}}/user/{{userId}}/profile/{{profileId}}/aBuddy",
 									"host": [
 										"{{IP}}"
 									],
 									"port": "{{PORTB}}",
 									"path": [
+										"user",
+										"{{userId}}",
 										"profile",
 										"{{profileId}}",
 										"aBuddy"
@@ -531,12 +543,14 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{IP}}:{{PORTB}}/profile/{{profileId}}/aBuddy/{{buddyId}}",
+									"raw": "{{IP}}:{{PORTB}}/user/{{userId}}/profile/{{profileId}}/aBuddy/{{buddyId}}",
 									"host": [
 										"{{IP}}"
 									],
 									"port": "{{PORTB}}",
 									"path": [
+										"user",
+										"{{userId}}",
 										"profile",
 										"{{profileId}}",
 										"aBuddy",
@@ -573,15 +587,18 @@
 									}
 								},
 								"url": {
-									"raw": "{{IP}}:{{PORTB}}/profile/{{profileId}}/aBuddy",
+									"raw": "{{IP}}:{{PORTB}}/user/{{userId}}/profile/{{profileId}}/aBuddy/{{buddyId}}",
 									"host": [
 										"{{IP}}"
 									],
 									"port": "{{PORTB}}",
 									"path": [
+										"user",
+										"{{userId}}",
 										"profile",
 										"{{profileId}}",
-										"aBuddy"
+										"aBuddy",
+										"{{buddyId}}"
 									]
 								}
 							},
@@ -602,12 +619,14 @@
 									}
 								},
 								"url": {
-									"raw": "{{IP}}:{{PORTB}}/profile/{{profileId}}/aBuddy/{{buddyId}}",
+									"raw": "{{IP}}:{{PORTB}}/user/{{userId}}/profile/{{profileId}}/aBuddy/{{buddyId}}",
 									"host": [
 										"{{IP}}"
 									],
 									"port": "{{PORTB}}",
 									"path": [
+										"user",
+										"{{userId}}",
 										"profile",
 										"{{profileId}}",
 										"aBuddy",
@@ -623,12 +642,14 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{IP}}:{{PORTB}}/profile/{{profileId}}/aBuddy/{{buddyId}}",
+									"raw": "{{IP}}:{{PORTB}}/user/{{userId}}/profile/{{profileId}}/aBuddy/{{buddyId}}",
 									"host": [
 										"{{IP}}"
 									],
 									"port": "{{PORTB}}",
 									"path": [
+										"user",
+										"{{userId}}",
 										"profile",
 										"{{profileId}}",
 										"aBuddy",
@@ -649,12 +670,14 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{IP}}:{{PORTB}}/profile/{{profileId}}/doctors",
+									"raw": "{{IP}}:{{PORTB}}/user/{{userId}}/profile/{{profileId}}/doctors",
 									"host": [
 										"{{IP}}"
 									],
 									"port": "{{PORTB}}",
 									"path": [
+										"user",
+										"{{userId}}",
 										"profile",
 										"{{profileId}}",
 										"doctors"
@@ -669,12 +692,14 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{IP}}:{{PORTB}}/profile/{{profileId}}/doctors/{{doctorId}}",
+									"raw": "{{IP}}:{{PORTB}}/user/{{userId}}/profile/{{profileId}}/doctors/{{doctorId}}",
 									"host": [
 										"{{IP}}"
 									],
 									"port": "{{PORTB}}",
 									"path": [
+										"user",
+										"{{userId}}",
 										"profile",
 										"{{profileId}}",
 										"doctors",
@@ -711,12 +736,14 @@
 									}
 								},
 								"url": {
-									"raw": "{{IP}}:{{PORTB}}/profile/{{profileId}}/doctors",
+									"raw": "{{IP}}:{{PORTB}}/user/{{userId}}/profile/{{profileId}}/doctors",
 									"host": [
 										"{{IP}}"
 									],
 									"port": "{{PORTB}}",
 									"path": [
+										"user",
+										"{{userId}}",
 										"profile",
 										"{{profileId}}",
 										"doctors"
@@ -728,7 +755,7 @@
 						{
 							"name": "updateDoc",
 							"request": {
-								"method": "PATCH",
+								"method": "PUT",
 								"header": [],
 								"body": {
 									"mode": "raw",
@@ -740,12 +767,14 @@
 									}
 								},
 								"url": {
-									"raw": "{{IP}}:{{PORTB}}/profile/{{profileId}}/doctors/{{doctorId}}",
+									"raw": "{{IP}}:{{PORTB}}/user/{{userId}}/profile/{{profileId}}/doctors/{{doctorId}}",
 									"host": [
 										"{{IP}}"
 									],
 									"port": "{{PORTB}}",
 									"path": [
+										"user",
+										"{{userId}}",
 										"profile",
 										"{{profileId}}",
 										"doctors",
@@ -761,12 +790,14 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{IP}}:{{PORTB}}/profile/{{profileId}}/doctors/{{doctorId}}",
+									"raw": "{{IP}}:{{PORTB}}/user/{{userId}}/profile/{{profileId}}/doctors/{{doctorId}}",
 									"host": [
 										"{{IP}}"
 									],
 									"port": "{{PORTB}}",
 									"path": [
+										"user",
+										"{{userId}}",
 										"profile",
 										"{{profileId}}",
 										"doctors",
@@ -790,12 +821,14 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{IP}}:{{PORTB}}/profile/{{profileId}}/medications",
+											"raw": "{{IP}}:{{PORTB}}/user/{{userId}}/profile/{{profileId}}/medications",
 											"host": [
 												"{{IP}}"
 											],
 											"port": "{{PORTB}}",
 											"path": [
+												"user",
+												"{{userId}}",
 												"profile",
 												"{{profileId}}",
 												"medications"
@@ -805,21 +838,70 @@
 									"response": []
 								},
 								{
-									"name": "getOne Med",
+									"name": "getByPrescriber",
 									"request": {
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{IP}}:{{PORTB}}/profile/{{profileId}}/medications/{{medId}}",
+											"raw": "{{IP}}:{{PORTB}}/user/{{userId}}/profile/{{profileId}}/medications",
 											"host": [
 												"{{IP}}"
 											],
 											"port": "{{PORTB}}",
 											"path": [
+												"user",
+												"{{userId}}",
+												"profile",
+												"{{profileId}}",
+												"medications"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "getOne",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{IP}}:{{PORTB}}/user/{{userId}}/profile/{{profileId}}/medications/{{medId}}/",
+											"host": [
+												"{{IP}}"
+											],
+											"port": "{{PORTB}}",
+											"path": [
+												"user",
+												"{{userId}}",
 												"profile",
 												"{{profileId}}",
 												"medications",
-												"{{medId}}"
+												"{{medId}}",
+												""
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "getByDateAdded",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{IP}}:{{PORTB}}/user/{{userId}}/profile/{{profileId}}/medications/dateAdded/{{date}}",
+											"host": [
+												"{{IP}}"
+											],
+											"port": "{{PORTB}}",
+											"path": [
+												"user",
+												"{{userId}}",
+												"profile",
+												"{{profileId}}",
+												"medications",
+												"dateAdded",
+												"{{date}}"
 											]
 										}
 									},
@@ -852,12 +934,14 @@
 											}
 										},
 										"url": {
-											"raw": "{{IP}}:{{PORTB}}/profile/{{profileId}}/medications",
+											"raw": "{{IP}}:{{PORTB}}/user/{{userId}}/profile/{{profileId}}/medications",
 											"host": [
 												"{{IP}}"
 											],
 											"port": "{{PORTB}}",
 											"path": [
+												"user",
+												"{{userId}}",
 												"profile",
 												"{{profileId}}",
 												"medications"
@@ -881,12 +965,14 @@
 											}
 										},
 										"url": {
-											"raw": "{{IP}}:{{PORTB}}/profile/{{profileId}}/medications/{{medId}}",
+											"raw": "{{IP}}:{{PORTB}}/user/{{userId}}/profile/{{profileId}}/medications/{{medId}}",
 											"host": [
 												"{{IP}}"
 											],
 											"port": "{{PORTB}}",
 											"path": [
+												"user",
+												"{{userId}}",
 												"profile",
 												"{{profileId}}",
 												"medications",
@@ -902,16 +988,41 @@
 										"method": "DELETE",
 										"header": [],
 										"url": {
-											"raw": "{{IP}}:{{PORTB}}/profile/{{profileId}}/medications/{{medId}}",
+											"raw": "{{IP}}:{{PORTB}}/user/{{userId}}/profile/{{profileId}}/medications/{{medId}}",
 											"host": [
 												"{{IP}}"
 											],
 											"port": "{{PORTB}}",
 											"path": [
+												"user",
+												"{{userId}}",
 												"profile",
 												"{{profileId}}",
 												"medications",
 												"{{medId}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "deleteAllMedications",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{IP}}:{{PORTB}}/user/{{userId}}/profile/{{profileId}}/medications/clear",
+											"host": [
+												"{{IP}}"
+											],
+											"port": "{{PORTB}}",
+											"path": [
+												"user",
+												"{{userId}}",
+												"profile",
+												"{{profileId}}",
+												"medications",
+												"clear"
 											]
 										}
 									},
@@ -923,12 +1034,14 @@
 										"method": "POST",
 										"header": [],
 										"url": {
-											"raw": "{{IP}}:{{PORTB}}/profile/{{profileId}}/medications/{{medId}}/drugs/{{drugId}}",
+											"raw": "{{IP}}:{{PORTB}}/user/{{userId}}/profile/{{profileId}}/medications/{{medId}}/drugs/{{drugId}}",
 											"host": [
 												"{{IP}}"
 											],
 											"port": "{{PORTB}}",
 											"path": [
+												"user",
+												"{{userId}}",
 												"profile",
 												"{{profileId}}",
 												"medications",
@@ -946,18 +1059,45 @@
 										"method": "DELETE",
 										"header": [],
 										"url": {
-											"raw": "{{IP}}:{{PORTB}}/profile/{{profileId}}/medications/{{medId}}/drugs/{{drugId}}",
+											"raw": "{{IP}}:{{PORTB}}/user/{{userId}}/profile/{{profileId}}/medications/{{medId}}/drugs/{{drugId}}",
 											"host": [
 												"{{IP}}"
 											],
 											"port": "{{PORTB}}",
 											"path": [
+												"user",
+												"{{userId}}",
 												"profile",
 												"{{profileId}}",
 												"medications",
 												"{{medId}}",
 												"drugs",
 												"{{drugId}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "toggle frequency",
+									"request": {
+										"method": "PATCH",
+										"header": [],
+										"url": {
+											"raw": "{{IP}}:{{PORTB}}/user/{{userId}}/profile/{{profileId}}/medications/{{medId}}/toggle/daily",
+											"host": [
+												"{{IP}}"
+											],
+											"port": "{{PORTB}}",
+											"path": [
+												"user",
+												"{{userId}}",
+												"profile",
+												"{{profileId}}",
+												"medications",
+												"{{medId}}",
+												"toggle",
+												"daily"
 											]
 										}
 									},
@@ -974,12 +1114,14 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{IP}}:{{PORTB}}/profile/{{profileId}}/medications/{{medId}}/intake",
+											"raw": "{{IP}}:{{PORTB}}/user/{{userId}}/profile/{{profileId}}/medications/{{medId}}/intake",
 											"host": [
 												"{{IP}}"
 											],
 											"port": "{{PORTB}}",
 											"path": [
+												"user",
+												"{{userId}}",
 												"profile",
 												"{{profileId}}",
 												"medications",
@@ -996,12 +1138,14 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{IP}}:{{PORTB}}/profile/{{profileId}}/medications/{{medId}}/intake/{{intakeId}}",
+											"raw": "{{IP}}:{{PORTB}}/user/{{userId}}/profile/{{profileId}}/medications/{{medId}}/intake/{{intakeId}}",
 											"host": [
 												"{{IP}}"
 											],
 											"port": "{{PORTB}}",
 											"path": [
+												"user",
+												"{{userId}}",
 												"profile",
 												"{{profileId}}",
 												"medications",
@@ -1021,7 +1165,9 @@
 											"script": {
 												"exec": [
 													"var jsonData = JSON.parse(responseBody);\r",
-													"postman.setEnvironmentVariable(\"intakeId\", jsonData._id);"
+													"postman.setEnvironmentVariable(\"intakeId\", jsonData._id);\r",
+													"let timestamp = new Date().toISOString();\r",
+													"pm.environment.set(\"currentTimestamp\", timestamp);"
 												],
 												"type": "text/javascript"
 											}
@@ -1032,7 +1178,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n  \"takenAt\": \"2022-03-01T10:00:00Z\"\r\n}",
+											"raw": "{\r\n  \"takenAt\": \"{{currentTimestamp}}\"\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -1040,12 +1186,14 @@
 											}
 										},
 										"url": {
-											"raw": "{{IP}}:{{PORTB}}/profile/{{profileId}}/medications/{{medId}}/intake",
+											"raw": "{{IP}}:{{PORTB}}/user/{{userId}}/profile/{{profileId}}/medications/{{medId}}/intake",
 											"host": [
 												"{{IP}}"
 											],
 											"port": "{{PORTB}}",
 											"path": [
+												"user",
+												"{{userId}}",
 												"profile",
 												"{{profileId}}",
 												"medications",
@@ -1071,12 +1219,14 @@
 											}
 										},
 										"url": {
-											"raw": "{{IP}}:{{PORTB}}/profile/{{profileId}}/medications/{{medId}}/intake/{{intakeId}}",
+											"raw": "{{IP}}:{{PORTB}}/user/{{userId}}/profile/{{profileId}}/medications/{{medId}}/intake/{{intakeId}}",
 											"host": [
 												"{{IP}}"
 											],
 											"port": "{{PORTB}}",
 											"path": [
+												"user",
+												"{{userId}}",
 												"profile",
 												"{{profileId}}",
 												"medications",
@@ -1094,12 +1244,14 @@
 										"method": "DELETE",
 										"header": [],
 										"url": {
-											"raw": "{{IP}}:{{PORTB}}/profile/{{profileId}}/medications/{{medId}}/intake/{{intakeId}}",
+											"raw": "{{IP}}:{{PORTB}}/user/{{userId}}/profile/{{profileId}}/medications/{{medId}}/intake/{{intakeId}}",
 											"host": [
 												"{{IP}}"
 											],
 											"port": "{{PORTB}}",
 											"path": [
+												"user",
+												"{{userId}}",
 												"profile",
 												"{{profileId}}",
 												"medications",
@@ -1285,24 +1437,49 @@
 					"response": []
 				},
 				{
-					"name": "search-drugs",
+					"name": "searchDrugsByName",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{IP}}:{{PORTB}}/drugs/search-drugs?q=Lepirudin",
+							"raw": "{{IP}}:{{PORTB}}/drugs/searchDrugsByName?q=Lepirudin",
 							"host": [
 								"{{IP}}"
 							],
 							"port": "{{PORTB}}",
 							"path": [
 								"drugs",
-								"search-drugs"
+								"searchDrugsByName"
 							],
 							"query": [
 								{
 									"key": "q",
 									"value": "Lepirudin"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "searchDrugsByProductName",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{IP}}:{{PORTB}}/drugs/searchDrugsByProductName?q=Refludan",
+							"host": [
+								"{{IP}}"
+							],
+							"port": "{{PORTB}}",
+							"path": [
+								"drugs",
+								"searchDrugsByProductName"
+							],
+							"query": [
+								{
+									"key": "q",
+									"value": "Refludan"
 								}
 							]
 						}

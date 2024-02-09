@@ -29,9 +29,10 @@ exports.getAllProfiles = async (req, res) => {
 
 // GET One Profile
 exports.getProfile = async (req, res) => {
+	console.log("🚀 ~ file: profileController.js:34 ~ exports.getProfile= ~ req.params:", req.params)
 	try {
-		const { id } = req.params;
-		const getProfile = await models.Profile.findOne({ _id: id });
+		const { profileId } = req.params;
+		const getProfile = await models.Profile.findOne({ _id: profileId });
 
 		if (!getProfile) throw new Error('Profile not found');
 
@@ -44,7 +45,7 @@ exports.getProfile = async (req, res) => {
 // Patch Profile Information
 exports.updateProfile = async (req, res) => {
 	try {
-		const task = await models.Profile.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+		const task = await models.Profile.findByIdAndUpdate(req.params.profileId, req.body, { new: true, runValidators: true });
 
 		task ? success(res, task) : incomplete(res, 'Update failed');
 	} catch (err) {
@@ -55,7 +56,7 @@ exports.updateProfile = async (req, res) => {
 // Delete Profile
 exports.deleteProfile = async (req, res) => {
 	try {
-		const user = await models.Profile.findById(req.params.id);
+		const user = await models.Profile.findById(req.params.profileId);
 		if (!user) {
 			return incomplete(res, 'Profile not found');
 		}
