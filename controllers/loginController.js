@@ -61,8 +61,8 @@ exports.login = (req, res, next) => {
 			return next(new Error(info.message));
 		}
 
-		const token = jwt.sign({ _id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
-		res.header('auth-token', token).send(token);
+		const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+		res.header('auth-token', token).json({ userId: user._id });
 	})(req, res, next);
 };
 
