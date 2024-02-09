@@ -49,19 +49,18 @@ exports.signup = async (req, res, next) => {
 };
 
 exports.login = (req, res, next) => {
-    passport.authenticate('local', (err, user, info) => {
-        if (err) {
-            return next(err);
-        }
+	passport.authenticate('local', (err, user, info) => {
+		if (err) {
+			return next(err);
+		}
 
-        if (!user) {
-            return next(new Error(info.message));
-        }
+		if (!user) {
+			return next(new Error(info.message));
+		}
 
-        const token = jwt.sign({ _id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
-        res.cookie('token', token);
-        res.json({ user: { username: user.username } });
-    })(req, res, next);
+		const token = jwt.sign({ _id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
+		res.header('auth-token', token).send(token);
+	})(req, res, next);
 };
 
 exports.logout = (req, res) => {

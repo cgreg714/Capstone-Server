@@ -48,9 +48,9 @@ app.use(express.json());
 // Route setup
 app.use('/', loginRoutes);
 app.use('/user', userRoutes);
-app.use('/profile', profileRoutes);
-app.use('/profile/:profileId/medications', medicationRoutes);
-app.use('/profile/:profileId/aBuddy', aBuddyRoutes);
+app.use('/user/:userId/profile', profileRoutes);
+app.use('/user/:userId/profile/:profileId/medications', medicationRoutes);
+app.use('/user/:userId/profile/:profileId/aBuddy', aBuddyRoutes);
 app.use('/drugs', drugRoutes);
 
 // Error handling

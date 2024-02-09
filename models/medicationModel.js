@@ -14,7 +14,11 @@ const MedicationSchema = new Schema({
 		unique: true,
 	},
 	description: String,
-	unitOfMeasurement: String,
+	unitOfMeasurement: {
+		type:String,
+		enum: [null, 'kg', 'g', 'mg', 'mcg', 'L', 'ml', 'cc', 'mol', 'mmol', 'units', 'tbsp', 'tsp'],
+		default: null
+	},
 	dose: {
 		type: Number,
 		required: true,

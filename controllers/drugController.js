@@ -29,7 +29,6 @@ exports.getDrugByUnii = async (req, res, next) => {
 };
 
 exports.getInteractionBetweenTwoDrugs = async (req, res, next) => {
-    console.log("🚀 ~ file: drugController.js:32 ~ exports.getInteractionBetweenTwoDrugs= ~ req:", req.params)
     try {
         const drug = await models.Drug.findOne({ 'drugbank-id.0': req.params.drugId1 });
         if (!drug) {

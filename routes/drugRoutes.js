@@ -21,7 +21,7 @@ router.get('/searchDrugsByName', (req, res, next) => {
 	DrugController.searchDrugsByName(req, res, next);
 });
 
-router.get('/searchByProductName', (req, res, next) => {
+router.get('/searchDrugsByProductName', (req, res, next) => {
 	DrugController.searchDrugsByProductName(req, res, next);
 });
 

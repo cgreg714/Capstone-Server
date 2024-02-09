@@ -53,7 +53,7 @@ exports.deleteAllMedications = async(req,res) => {
         profile.medications = [];
 
         await profile.save();
-        success(res, { message: 'All meds cleared' });
+        helpers.success(res, { message: 'All meds cleared' });
     } catch (err) {
         helpers.error(res,err);
     }
@@ -121,7 +121,7 @@ exports.deleteByID = async(req,res) => {
         profile.medications.pull(medId);
         await profile.save();
 
-        success(res, { message: 'Medication Deleted' });
+        helpers.success(res, { message: 'Medication Deleted' });
     } catch (err) {
         helpers.error(res,err);
     }
