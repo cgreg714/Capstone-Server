@@ -51,25 +51,24 @@ exports.signup = async (req, res, next) => {
 };
 
 exports.login = (req, res, next) => {
-	passport.authenticate('local', (err, user, info) => {
-		if (err) {
-			return next(err);
-		}
+    passport.authenticate('local', (err, user, info) => {
+        if (err) {
+            return next(err);
+        }
 
-		if (!user) {
-			return next(new Error(info.message));
-		}
+        if (!user) {
+            return next(new Error(info.message));
+        }
 
-		req.login(user, { session: false }, async (error) => {
-			if (error) return next(error);
+        req.login(user, { session: false }, async (error) => {
+            if (error) return next(error);
 
-			const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+            const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-			// send the token in the Authorization header
-			res.setHeader('Authorization', 'Bearer ' + token);
-			return res.status(200).send({ message: 'Logged in successfully' });
-		});
-	})(req, res, next);
+            // send the token in the response body
+            return res.status(200).send({ message: 'Logged in successfully', token: token });
+        });
+    })(req, res, next);
 };
 
 exports.logout = (req, res) => {
