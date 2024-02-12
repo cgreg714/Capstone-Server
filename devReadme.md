@@ -5,10 +5,11 @@
     ```env
     IP=http://localhost
     PORT=3009
-    FPORT=3008
-
+    
     MONGODB=mongodb://localhost:27017
     DB_NAME=DoseMinder
+
+    FPORT=3008
 
     JWT_SECRET=secret
     ```
