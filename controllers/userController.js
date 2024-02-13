@@ -11,7 +11,6 @@ exports.getAllUsers = async (req, res, next) => {
 };
 
 exports.getOneUser = async (req, res, next) => {
-    console.log("🚀 ~ file: userController.js:14 ~ exports.getOneUser= ~ req.params:", req.params)
     try {
         const user = await models.User.findById(req.params.userId)
         if (!user) {
