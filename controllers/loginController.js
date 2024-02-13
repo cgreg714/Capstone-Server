@@ -8,7 +8,7 @@ const passport = require('passport');
 const models = require('../models/databaseModel');
 const { success, error, incomplete } = require('../helpers/response');
 
-const FRONTENDPORT = process.env.FRONTEND_PORT;
+const FPORT = process.env.FPORT;
 const IP = process.env.IP;
 
 passport.use(
@@ -35,7 +35,6 @@ passport.use(
 );
 
 exports.signup = async (req, res, next) => {
-	console.log("🚀 ~ file: loginController.js:35 ~ exports.signup= ~ req:", req.body)
 	let user = new models.User(req.body);
 
 	const passwordStrength = zxcvbn(user.password);
@@ -52,43 +51,45 @@ exports.signup = async (req, res, next) => {
 };
 
 exports.login = (req, res, next) => {
-	passport.authenticate('local', (err, user, info) => {
-		if (err) {
-			return next(err);
-		}
+    passport.authenticate('local', (err, user, info) => {
+        if (err) {
+            return next(err);
+        }
 
-		if (!user) {
-			return next(new Error(info.message));
-		}
+        if (!user) {
+            return next(new Error(info.message));
+        }
 
-		const token = jwt.sign({ _id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
-		res.header('auth-token', token).send(token);
-	})(req, res, next);
+        req.login(user, { session: false }, async (error) => {
+            if (error) return next(error);
+
+            const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+            // send the token in the response body
+            return res.status(200).send({ message: 'Logged in successfully', token: token });
+        });
+    })(req, res, next);
 };
 
 exports.logout = (req, res) => {
-	res.header('auth-token', '');
+	res.setHeader('Authorization', '');
 	success(res, 'Logged out');
 };
 
 exports.sendPasswordResetEmail = async (req, res, next) => {
 	const { email } = req.body;
 
-	// Look up the user in your database using the email
 	const user = await models.User.findOne({ email });
 
 	if (!user) {
 		return next(new Error('User with this email does not exist'));
 	}
 
-	// Generate a password reset token
 	const token = Math.random().toString(36).substring(2);
 
-	// Store the token in your database and associate it with the user
 	user.resetPasswordToken = token;
 	await user.save();
 
-	// Create a Nodemailer transporter using SMTP
 	const transporter = nodemailer.createTransport({
 		host: process.env.SMTP_HOST,
 		port: process.env.SMTP_PORT,
@@ -104,7 +105,7 @@ exports.sendPasswordResetEmail = async (req, res, next) => {
 		from: 'your-email@example.com',
 		to: email,
 		subject: 'Password Reset',
-		text: `Click the following link to reset your password: ${IP}:${FRONTENDPORT}/reset-password/${token}`,
+		text: `Click the following link to reset your password: ${IP}:${FPORT}/reset-password/${token}`,
 	};
 
 	try {
@@ -119,7 +120,6 @@ exports.resetPassword = async (req, res, next) => {
 	const { token } = req.params;
 	const { password } = req.body;
 
-	// Find the user with the reset token and make sure the token hasn't expired
 	const user = await models.User.findOne({
 		resetPasswordToken: token,
 		resetPasswordExpires: { $gt: Date.now() },
@@ -129,7 +129,6 @@ exports.resetPassword = async (req, res, next) => {
 		return next(new Error('Invalid or expired reset token'));
 	}
 
-	// Hash the new password and save it to the user
 	user.password = await bcrypt.hash(password, 10);
 	user.resetPasswordToken = undefined;
 	user.resetPasswordExpires = undefined;
