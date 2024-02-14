@@ -57,7 +57,7 @@ exports.login = (req, res, next) => {
         }
 
         if (!user) {
-            return next(new Error(info.message));
+            return res.status(400).json({ message: info.message });
         }
 
         req.login(user, { session: false }, async (error) => {
@@ -65,7 +65,6 @@ exports.login = (req, res, next) => {
 
             const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-            // send the token in the response body
             return res.status(200).send({ message: 'Logged in successfully', token: token });
         });
     })(req, res, next);
