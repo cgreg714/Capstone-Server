@@ -2,6 +2,8 @@ const models = require('../models/databaseModel');
 const helpers = require('../helpers/response');
 
 exports.createMedication = async (req, res) => {
+    console.log("🚀 ~ file: medicationController.js:5 ~ exports.createMedication= ~ req.params:", req.params)
+    console.log("🚀 ~ file: medicationController.js:7 ~ exports.createMedication= ~ req.body:", req.body)
     try {
         const { name, description, dosages, dose, frequency, quantity, dateAdded, prescriber, timeOfDay } = req.body;
 
