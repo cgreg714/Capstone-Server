@@ -2,21 +2,21 @@ const router = require('express').Router();
 const profileController = require('../controllers/profileController');
 const doctorController = require('../controllers/doctorController');
 
-router.route('/')
+router.route('/:userId/profile/')
     .get(profileController.getAllProfiles)
     .post(profileController.createProfile);
 
-router.route('/:profileId')
+router.route('/:userId/profile/:profileId')
     .get(profileController.getProfile)
     .put(profileController.updateProfile)
     .delete(profileController.deleteProfile);
 
 // Doctors
-router.route('/:profileId/doctors')
+router.route('/:userId/profile/:profileId/doctors')
     .get(doctorController.getAllDoctors)
     .post(doctorController.createDoctor);
 
-router.route('/:profileId/doctors/:doctorId')
+router.route('/:userId/profile/:profileId/doctors/:doctorId')
     .get(doctorController.getOneDoctor)
     .put(doctorController.updateDoctor)
     .delete(doctorController.deleteDoctor);
