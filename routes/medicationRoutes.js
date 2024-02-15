@@ -2,41 +2,41 @@ const express = require('express');
 const router = express.Router({ mergeParams: true });
 const medicationController = require('../controllers/medicationController');
 
-router.route('/')
+router.route('/:userId/profile/:profileId/medications/')
     .get(medicationController.getAllMedications)
     .post(medicationController.createMedication)
     .delete(medicationController.deleteAllMedications);
 
-router.route('/:medId')
+router.route('/:userId/profile/:profileId/medications/:medId')
     .get(medicationController.getMedicationById)
     .patch(medicationController.updateMedication)
     .delete(medicationController.deleteByID);
 
-router.route('/prescriber/:prescriber')
+router.route('/:userId/profile/:profileId/medications/prescriber/:prescriber')
     .get(medicationController.getByPrescriber);
 
-router.route('/name/:name')
+router.route('/:userId/profile/:profileId/medications/name/:name')
     .get(medicationController.getByName);
 
-router.route('/date/:dateAdded')
+router.route('/:userId/profile/:profileId/medications/date/:dateAdded')
     .get(medicationController.getByDate);
 
-router.route('/:medId/drugs/:drugId')
+router.route('/:userId/profile/:profileId/medications/:medId/drugs/:drugId')
     .post(medicationController.addDrugToMedication)
     .delete(medicationController.removeDrugFromMedication);
 
 // Medication intake
-router.route('/:medId/intake')
+router.route('/:userId/profile/:profileId/medications/:medId/intake')
     .get(medicationController.getAllIntakes)
     .post(medicationController.createIntake)
     .delete(medicationController.deleteAllIntakes);
 
-router.route('/:medId/intake/:intakeId')
+router.route('/:userId/profile/:profileId/medications/:medId/intake/:intakeId')
     .get(medicationController.getIntake)
     .patch(medicationController.updateIntake)
     .delete(medicationController.deleteIntake);
 
-router.route('/:medId/toggle/:field')
+router.route('/:userId/profile/:profileId/medications/:medId/toggle/:field')
     .patch(medicationController.toggleField);
 
 module.exports = router;
