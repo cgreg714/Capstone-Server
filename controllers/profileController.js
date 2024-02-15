@@ -3,8 +3,6 @@ const { error, success, incomplete } = require('../helpers/response');
 
 // CREATE
 exports.createProfile = async (req, res) => {
-	console.log("🚀 ~ file: profileController.js:9 ~ exports.createProfile= ~ req.params:", req.params)
-	console.log("🚀 ~ file: profileController.js:8 ~ exports.createProfile= ~ req.body:", req.body)
 	try {
 		const { firstName, lastName, email } = req.body;
 		const { userId } = req.params;
