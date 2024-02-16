@@ -2,10 +2,8 @@ const models = require('../models/databaseModel');
 const helpers = require('../helpers/response');
 
 exports.createMedication = async (req, res) => {
-    console.log("🚀 ~ file: medicationController.js:5 ~ exports.createMedication= ~ req.params:", req.params)
-    console.log("🚀 ~ file: medicationController.js:7 ~ exports.createMedication= ~ req.body:", req.body)
     try {
-        const { name, description, dosages, dose, frequency, quantity, dateAdded, prescriber, timeOfDay } = req.body;
+        const { name, description, unitOfMeasurement, dose, quantity, prescriber, drug, frequency } = req.body;
 
         const profile = await models.Profile.findById(req.params.profileId);
         if (!profile) {
@@ -17,7 +15,17 @@ exports.createMedication = async (req, res) => {
             return helpers.incomplete(res, 'A medication with the same name already exists in the profile');
         }
 
-        const newMedication = { name, description, dosages, dose, frequency, quantity, dateAdded: new Date(), prescriber, timeOfDay };
+        const newMedication = { 
+            name, 
+            description, 
+            unitOfMeasurement, 
+            dose, 
+            frequency, 
+            quantity, 
+            prescriber, 
+            associatedDrug: drug,
+            dateAdded: new Date() 
+        };
         const medicationDoc = profile.medications.create(newMedication);
         profile.medications.push(medicationDoc);
         await profile.save();
