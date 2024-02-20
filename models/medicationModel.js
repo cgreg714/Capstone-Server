@@ -2,8 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const MedicationIntakeSchema = new Schema({
-	medication: { type: Schema.Types.ObjectId, ref: 'Medication', required: true },
-	profile: { type: Schema.Types.ObjectId, ref: 'Profile', required: true },
+	quantity: { type: Number, required: true },
 	takenAt: { type: Date, default: Date.now }
 });
 
@@ -11,7 +10,6 @@ const MedicationSchema = new Schema({
 	name: {
 		type: String,
 		required: true,
-		unique: true,
 	},
 	description: String,
 	unitOfMeasurement: {
@@ -47,6 +45,10 @@ const MedicationSchema = new Schema({
 			min: 1,
 			max: 31,
 		},
+		once: {
+			type: Boolean,
+			default: false,
+		},
 		daily: {
 			type: Boolean,
 			default: false,
@@ -75,13 +77,11 @@ const MedicationSchema = new Schema({
 	},
 	prescriber: String,
 	associatedDrug: { type: Schema.Types.ObjectId, ref: 'Drug' },
-	medicationIntakes: [{ type: Schema.Types.ObjectId, ref: 'MedicationIntake' }],
+    medicationIntakes: [MedicationIntakeSchema],
 });
 
 MedicationIntakeSchema.index({ medication: 1, profile: 1 });
 
 module.exports = {
-	Medication: mongoose.model('Medication', MedicationSchema),
-	MedicationIntake: mongoose.model('MedicationIntake', MedicationIntakeSchema),
 	MedicationSchema: MedicationSchema
 };
