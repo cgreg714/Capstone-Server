@@ -39,7 +39,7 @@ exports.signup = async (req, res, next) => {
 
 	const passwordStrength = zxcvbn(user.password);
 	if (passwordStrength.score < 3) {
-		return next(new Error('Password is too weak'));
+		return next(Object.assign(new Error('Password is too weak'), { status: 400 }));
 	}
 
 	try {
@@ -51,28 +51,45 @@ exports.signup = async (req, res, next) => {
 };
 
 exports.login = (req, res, next) => {
-    passport.authenticate('local', (err, user, info) => {
-        if (err) {
-            return next(err);
-        }
+	passport.authenticate('local', (err, user, info) => {
+		if (err) {
+			return next(Object.assign(err, { status: 500 }));
+		}
 
-        if (!user) {
-            return res.status(400).json({ message: info.message });
-        }
+		if (!user) {
+			return next(Object.assign(new Error(info.message), { status: 400 }));
+		}
 
-        req.login(user, { session: false }, async (error) => {
-            if (error) return next(error);
+		req.login(user, { session: false }, async (error) => {
+			if (error) return next(Object.assign(error, { status: 500 }));
 
-            const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+			const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-            return res.status(200).send({ message: 'Logged in successfully', token: token });
-        });
-    })(req, res, next);
+			return res.status(200).send({ message: 'Logged in successfully', token: token });
+		});
+	})(req, res, next);
 };
 
 exports.logout = (req, res) => {
 	res.setHeader('Authorization', '');
 	success(res, 'Logged out');
+};
+
+exports.checkToken = (req, res) => {
+    const token = req.headers['authorization'];
+
+    if (!token) {
+        return res.status(401).send({ message: 'No token provided' });
+    }
+
+    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+        if (err) {
+            return res.status(401).send({ message: 'Failed to authenticate token' });
+        }
+
+        req.userId = decoded._id;
+        res.status(200).send({ message: 'Token is valid' });
+    });
 };
 
 exports.sendPasswordResetEmail = async (req, res, next) => {

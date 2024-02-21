@@ -39,7 +39,7 @@ const DrugSchema = new mongoose.Schema({
     'food-interactions': [DrugFoodInteractionSchema],
     'drug-interactions': [DrugInteractionSchema],
     "external-links": { type: Map, of: DrugExternalLinkSchema },
-});
+}, { id: false });
 
 const Drug = mongoose.model('Drug', DrugSchema, 'drugDB');
 
