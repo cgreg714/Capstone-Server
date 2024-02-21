@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const MedicationIntakeSchema = new Schema({
 	quantity: { type: Number, required: true },
-	takenAt: { type: Date, default: Date.now }
+	takenAt: { type: Date, required: true },
 });
 
 const MedicationSchema = new Schema({

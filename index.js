@@ -9,12 +9,11 @@ const IP = process.env.IP;
 const FPORT = process.env.FPORT;
 const { MONGODB, DB_NAME } = process.env;
 
-
 // Data loading
 const loadData = require('./drugDB/loadData');
 
 // Routes
-const loginRoutes = require('./routes/loginRoutes');
+const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
 const profileRoutes = require('./routes/profileRoutes');
 const medicationRoutes = require('./routes/medicationRoutes');
@@ -46,7 +45,7 @@ app.use(
 app.use(express.json());
 
 // Route setup
-app.use('/', loginRoutes);
+app.use('/', authRoutes);
 app.use('/user', userRoutes);
 app.use('/user', profileRoutes);
 app.use('/user', medicationRoutes);

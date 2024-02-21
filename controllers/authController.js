@@ -75,6 +75,23 @@ exports.logout = (req, res) => {
 	success(res, 'Logged out');
 };
 
+exports.checkToken = (req, res) => {
+    const token = req.headers['authorization'];
+
+    if (!token) {
+        return res.status(401).send({ message: 'No token provided' });
+    }
+
+    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+        if (err) {
+            return res.status(401).send({ message: 'Failed to authenticate token' });
+        }
+
+        req.userId = decoded._id;
+        res.status(200).send({ message: 'Token is valid' });
+    });
+};
+
 exports.sendPasswordResetEmail = async (req, res, next) => {
 	const { email } = req.body;
 
