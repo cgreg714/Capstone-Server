@@ -5,7 +5,6 @@ const { error, success, incomplete } = require('../helpers/response');
 exports.createProfile = async (req, res) => {
     try {
         const { firstName, lastName, email, avatar } = req.body;
-        console.log("🚀 ~ file: profileController.js:8 ~ exports.createProfile= ~ avatar:", avatar)
         const { userId } = req.params;
         if (!firstName || !lastName || !email) throw new Error('Please input a first name, last name, and email.');
 
