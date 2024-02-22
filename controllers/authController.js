@@ -97,9 +97,12 @@ exports.sendPasswordResetEmail = async (req, res, next) => {
 
 	const user = await models.User.findOne({ email });
 
-	if (!user) {
-		return next(new Error('User with this email does not exist'));
-	}
+    if (!user) {
+        const err = new Error('User with this email does not exist');
+        err.status = 400;
+        return next(err);
+    }
+
 
 	const token = Math.random().toString(36).substring(2);
 
@@ -109,7 +112,7 @@ exports.sendPasswordResetEmail = async (req, res, next) => {
 	const transporter = nodemailer.createTransport({
 		host: process.env.SMTP_HOST,
 		port: process.env.SMTP_PORT,
-		secure: false, // true for 465, false for other ports
+		secure: true,
 		auth: {
 			user: process.env.EMAIL,
 			pass: process.env.EMAIL_PASSWORD,
@@ -118,7 +121,7 @@ exports.sendPasswordResetEmail = async (req, res, next) => {
 
 	// Send an email to the user with the password reset link
 	const mailOptions = {
-		from: 'your-email@example.com',
+		from: process.env.EMAIL,
 		to: email,
 		subject: 'Password Reset',
 		text: `Click the following link to reset your password: ${IP}:${FPORT}/reset-password/${token}`,
@@ -135,6 +138,11 @@ exports.sendPasswordResetEmail = async (req, res, next) => {
 exports.resetPassword = async (req, res, next) => {
 	const { token } = req.params;
 	const { password } = req.body;
+
+	const passwordStrength = zxcvbn(password);
+	if (passwordStrength.score < 3) {
+		return next(Object.assign(new Error('Password is too weak'), { status: 400 }));
+	}
 
 	const user = await models.User.findOne({
 		resetPasswordToken: token,

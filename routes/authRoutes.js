@@ -15,5 +15,12 @@ router.get('/check-token', (req, res, next) => {
     AuthController.checkToken(req, res, next);
 });
 
+router.post('/request-password-reset', (req, res, next) => {
+    AuthController.sendPasswordResetEmail(req, res, next);
+});
+
+router.post('/reset-password/:token', (req, res, next) => {
+    AuthController.resetPassword(req, res, next);
+});
 
 module.exports = router;
