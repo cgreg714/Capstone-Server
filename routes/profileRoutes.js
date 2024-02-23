@@ -8,7 +8,7 @@ router.route('/:userId/profile/')
 
 router.route('/:userId/profile/:profileId')
     .get(profileController.getProfile)
-    .put(profileController.updateProfile)
+    .patch(profileController.updateProfile)
     .delete(profileController.deleteProfile);
 
 // Doctors
@@ -18,7 +18,7 @@ router.route('/:userId/profile/:profileId/doctors')
 
 router.route('/:userId/profile/:profileId/doctors/:doctorId')
     .get(doctorController.getOneDoctor)
-    .put(doctorController.updateDoctor)
+    .patch(doctorController.updateDoctor)
     .delete(doctorController.deleteDoctor);
 
 module.exports = router;

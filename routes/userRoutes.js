@@ -8,7 +8,7 @@ router.route('/')
 
 router.route('/:userId')
     .get(authenticate, UserController.getOneUser)
-    .put(authenticate, UserController.updateUser)
+    .patch(authenticate, UserController.updateUser)
     .delete(authenticate, UserController.deleteUser);
 
 router.post('/:userId/addProfile/:profileId', authenticate, UserController.addProfileToUser);

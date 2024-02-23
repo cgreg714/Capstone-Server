@@ -13,6 +13,8 @@ router.route('/:userId/profile/:profileId/medications/:medId')
     .patch(medicationController.updateMedication)
     .delete(medicationController.deleteByID);
 
+router.patch('/:userId/profile/:profileId/medications/:medId/addQuantity', medicationController.addQuantity);
+
 router.route('/:userId/profile/:profileId/medications/prescriber/:prescriber')
     .get(medicationController.getByPrescriber);
 

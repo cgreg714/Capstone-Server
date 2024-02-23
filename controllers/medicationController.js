@@ -230,3 +230,28 @@ exports.toggleField = async (req, res) => {
         helpers.error(res, err);
     }
 };
+
+exports.addQuantity = async (req, res) => {
+    try {
+        const { profileId, medId } = req.params;
+        const { quantity } = req.body;
+        const profile = await models.Profile.findById(profileId);
+
+        if (!profile) {
+            return res.status(404).json({ message: 'Profile not found' });
+        }
+
+        const medication = profile.medications.id(medId);
+
+        if (!medication) {
+            return res.status(404).json({ message: 'Medication not found' });
+        }
+
+        medication.quantity = Number(medication.quantity) + Number(quantity);
+
+        await profile.save();
+        helpers.success(res, medication);
+    } catch (err) {
+        helpers.error(res, err);
+    }
+};
