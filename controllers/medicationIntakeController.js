@@ -104,8 +104,21 @@ exports.deleteIntake = async (req, res) => {
     try {
         const profile = await models.Profile.findById(req.params.profileId);
         const medication = profile.medications.id(req.params.medId);
+        const intakeId = req.params.intakeId;
 
-        medication.medicationIntakes.id(req.params.intakeId).remove();
+        if (!medication) {
+            return helpers.error(res, { message: 'Medication not found' });
+        }
+
+        const intake = medication.medicationIntakes.id(intakeId);
+        if (!intake) {
+            return helpers.error(res, { message: 'Intake not found' });
+        }
+
+        medication.quantity += intake.quantity;
+
+        // Remove the intake
+        medication.medicationIntakes.pull(intakeId);
         await profile.save();
 
         helpers.success(res, { message: 'Medication intake deleted' });

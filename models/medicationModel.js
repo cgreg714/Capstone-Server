@@ -73,7 +73,6 @@ const MedicationSchema = new Schema({
 	dateAdded: {
 		type: Date,
 		required: true,
-		default: new Date(),
 	},
 	prescriber: String,
 	associatedDrug: { type: Schema.Types.ObjectId, ref: 'Drug' },

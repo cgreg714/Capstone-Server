@@ -249,6 +249,7 @@ exports.addQuantity = async (req, res) => {
 
         medication.quantity = Number(medication.quantity) + Number(quantity);
 
+        profile.markModified('medications');
         await profile.save();
         helpers.success(res, medication);
     } catch (err) {

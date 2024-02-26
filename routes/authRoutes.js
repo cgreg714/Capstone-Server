@@ -15,11 +15,15 @@ router.get('/check-token', (req, res, next) => {
     AuthController.checkToken(req, res, next);
 });
 
-router.post('/request-password-reset', (req, res, next) => {
+router.post('/send-otp', (req, res, next) => {
     AuthController.sendPasswordResetEmail(req, res, next);
 });
 
-router.post('/reset-password/:token', (req, res, next) => {
+router.post('/verify-otp', (req, res, next) => {
+    AuthController.verifyOTP(req, res, next);
+});
+
+router.post('/reset-password', (req, res, next) => {
     AuthController.resetPassword(req, res, next);
 });
 
