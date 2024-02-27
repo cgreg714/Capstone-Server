@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const zxcvbn = require('zxcvbn');
 const nodemailer = require('nodemailer');
+const bcrypt = require('bcrypt');
 
 const LocalStrategy = require('passport-local').Strategy;
 const passport = require('passport');
@@ -93,62 +94,105 @@ exports.checkToken = (req, res) => {
 };
 
 exports.sendPasswordResetEmail = async (req, res, next) => {
-	const { email } = req.body;
+    const { email } = req.body;
 
-	const user = await models.User.findOne({ email });
+    const user = await models.User.findOne({ email });
 
-	if (!user) {
-		return next(new Error('User with this email does not exist'));
-	}
+    if (!user) {
+        const err = new Error('User with this email does not exist');
+        err.status = 400;
+        return next(err);
+    }
 
-	const token = Math.random().toString(36).substring(2);
+    const otp = Math.floor(100000 + Math.random() * 900000);
 
-	user.resetPasswordToken = token;
-	await user.save();
+    const expires = new Date();
+    expires.setMinutes(expires.getMinutes() + 5);
 
-	const transporter = nodemailer.createTransport({
-		host: process.env.SMTP_HOST,
-		port: process.env.SMTP_PORT,
-		secure: false, // true for 465, false for other ports
-		auth: {
-			user: process.env.EMAIL,
-			pass: process.env.EMAIL_PASSWORD,
-		},
-	});
+    user.resetPasswordToken = otp;
+    user.resetPasswordExpires = expires;
 
-	// Send an email to the user with the password reset link
-	const mailOptions = {
-		from: 'your-email@example.com',
-		to: email,
-		subject: 'Password Reset',
-		text: `Click the following link to reset your password: ${IP}:${FPORT}/reset-password/${token}`,
-	};
+    await user.save();
 
-	try {
-		await transporter.sendMail(mailOptions);
-		success(res, 'Password reset link sent');
-	} catch (error) {
-		next(error);
-	}
+    const transporter = nodemailer.createTransport({
+        host: process.env.SMTP_HOST,
+        port: process.env.SMTP_PORT,
+        secure: true,
+        auth: {
+            user: process.env.EMAIL,
+            pass: process.env.EMAIL_PASSWORD,
+        },
+    });
+
+    const mailOptions = {
+        from: process.env.EMAIL,
+        to: email,
+        subject: 'Password Reset',
+        text: `Your OTP for password reset is: ${otp}`,
+    };
+
+    try {
+        await transporter.sendMail(mailOptions);
+        success(res, 'OTP sent');
+    } catch (error) {
+        next(error);
+    }
+};
+
+exports.verifyOTP = async (req, res, next) => {
+    const { otp } = req.body;
+
+    const user = await models.User.findOne({ resetPasswordToken: otp });
+
+    if (!user || user.resetPasswordExpires < Date.now()) {
+        const err = new Error('Invalid or expired OTP');
+        err.status = 400;
+        return next(err);
+    }
+
+    success(res, 'OTP verified');
 };
 
 exports.resetPassword = async (req, res, next) => {
-	const { token } = req.params;
-	const { password } = req.body;
+    const { otp } = req.body;
+    const { password } = req.body;
 
-	const user = await models.User.findOne({
-		resetPasswordToken: token,
-		resetPasswordExpires: { $gt: Date.now() },
-	});
+    const passwordStrength = zxcvbn(password);
+    if (passwordStrength.score < 3) {
+        return next(Object.assign(new Error('Password is too weak'), { status: 400 }));
+    }
 
-	if (!user) {
-		return next(new Error('Invalid or expired reset token'));
-	}
+    let user;
+    try {
+        user = await models.User.findOne({
+            resetPasswordToken: otp,
+            resetPasswordExpires: { $gt: Date.now() },
+        });
+    } catch (error) {
+        console.error('Error finding user:', error);
+        return next(new Error('Error finding user: ' + error.message));
+    }
 
-	user.password = await bcrypt.hash(password, 10);
-	user.resetPasswordToken = undefined;
-	user.resetPasswordExpires = undefined;
-	await user.save();
+    if (!user) {
+        return next(new Error('Invalid or expired OTP'));
+    }
 
-	success(res, 'Password successfully reset');
+    try {
+        user.password = await bcrypt.hash(password, 10);
+    } catch (error) {
+        console.error('Error hashing password:', error);
+        return next(new Error('Error hashing password: ' + error.message));
+    }
+
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpires = undefined;
+
+    try {
+        await user.save();
+    } catch (error) {
+        console.error('Error saving user:', error);
+        return next(new Error('Error saving user: ' + error.message));
+    }
+
+    success(res, 'Password successfully reset');
 };

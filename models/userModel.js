@@ -1,10 +1,10 @@
 const Joi = require('joi');
 const mongoose = require('mongoose');
+const zxcvbn = require('zxcvbn');
 const bcrypt = require('bcrypt');
 
 const schema = Joi.object({
     username: Joi.string().alphanum().min(3).max(30).required(),
-    password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9!@#$%^&*]{3,30}$')),
     email: Joi.string().email().required(),
 });
 
@@ -19,7 +19,7 @@ const UserSchema = new mongoose.Schema({
     },
     avatar: String,
     resetPasswordToken: String,
-    resetPasswordExpires: Date,
+    resetPasswordExpires: { type: Date, expires: 0 },
     profiles: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Profile' }]
 });
 
@@ -41,7 +41,11 @@ UserSchema.pre('save', async function (next) {
             throw new Error('Password is required');
         }
 
-        user.password = this.password;
+        const passwordStrength = zxcvbn(this.password);
+        if (passwordStrength.score < 3) {
+            throw new Error('Password is too weak');
+        }
+
         this.password = await bcrypt.hash(this.password, 10);
     }
 

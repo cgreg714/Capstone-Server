@@ -25,12 +25,8 @@ const DrugExternalLinkSchema = new mongoose.Schema({
 }, {_id: false});
 
 const DrugSchema = new mongoose.Schema({
-    'drugbank-id': {
-        '0': String,
-        '1': String,
-        '2': String
-    },
-    name: String,
+    'drugbank-id': String,
+    name: { type: String, index: true },
     description: String,
     unii: String,
     indication: String,
@@ -40,6 +36,9 @@ const DrugSchema = new mongoose.Schema({
     'drug-interactions': [DrugInteractionSchema],
     "external-links": { type: Map, of: DrugExternalLinkSchema },
 }, { id: false });
+
+DrugSchema.index({ 'products.name': 1 });
+DrugSchema.index({ 'drugbank-id': 1 });
 
 const Drug = mongoose.model('Drug', DrugSchema, 'drugDB');
 

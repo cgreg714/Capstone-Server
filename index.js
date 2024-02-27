@@ -11,6 +11,7 @@ const { MONGODB, DB_NAME } = process.env;
 
 // Data loading
 const loadData = require('./drugDB/loadData');
+const loadAllData = require('./drugDB/loadAllData');
 
 // Routes
 const authRoutes = require('./routes/authRoutes');
@@ -20,6 +21,8 @@ const medicationRoutes = require('./routes/medicationRoutes');
 const drugRoutes = require('./routes/drugRoutes');
 const aBuddyRoutes = require('./routes/aBuddyRoutes');
 
+// Cron jobs - Notifications
+require('./helpers/cronNotifications');
 // Middlewares
 const errorHandler = require('./middlewares/errorHandler');
 
@@ -30,6 +33,7 @@ db()
     .then(() => {
         console.log(`Database connected to: ${MONGODB}/${DB_NAME}`);
         loadData();
+        // loadAllData();
     })
     .catch((err) => console.error(err));
 
