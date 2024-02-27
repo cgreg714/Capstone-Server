@@ -20,6 +20,8 @@ const medicationRoutes = require('./routes/medicationRoutes');
 const drugRoutes = require('./routes/drugRoutes');
 const aBuddyRoutes = require('./routes/aBuddyRoutes');
 
+// Cron jobs - Notifications
+require('./helpers/cronNotifications');
 // Middlewares
 const errorHandler = require('./middlewares/errorHandler');
 

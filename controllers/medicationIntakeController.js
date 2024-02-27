@@ -26,6 +26,44 @@ exports.createIntake = async (req, res) => {
             profile: profile._id 
         };
         medication.medicationIntakes.push(newMedicationIntake);
+
+        // Check medication quantity and update or create notification if necessary
+        let notificationText;
+        let notificationSeverity;
+        let notificationType;
+        let notificationKey;
+        if (medication.quantity === 0) {
+            notificationText = `You are out of ${medication.name}. Please refill your prescription immediately.`;
+            notificationSeverity = 'high';
+            notificationType = 'error';
+            notificationKey = 'out of';
+        } else if (medication.quantity < 5) {
+            notificationText = `You are very low on ${medication.name}. Only ${medication.quantity} remaining. Please refill your prescription immediately.`;
+            notificationSeverity = 'medium';
+            notificationType = 'warning';
+            notificationKey = 'very low on';
+        } else if (medication.quantity < 15) {
+            notificationText = `You are low on ${medication.name}. Only ${medication.quantity} remaining. Please refill your prescription.`;
+            notificationSeverity = 'medium';
+            notificationType = 'warning';
+            notificationKey = 'low on';
+        }
+        if (notificationText) {
+            const existingNotification = profile.notifications.find(notification =>
+                notification.text.includes(medication.name) && notification.text.includes(notificationKey)
+            );
+            if (existingNotification) {
+                existingNotification.text = notificationText;
+            } else {
+                profile.notifications.push({
+                    text: notificationText,
+                    severity: notificationSeverity,
+                    type: notificationType,
+                    read: false,
+                });
+            }
+        }
+
         await profile.save();
 
         helpers.success(res, newMedicationIntake);

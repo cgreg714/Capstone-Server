@@ -21,4 +21,14 @@ router.route('/:userId/profile/:profileId/doctors/:doctorId')
     .patch(doctorController.updateDoctor)
     .delete(doctorController.deleteDoctor);
 
+// Notifications
+router.route('/:userId/profile/:profileId/notifications')
+    .get(profileController.getAllNotifications)
+    .post(profileController.createNotification)
+    .delete(profileController.deleteAllNotifications);
+
+router.route('/:userId/profile/:profileId/notifications/:notificationId')
+    .get(profileController.getOneNotification)
+    .patch(profileController.updateNotification)
+    .delete(profileController.deleteNotification);
 module.exports = router;

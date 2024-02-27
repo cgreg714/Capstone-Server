@@ -5,7 +5,7 @@ async function loadData() {
     try {
         const count = await Drug.countDocuments();
         if (count === 0) {
-            for (let i = 1; i <= 11; i++) {
+            for (let i = 1; i <= 1; i++) {
                 const data = fs.readFileSync(`./drugDB/AllTheDrugs_${i}.json`, 'utf8');
                 const jsonData = JSON.parse(data);
                 const drugs = jsonData.map(drug => {
@@ -31,10 +31,23 @@ async function loadData() {
                     }
                     let drugInteractions = [];
                     if (drug.drug['drug-interactions'] && drug.drug['drug-interactions']['drug-interaction']) {
-                        if (typeof drug.drug['drug-interactions']['drug-interaction'] === 'string') {
-                            drugInteractions = [{ 'drug-interaction': drug.drug['drug-interactions']['drug-interaction'] }];
-                        } else if (Array.isArray(drug.drug['drug-interactions']['drug-interaction'])) {
-                            drugInteractions = drug.drug['drug-interactions']['drug-interaction'].map(interaction => ({ 'drug-interaction': interaction }));
+                        const interactions = drug.drug['drug-interactions']['drug-interaction'];
+                        if (typeof interactions === 'object' && interactions !== null && !Array.isArray(interactions)) {
+                            drugInteractions = Object.values(interactions).map(interaction => {
+                                return {
+                                    'drugbank-id': interaction['drugbank-id'],
+                                    'name': interaction.name,
+                                    'description': interaction.description
+                                };
+                            });
+                        } else if (Array.isArray(interactions)) {
+                            drugInteractions = interactions.map(interaction => {
+                                return {
+                                    'drugbank-id': interaction['drugbank-id'],
+                                    'name': interaction.name,
+                                    'description': interaction.description
+                                };
+                            });
                         }
                     }
                     let foodInteractions = [];

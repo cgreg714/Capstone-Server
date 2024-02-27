@@ -76,3 +76,103 @@ exports.deleteProfile = async (req, res) => {
 		error(res, err);
 	}
 }
+
+// GET All Notifications for a Profile
+exports.getAllNotifications = async (req, res) => {
+	try {
+		const { profileId } = req.params;
+		const profile = await models.Profile.findById(profileId).populate('notifications');
+
+		if (!profile) throw new Error('Profile not found');
+
+		profile ? success(res, profile.notifications) : incomplete(res, 'No notifications found');
+	} catch (err) {
+		error(res, err);
+	}
+};
+
+// CREATE Notification
+exports.createNotification = async (req, res) => {
+	try {
+		const { profileId } = req.params;
+		const notificationData = { ...req.body, profile: profileId };
+		const profile = await models.Profile.findById(profileId);
+		if (!profile) throw new Error('Profile not found');
+		profile.notifications.push(notificationData);
+		await profile.save();
+		const notification = profile.notifications[profile.notifications.length - 1];
+		notification ? success(res, notification) : incomplete(res, 'Notification creation failed');
+	} catch (err) {
+		error(res, err);
+	}
+};
+
+// GET One Notification
+exports.getOneNotification = async (req, res) => {
+	try {
+		const { profileId, notificationId } = req.params;
+		const profile = await models.Profile.findById(profileId);
+		if (!profile) throw new Error('Profile not found');
+
+		const notification = profile.notifications.id(notificationId);
+		if (!notification) throw new Error('Notification not found');
+
+		success(res, notification);
+	} catch (err) {
+		error(res, err);
+	}
+};
+
+// Update Notification
+exports.updateNotification = async (req, res) => {
+	try {
+		const { profileId, notificationId } = req.params;
+		const profile = await models.Profile.findById(profileId);
+		if (!profile) throw new Error('Profile not found');
+
+		const notification = profile.notifications.id(notificationId);
+		if (!notification) throw new Error('Notification not found');
+
+		Object.assign(notification, req.body);
+		await profile.save();
+
+		success(res, notification);
+	} catch (err) {
+		error(res, err);
+	}
+};
+
+// Delete Notification
+exports.deleteNotification = async (req, res) => {
+	try {
+		const { profileId, notificationId } = req.params;
+		const profile = await models.Profile.findById(profileId);
+		if (!profile) throw new Error('Profile not found');
+
+		const notification = profile.notifications.id(notificationId);
+		if (!notification) throw new Error('Notification not found');
+
+		profile.notifications.pull(notificationId);
+		await profile.save();
+
+		success(res, { message: 'Notification deleted successfully' });
+	} catch (err) {
+		error(res, err);
+	}
+};
+
+// Delete All Notifications
+exports.deleteAllNotifications = async (req, res) => {
+	try {
+		const { profileId } = req.params;
+		const profile = await models.Profile.findById(profileId);
+		if (!profile) throw new Error('Profile not found');
+
+		profile.notifications = [];
+		await profile.save();
+
+		success(res, { message: 'All notifications deleted successfully' });
+	} catch (err) {
+		error(res, err);
+	}
+};

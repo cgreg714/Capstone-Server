@@ -55,6 +55,34 @@ const PharmacySchema = new mongoose.Schema({
     phoneNumber: String,
 });
 
+const NotificationSchema = new mongoose.Schema({
+	text: {
+		type: String,
+		required: true,
+	},
+	createdAt: {
+		type: Date,
+		default: Date.now,
+	},
+	timeDismissed: {
+		type: Date,
+	},
+	severity: {
+		type: String,
+		enum: ['low', 'medium', 'high'],
+		default: 'low',
+	},
+	type: {
+		type: String,
+		enum: ['error', 'warning', 'info'],
+		default: 'info',
+	},
+	read: {
+		type: Boolean,
+		default: false,
+	},
+});
+
 const ProfileSchema = new mongoose.Schema({
 	firstName: {
 		type: String,
@@ -83,6 +111,7 @@ const ProfileSchema = new mongoose.Schema({
 	doctors: [DoctorSchema],
 	medications: [MedicationSchema],
 	abuddies: [aBuddySchema],
+	notifications: [NotificationSchema],
 });
 
 ProfileSchema.index({ firstName: 1, lastName: 1, email: 1 }, { unique: true });
