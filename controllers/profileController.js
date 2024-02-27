@@ -11,7 +11,6 @@ exports.createProfile = async (req, res) => {
         const profileData = { ...req.body, users: [userId] };
         const profile = await new models.Profile(profileData).save();
 
-        // Find the user and add the profile to the user's profiles
         const user = await models.User.findById(userId);
         if (!user) throw new Error('User not found');
         user.profiles.push(profile._id);
@@ -55,9 +54,9 @@ exports.getProfile = async (req, res) => {
 exports.updateProfile = async (req, res) => {
 	try {
 		const { profileId, userId } = req.params;
-		const task = await models.Profile.findOneAndUpdate({ _id: profileId, users: userId }, req.body, { new: true, runValidators: true });
+		const updatedProfile = await models.Profile.findOneAndUpdate({ _id: profileId, users: userId }, req.body, { new: true, runValidators: true });
 
-		task ? success(res, task) : incomplete(res, 'Update failed');
+		updatedProfile ? success(res, updatedProfile) : incomplete(res, 'Update failed');
 	} catch (err) {
 		error(res, err);
 	}
@@ -67,11 +66,11 @@ exports.updateProfile = async (req, res) => {
 exports.deleteProfile = async (req, res) => {
 	try {
 		const { profileId, userId } = req.params;
-		const user = await models.Profile.findOne({ _id: profileId, users: userId });
-		if (!user) {
+		const profile = await models.Profile.findOne({ _id: profileId, users: userId });
+		if (!profile) {
 			return incomplete(res, 'Profile not found');
 		}
-		await user.deleteOne();
+		await profile.deleteOne();
 		success(res, { message: 'Profile deleted successfully' });
 	} catch (err) {
 		error(res, err);
