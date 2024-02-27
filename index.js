@@ -11,6 +11,7 @@ const { MONGODB, DB_NAME } = process.env;
 
 // Data loading
 const loadData = require('./drugDB/loadData');
+const loadAllData = require('./drugDB/loadAllData');
 
 // Routes
 const authRoutes = require('./routes/authRoutes');
@@ -32,6 +33,7 @@ db()
     .then(() => {
         console.log(`Database connected to: ${MONGODB}/${DB_NAME}`);
         loadData();
+        // loadAllData();
     })
     .catch((err) => console.error(err));
 
