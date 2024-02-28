@@ -37,8 +37,9 @@ const DrugSchema = new mongoose.Schema({
     "external-links": { type: Map, of: DrugExternalLinkSchema },
 }, { id: false });
 
-DrugSchema.index({ 'products.name': 1 });
+DrugSchema.index({ name: 'text' });
 DrugSchema.index({ 'drugbank-id': 1 });
+DrugSchema.index({ 'products.name': 'text' });
 
 const Drug = mongoose.model('Drug', DrugSchema, 'drugDB');
 

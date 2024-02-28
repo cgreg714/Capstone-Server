@@ -72,11 +72,8 @@ const NotificationSchema = new mongoose.Schema({
 		enum: ['low', 'medium', 'high'],
 		default: 'low',
 	},
-	type: {
-		type: String,
-		enum: ['error', 'warning', 'info'],
-		default: 'info',
-	},
+	type: { type: String, enum: ['error', 'warning', 'info', 'next_intake', 'low_medication', 'missed_medication', 'empty_medication'] },
+
 	read: {
 		type: Boolean,
 		default: false,
