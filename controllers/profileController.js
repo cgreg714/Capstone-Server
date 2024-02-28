@@ -54,6 +54,7 @@ exports.getProfile = async (req, res) => {
 
 // Patch Profile Information
 exports.updateProfile = async (req, res) => {
+	console.log(req)
 	try {
 		const { profileId, userId } = req.params;
 		const task = await models.Profile.findOneAndUpdate({ _id: profileId, users: userId }, req.body, { new: true, runValidators: true });

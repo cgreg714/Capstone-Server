@@ -7,6 +7,7 @@ const app = express();
 const BACKEND_PORT = process.env.PORT;
 const IP = process.env.IP;
 const FPORT = process.env.FPORT;
+// console.log(FPORT)
 const { MONGODB, DB_NAME } = process.env;
 
 // Data loading
