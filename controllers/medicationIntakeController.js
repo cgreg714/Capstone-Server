@@ -13,7 +13,6 @@ exports.createIntake = async (req, res) => {
             return helpers.error(res, { message: 'Medication not found' });
         }
 
-        // Subtract the quantity taken from the medication's quantity
         medication.quantity -= quantity;
         if (medication.quantity < 0) {
             return helpers.error(res, { message: 'Insufficient medication quantity' });
@@ -27,11 +26,11 @@ exports.createIntake = async (req, res) => {
         };
         medication.medicationIntakes.push(newMedicationIntake);
 
-        // Check medication quantity and update or create notification if necessary
         let notificationText;
         let notificationSeverity;
         let notificationType;
         let notificationKey;
+
         if (medication.quantity === 0) {
             notificationText = `You are out of ${medication.name}. Please refill your prescription immediately.`;
             notificationSeverity = 'high';
@@ -155,7 +154,6 @@ exports.deleteIntake = async (req, res) => {
 
         medication.quantity += intake.quantity;
 
-        // Remove the intake
         medication.medicationIntakes.pull(intakeId);
         await profile.save();
 

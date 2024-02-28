@@ -15,6 +15,15 @@ exports.createMedication = async (req, res) => {
             return helpers.incomplete(res, 'A medication with the same name already exists in the profile');
         }
 
+        // Fetch the associated drug from the database
+        const associatedDrug = await models.Drug.findById(drug);
+        if (!associatedDrug) {
+            return helpers.incomplete(res, 'Associated drug not found');
+        }
+
+        // Extract the food interactions
+        const foodInteractions = associatedDrug['food-interactions'].map(interaction => interaction['food-interaction']);
+
         const newMedication = { 
             name, 
             description, 
@@ -28,6 +37,17 @@ exports.createMedication = async (req, res) => {
         };
         const medicationDoc = profile.medications.create(newMedication);
         profile.medications.push(medicationDoc);
+
+        // Create a notification with the food interactions if there are any
+        if (foodInteractions.length > 0) {
+            const notificationData = {
+                text: `The medication ${name} has been added. It has the following food interactions: ${foodInteractions.join(', ')}`,
+                severity: 'high',
+                type: 'warning'
+            };
+            profile.notifications.push(notificationData);
+        }
+
         await profile.save();
 
         helpers.success(res, medicationDoc);

@@ -15,11 +15,13 @@ const loadAllData = require('./drugDB/loadAllData');
 
 // Routes
 const authRoutes = require('./routes/authRoutes');
+const drugRoutes = require('./routes/drugRoutes');
 const userRoutes = require('./routes/userRoutes');
 const profileRoutes = require('./routes/profileRoutes');
 const medicationRoutes = require('./routes/medicationRoutes');
-const drugRoutes = require('./routes/drugRoutes');
 const aBuddyRoutes = require('./routes/aBuddyRoutes');
+const doctorRoutes = require('./routes/doctorRoutes');
+const pharmacyRoutes = require('./routes/pharmacyRoutes');
 
 // Cron jobs - Notifications
 require('./helpers/cronNotifications');
@@ -32,8 +34,8 @@ const db = require('./helpers/db');
 db()
     .then(() => {
         console.log(`Database connected to: ${MONGODB}/${DB_NAME}`);
-        loadData();
-        // loadAllData();
+        // loadData();
+        loadAllData();
     })
     .catch((err) => console.error(err));
 
@@ -50,11 +52,13 @@ app.use(express.json());
 
 // Route setup
 app.use('/', authRoutes);
+app.use('/drugs', drugRoutes);
 app.use('/user', userRoutes);
 app.use('/user', profileRoutes);
 app.use('/user', medicationRoutes);
 app.use('/user', aBuddyRoutes);
-app.use('/drugs', drugRoutes);
+app.use('/user', doctorRoutes);
+app.use('/user', pharmacyRoutes);
 
 // Error handling
 app.use(errorHandler);
