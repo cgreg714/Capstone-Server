@@ -1,5 +1,6 @@
 const cron = require('node-cron');
 const models = require('../models/databaseModel');
+const createMedicationNotification = require('./createNotification');
 
 // Calculate next intake time
 function calculateNextIntakeTime(medication) {
@@ -100,40 +101,14 @@ async function checkForLowMedications() {
     const profiles = await models.Profile.find().populate('medications');
     profiles.forEach(async (profile) => {
         profile.medications.forEach(async (medication) => {
-            let severity;
-            let message;
-            let type;
-
-            if (medication.quantity === 0) {
-                severity = 'error';
-                message = `You are out of ${medication.name}. Please refill your prescription immediately.`;
-                type = 'empty_medication';
-            } else if (medication.quantity <= 5) {
-                severity = 'high';
-                message = `You are critically low on ${medication.name}. Only ${medication.quantity} remaining. Please refill your prescription.`;
-                type = 'low_medication';
-            } else if (medication.quantity <= 10) {
-                severity = 'medium';
-                message = `You are low on ${medication.name}. Only ${medication.quantity} remaining. Please refill your prescription soon.`;
-                type = 'low_medication';
-            } else if (medication.quantity <= 15) {
-                severity = 'low';
-                message = `You have ${medication.quantity} of ${medication.name} remaining. Consider refilling your prescription.`;
-                type = 'low_medication';
-            }
-
-            if (message) {
+            const notificationData = createMedicationNotification(medication, medication.quantity);
+            if (notificationData) {
                 const existingNotification = profile.notifications.find(notification =>
-                    notification.text === message
+                    notification.text === notificationData.text
                 );
                 if (!existingNotification) {
-                    const notificationData = {
-                        text: message,
-                        severity: severity,
-                        type: type,
-                        createdAt: new Date(),
-                        read: false,
-                    };
+                    notificationData.createdAt = new Date();
+                    notificationData.read = false;
                     profile.notifications.push(notificationData);
                 }
             }
@@ -141,7 +116,6 @@ async function checkForLowMedications() {
         await profile.save();
     });
 }
-
 // Run the functions every minute
 cron.schedule('* * * * *', () => {
     checkForMissedMedications();

@@ -1,32 +1,6 @@
 const models = require('../models/databaseModel');
 const helpers = require('../helpers/response');
-const {createNotification} = require('./profileController');
-
-function createMedicationNotification(medication, quantity) {
-    let notificationText;
-    let notificationSeverity;
-    let notificationType;
-
-    if (quantity === 0) {
-        notificationText = `You are out of ${medication.name}. Please refill your prescription immediately.`;
-        notificationSeverity = 'error';
-        notificationType = 'empty_medication';
-    } else if (quantity < 5) {
-        notificationText = `You are critically low on ${medication.name}. Only ${quantity} remaining. Please refill your prescription.`;
-        notificationSeverity = 'high';
-        notificationType = 'low_medication';
-    } else if (quantity < 10) {
-        notificationText = `You are low on ${medication.name}. Only ${quantity} remaining. Please refill your prescription soon.`;
-        notificationSeverity = 'medium';
-        notificationType = 'low_medication';
-    } else if (quantity < 15) {
-        notificationText = `You have ${quantity} of ${medication.name} remaining. Consider refilling your prescription.`;
-        notificationSeverity = 'low';
-        notificationType = 'low_medication';
-    }
-
-    return notificationText ? { text: notificationText, severity: notificationSeverity, type: notificationType } : null;
-}
+const createMedicationNotification = require('..//helpers/createNotification');
 
 // Medication intake
 
