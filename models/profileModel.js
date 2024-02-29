@@ -3,7 +3,7 @@ const { MedicationSchema } = require('./medicationModel');
 
 const AddressSchema = new mongoose.Schema({
 	street: String,
-	cityOrTown: String,
+	city: String,
 	state: String,
 	zip: String,
 });

@@ -1,7 +1,35 @@
 const models = require('../models/databaseModel');
 const helpers = require('../helpers/response');
+const {createNotification} = require('./profileController');
+
+function createMedicationNotification(medication, quantity) {
+    let notificationText;
+    let notificationSeverity;
+    let notificationType;
+
+    if (quantity === 0) {
+        notificationText = `You are out of ${medication.name}. Please refill your prescription immediately.`;
+        notificationSeverity = 'error';
+        notificationType = 'empty_medication';
+    } else if (quantity < 5) {
+        notificationText = `You are critically low on ${medication.name}. Only ${quantity} remaining. Please refill your prescription.`;
+        notificationSeverity = 'high';
+        notificationType = 'low_medication';
+    } else if (quantity < 10) {
+        notificationText = `You are low on ${medication.name}. Only ${quantity} remaining. Please refill your prescription soon.`;
+        notificationSeverity = 'medium';
+        notificationType = 'low_medication';
+    } else if (quantity < 15) {
+        notificationText = `You have ${quantity} of ${medication.name} remaining. Consider refilling your prescription.`;
+        notificationSeverity = 'low';
+        notificationType = 'low_medication';
+    }
+
+    return notificationText ? { text: notificationText, severity: notificationSeverity, type: notificationType } : null;
+}
 
 // Medication intake
+
 exports.createIntake = async (req, res) => {
     try {
         const { takenAt, quantity } = req.body;
@@ -26,44 +54,23 @@ exports.createIntake = async (req, res) => {
         };
         medication.medicationIntakes.push(newMedicationIntake);
 
-        let notificationText;
-        let notificationSeverity;
-        let notificationType;
-        let notificationKey;
-
-        if (medication.quantity === 0) {
-            notificationText = `You are out of ${medication.name}. Please refill your prescription immediately.`;
-            notificationSeverity = 'high';
-            notificationType = 'error';
-            notificationKey = 'out of';
-        } else if (medication.quantity < 5) {
-            notificationText = `You are very low on ${medication.name}. Only ${medication.quantity} remaining. Please refill your prescription immediately.`;
-            notificationSeverity = 'medium';
-            notificationType = 'warning';
-            notificationKey = 'very low on';
-        } else if (medication.quantity < 15) {
-            notificationText = `You are low on ${medication.name}. Only ${medication.quantity} remaining. Please refill your prescription.`;
-            notificationSeverity = 'medium';
-            notificationType = 'warning';
-            notificationKey = 'low on';
-        }
-        if (notificationText) {
-            const existingNotification = profile.notifications.find(notification =>
-                notification.text.includes(medication.name) && notification.text.includes(notificationKey)
+        const notification = createMedicationNotification(medication, medication.quantity);
+        if (notification) {
+            const existingNotification = profile.notifications.find(n =>
+                n.text.includes(medication.name) && n.text.includes(notification.type)
             );
             if (existingNotification) {
-                existingNotification.text = notificationText;
+                existingNotification.text = notification.text;
             } else {
                 profile.notifications.push({
-                    text: notificationText,
-                    severity: notificationSeverity,
-                    type: notificationType,
+                    text: notification.text,
+                    severity: notification.severity,
+                    type: notification.type,
                     read: false,
                 });
             }
+            await profile.save();
         }
-
-        await profile.save();
 
         helpers.success(res, newMedicationIntake);
     } catch (err) {
