@@ -92,7 +92,7 @@ exports.deleteAllMedications = async(req,res) => {
 exports.getMedicationById = async(req,res) => {
     try {
         const { profileId, medId } = req.params;
-        const profile = await models.Profile.findById(profileId);
+        const profile = await models.Profile.findById(profileId).populate('medications.associatedDrug');
 
         if (!profile) {
             return res.status(404).json({ message: 'Profile not found' });
@@ -114,7 +114,7 @@ exports.updateMedication = async(req,res) => {
     try {
         const { profileId, medId } = req.params;
         const updates = req.body;
-        const profile = await models.Profile.findById(profileId);
+        const profile = await models.Profile.findById(profileId).populate('medications.associatedDrug');
 
         if (!profile) {
             return res.status(404).json({ message: 'Profile not found' });
@@ -271,7 +271,14 @@ exports.addQuantity = async (req, res) => {
 
         profile.markModified('medications');
         await profile.save();
-        helpers.success(res, medication);
+
+        // Populate the associatedDrug field
+        const updatedProfile = await models.Profile.findById(profileId).populate('medications.associatedDrug');
+
+        // Fetch the updated medication object including all fields
+        const updatedMedication = updatedProfile.medications.id(medId);
+
+        helpers.success(res, updatedMedication);
     } catch (err) {
         helpers.error(res, err);
     }

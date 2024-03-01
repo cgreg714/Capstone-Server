@@ -57,18 +57,24 @@ const MedicationSchema = new Schema({
 			type: Boolean,
 			default: false,
 		},
-		biWeekly: {
-			type: Boolean,
-			default: false,
-		},
 		monthly: {
 			type: Boolean,
 			default: false,
 		},
+		everyXHours: {
+            type: Number,
+            min: 1,
+            validate: {
+                validator: Number.isInteger,
+                message: '{VALUE} is not an integer value'
+            }
+        },
+        customFrequency: {
+            type: String,
+        },
 	},
 	quantity: {
 		type: Number,
-		required: true,
 	},
 	dateAdded: {
 		type: Date,
