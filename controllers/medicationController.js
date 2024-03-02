@@ -3,7 +3,7 @@ const helpers = require('../helpers/response');
 
 exports.createMedication = async (req, res) => {
     try {
-        const { name, description, unitOfMeasurement, dose, quantity, prescriber, drug, frequency } = req.body;
+        const { name, description, unitOfMeasurement, dose, quantity, drug, frequency, doctor, pharmacy } = req.body;
 
         const profile = await models.Profile.findById(req.params.profileId);
         if (!profile) {
@@ -31,9 +31,10 @@ exports.createMedication = async (req, res) => {
             dose, 
             frequency, 
             quantity, 
-            prescriber, 
             associatedDrug: drug,
-            dateAdded: new Date() 
+            dateAdded: new Date(),
+            doctor: { profile: profile._id, doctor },
+            pharmacy: { profile: profile._id, pharmacy }
         };
         const medicationDoc = profile.medications.create(newMedication);
         profile.medications.push(medicationDoc);
