@@ -82,12 +82,10 @@ const MedicationSchema = new Schema({
 	},
 	// prescriber: String,
 	doctor: {
-		profile: { type: Schema.Types.ObjectId, ref: 'Profile' },
-		doctor: Schema.Types.ObjectId,
+		doctor: { type: Schema.Types.ObjectId, ref: 'Doctor' },
 	},
 	pharmacy: {
-		profile: { type: Schema.Types.ObjectId, ref: 'Profile' },
-		pharmacy: Schema.Types.ObjectId,
+		pharmacy: { type: Schema.Types.ObjectId, ref: 'Pharmacy' }
 	},
 	associatedDrug: { type: Schema.Types.ObjectId, ref: 'Drug' },
 	medicationIntakes: [MedicationIntakeSchema],

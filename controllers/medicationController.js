@@ -33,8 +33,8 @@ exports.createMedication = async (req, res) => {
             quantity, 
             associatedDrug: drug,
             dateAdded: new Date(),
-            doctor: { profile: profile._id, doctor },
-            pharmacy: { profile: profile._id, pharmacy }
+            doctor,
+            pharmacy,
         };
         const medicationDoc = profile.medications.create(newMedication);
         profile.medications.push(medicationDoc);
@@ -60,8 +60,8 @@ exports.createMedication = async (req, res) => {
 exports.getAllMedications = async(req,res) => {
     try {
         const { profileId } = req.params;
-        const profile = await models.Profile.findById(profileId).populate('medications.associatedDrug');
-        
+        const profile = await models.Profile.findById(profileId).populate(['medications.associatedDrug']);
+
         if (!profile) {
             return helpers.incomplete(res, 'Profile not found');
         }
