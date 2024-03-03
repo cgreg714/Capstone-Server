@@ -41,7 +41,6 @@ exports.getProfile = async (req, res) => {
 	try {
 		const { profileId, userId } = req.params;
 		const getProfile = await models.Profile.findOne({ _id: profileId, users: userId });
-
 		if (!getProfile) throw new Error('Profile not found');
 
 		getProfile ? success(res, getProfile) : incomplete(res, 'Profile not found');
@@ -55,7 +54,6 @@ exports.updateProfile = async (req, res) => {
 	try {
 		const { profileId, userId } = req.params;
 		const updatedProfile = await models.Profile.findOneAndUpdate({ _id: profileId, users: userId }, req.body, { new: true, runValidators: true });
-
 		updatedProfile ? success(res, updatedProfile) : incomplete(res, 'Update failed');
 	} catch (err) {
 		error(res, err);

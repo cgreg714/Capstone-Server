@@ -29,12 +29,12 @@ exports.createMedication = async (req, res) => {
             description, 
             unitOfMeasurement, 
             dose, 
-            frequency, 
             quantity, 
             associatedDrug: drug,
+            doctor: doctor._id,
+            pharmacy: pharmacy._id,
+            frequency, 
             dateAdded: new Date(),
-            doctor,
-            pharmacy,
         };
         const medicationDoc = profile.medications.create(newMedication);
         profile.medications.push(medicationDoc);
@@ -57,21 +57,6 @@ exports.createMedication = async (req, res) => {
     }
 };
 
-exports.getAllMedications = async(req,res) => {
-    try {
-        const { profileId } = req.params;
-        const profile = await models.Profile.findById(profileId).populate(['medications.associatedDrug']);
-
-        if (!profile) {
-            return helpers.incomplete(res, 'Profile not found');
-        }
-
-        helpers.success(res, profile.medications);
-    } catch (err) {
-        helpers.error(res,err);
-    }
-};
-
 exports.deleteAllMedications = async(req,res) => {
     try {
         const { profileId } = req.params;
@@ -85,6 +70,26 @@ exports.deleteAllMedications = async(req,res) => {
 
         await profile.save();
         helpers.success(res, { message: 'All meds cleared' });
+    } catch (err) {
+        helpers.error(res,err);
+    }
+};
+
+exports.getAllMedications = async(req,res) => {
+    try {
+        const { profileId } = req.params;
+        const profile = await models.Profile.findById(profileId).populate('medications.associatedDrug');
+        if (!profile) {
+            return helpers.incomplete(res, 'Profile not found');
+        }
+
+        const medications = profile.medications.map(medication => {
+            const doctor = profile.doctors.id(medication.doctor);
+            const pharmacy = profile.pharmacy.id(medication.pharmacy);
+            return { ...medication._doc, doctor, pharmacy };
+        });
+
+        helpers.success(res, medications);
     } catch (err) {
         helpers.error(res,err);
     }
@@ -105,7 +110,11 @@ exports.getMedicationById = async(req,res) => {
             return res.status(404).json({ message: 'Medication not found' });
         }
 
-        helpers.success(res, medication);
+        const doctor = profile.doctors.id(medication.doctor);
+        const pharmacy = profile.pharmacy.id(medication.pharmacy);
+        const medicationWithDoctorAndPharmacy = { ...medication._doc, doctor, pharmacy };
+
+        helpers.success(res, medicationWithDoctorAndPharmacy);
     } catch (err) {
         helpers.error(res,err);
     }
@@ -115,7 +124,7 @@ exports.updateMedication = async(req,res) => {
     try {
         const { profileId, medId } = req.params;
         const updates = req.body;
-        const profile = await models.Profile.findById(profileId).populate('medications.associatedDrug');
+        const profile = await models.Profile.findById(profileId);
 
         if (!profile) {
             return res.status(404).json({ message: 'Profile not found' });
