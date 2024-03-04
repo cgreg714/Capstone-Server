@@ -31,7 +31,7 @@ exports.createDoctor = async (req, res) => {
 exports.getAllDoctors = async (req, res) => {
     try {
         const { profileId } = req.params;
-        const profile = await models.Profile.findById(profileId);
+        const profile = await models.Profile.findById(profileId).populate('doctors');
 
         if (!profile) throw new Error('Profile not found');
 
@@ -45,7 +45,7 @@ exports.getAllDoctors = async (req, res) => {
 exports.getOneDoctor = async (req, res) => {
     try {
         const { profileId, doctorId } = req.params;
-        const profile = await models.Profile.findById(profileId);
+        const profile = await models.Profile.findById(profileId).populate('doctors');
 
         if (!profile) throw new Error('Profile not found');
 

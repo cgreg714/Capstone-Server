@@ -1,5 +1,6 @@
 const cron = require('node-cron');
 const models = require('../models/databaseModel');
+const createMedicationNotification = require('./createNotification');
 
 // Calculate next intake time
 function calculateNextIntakeTime(medication) {
@@ -44,14 +45,11 @@ async function checkForMissedMedications() {
             if (new Date() > nextIntakeTime) {
                 const lastIntake = medication.medicationIntakes[medication.medicationIntakes.length - 1];
                 if (!lastIntake || lastIntake.takenAt < nextIntakeTime) {
-                    // Check if a missed medication notification for the same medication and intake time already exists
                     const existingNotification = profile.notifications.find(notification =>
-                        notification.text === `You missed your ${medication.name} medication. It was supposed to be taken at ${nextIntakeTime.toLocaleTimeString()}.` &&
                         notification.type === 'missed_medication' &&
                         new Date(notification.createdAt).getTime() === nextIntakeTime.getTime()
                     );
                     if (!existingNotification) {
-                        // Create missed medication notification
                         const notificationData = {
                             text: `You missed your ${medication.name} medication. It was supposed to be taken at ${nextIntakeTime.toLocaleTimeString()}.`,
                             severity: 'high',
@@ -77,14 +75,12 @@ async function createNextIntakeNotifications() {
             const reminderTime = new Date(nextIntakeTime.getTime() - 5 * 60 * 1000); // 5 minutes before next intake time
 
             if (new Date().getTime() === reminderTime.getTime()) {
-                // Check if a reminder notification for the same medication and intake time already exists
                 const existingNotification = profile.notifications.find(notification =>
                     notification.text === `It's time to take your ${medication.name} medication in 5 minutes. It should be taken at ${nextIntakeTime.toLocaleTimeString()}.` &&
                     notification.type === 'next_intake' &&
                     new Date(notification.createdAt).getTime() === reminderTime.getTime()
                 );
                 if (!existingNotification) {
-                    // Create reminder notification
                     const notificationData = {
                         text: `It's time to take your ${medication.name} medication in 5 minutes. It should be taken at ${nextIntakeTime.toLocaleTimeString()}.`,
                         severity: 'medium',
@@ -105,43 +101,14 @@ async function checkForLowMedications() {
     const profiles = await models.Profile.find().populate('medications');
     profiles.forEach(async (profile) => {
         profile.medications.forEach(async (medication) => {
-            let severity;
-            let message;
-            let type;
-
-            if (medication.dose === 0) {
-                severity = 'error';
-                message = `You are out of ${medication.name}. Please refill your prescription immediately.`;
-                type = 'empty_medication';
-            } else if (medication.dose <= 5) {
-                severity = 'high';
-                message = `You are critically low on ${medication.name}. Only ${medication.dose} remaining. Please refill your prescription.`;
-                type = 'low_medication';
-            } else if (medication.dose <= 10) {
-                severity = 'medium';
-                message = `You are low on ${medication.name}. Only ${medication.dose} remaining. Please refill your prescription soon.`;
-                type = 'low_medication';
-            } else if (medication.dose <= 15) {
-                severity = 'low';
-                message = `You have ${medication.dose} doses of ${medication.name} remaining. Consider refilling your prescription.`;
-                type = 'low_medication';
-            }
-
-            if (message) {
-                // Check if a low medication notification for the same medication and message already exists
+            const notificationData = createMedicationNotification(medication, medication.quantity);
+            if (notificationData) {
                 const existingNotification = profile.notifications.find(notification =>
-                    notification.text === message &&
-                    notification.type === type
+                    notification.text === notificationData.text
                 );
                 if (!existingNotification) {
-                    // Create low medication notification
-                    const notificationData = {
-                        text: message,
-                        severity: severity,
-                        type: type,
-                        createdAt: new Date(),
-                        read: false,
-                    };
+                    notificationData.createdAt = new Date();
+                    notificationData.read = false;
                     profile.notifications.push(notificationData);
                 }
             }
@@ -149,7 +116,6 @@ async function checkForLowMedications() {
         await profile.save();
     });
 }
-
 // Run the functions every minute
 cron.schedule('* * * * *', () => {
     checkForMissedMedications();

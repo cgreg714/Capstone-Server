@@ -5,8 +5,8 @@ async function loadAllData() {
     try {
         const count = await Drug.countDocuments();
         if (count === 0) {
-            for (let i = 1; i <= 1; i++) {
-                const data = fs.readFileSync(`./drugDB/AllTheDrugs_${i}.json`, 'utf8');
+            for (let i = 1; i <= 2; i++) {
+                const data = fs.readFileSync(`./drugDB/CommonDrugs_${i}.json`, 'utf8');
                 const jsonData = JSON.parse(data);
                 const drugs = jsonData.map(drug => {
                     let products = [];
@@ -66,7 +66,7 @@ async function loadAllData() {
                     };
                 });
                 await Drug.insertMany(drugs);
-                console.log(`Data from AllTheDrugs_${i} loaded successfully`);
+                console.log(`Data from CommonDrugs_${i} loaded successfully`);
             }
         } else {
             console.log('Data already exists, not loading data');

@@ -13,9 +13,9 @@ const MedicationSchema = new Schema({
 	},
 	description: String,
 	unitOfMeasurement: {
-		type:String,
+		type: String,
 		enum: [null, 'kg', 'g', 'mg', 'mcg', 'L', 'ml', 'cc', 'mol', 'mmol', 'units', 'tbsp', 'tsp'],
-		default: null
+		default: null,
 	},
 	dose: {
 		type: Number,
@@ -26,19 +26,19 @@ const MedicationSchema = new Schema({
 			type: String,
 		},
 		timeOfDay: {
-			'morning':Boolean,
-			'noon':Boolean,
-			'evening':Boolean,
-			'bedtime':Boolean
+			morning: Boolean,
+			noon: Boolean,
+			evening: Boolean,
+			bedtime: Boolean,
 		},
 		dayOfTheWeek: {
-			'sunday': Boolean,
-			'monday': Boolean,
-			'tuesday': Boolean,
-			'wednesday': Boolean,
-			'thursday': Boolean,
-			'friday': Boolean,
-			'saturday': Boolean
+			sunday: Boolean,
+			monday: Boolean,
+			tuesday: Boolean,
+			wednesday: Boolean,
+			thursday: Boolean,
+			friday: Boolean,
+			saturday: Boolean,
 		},
 		day: {
 			type: Number,
@@ -57,30 +57,38 @@ const MedicationSchema = new Schema({
 			type: Boolean,
 			default: false,
 		},
-		biWeekly: {
-			type: Boolean,
-			default: false,
-		},
 		monthly: {
 			type: Boolean,
 			default: false,
 		},
+		everyXHours: {
+			type: Number,
+			min: 1,
+			validate: {
+				validator: Number.isInteger,
+				message: '{VALUE} is not an integer value',
+			},
+		},
+		customFrequency: {
+			type: String,
+		},
 	},
 	quantity: {
 		type: Number,
-		required: true,
 	},
 	dateAdded: {
 		type: Date,
 		required: true,
 	},
-	prescriber: String,
+	// prescriber: String,
+	doctor: { type: Schema.Types.ObjectId, ref: 'Doctor' },
+	pharmacy: { type: Schema.Types.ObjectId, ref: 'Pharmacy' },
 	associatedDrug: { type: Schema.Types.ObjectId, ref: 'Drug' },
-    medicationIntakes: [MedicationIntakeSchema],
+	medicationIntakes: [MedicationIntakeSchema],
 });
 
 MedicationIntakeSchema.index({ medication: 1, profile: 1 });
 
 module.exports = {
-	MedicationSchema: MedicationSchema
+	MedicationSchema: MedicationSchema,
 };

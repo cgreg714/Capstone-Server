@@ -55,7 +55,7 @@ exports.getInteractionBetweenTwoDrugs = async (req, res, next) => {
 exports.searchDrugsByName = async (req, res, next) => {
 	try {
 		const searchQuery = req.query.q;
-		const drugs = await models.Drug.find({ name: new RegExp('^' + searchQuery, 'i') }).limit(10);
+		const drugs = await models.Drug.find({ $text: { $search: searchQuery } }).limit(10);
 		success(res, drugs);
 	} catch (err) {
 		next(err);

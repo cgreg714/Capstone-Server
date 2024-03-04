@@ -1,28 +1,11 @@
 const router = require('express').Router();
 const DrugController = require('../controllers/drugController');
 
-router.get('/', (req, res, next) => {
-	DrugController.getAllDrugs(req, res, next);
-});
-
-router.get('/:drugId1/interactions/:drugId2', (req, res, next) => {
-	DrugController.getInteractionBetweenTwoDrugs(req, res, next);
-});
-
-router.get('/drugbank-id/:id', (req, res, next) => {
-	DrugController.getDrugByDrugbankId(req, res, next);
-});
-
-router.get('/unii/:unii', (req, res, next) => {
-	DrugController.getDrugByUnii(req, res, next);
-});
-
-router.get('/searchDrugsByName', (req, res, next) => {
-	DrugController.searchDrugsByName(req, res, next);
-});
-
-router.get('/searchDrugsByProductName', (req, res, next) => {
-	DrugController.searchDrugsByProductName(req, res, next);
-});
+router.get('/', DrugController.getAllDrugs);
+router.get('/:drugId1/interactions/:drugId2', DrugController.getInteractionBetweenTwoDrugs);
+router.get('/drugbank-id/:id', DrugController.getDrugByDrugbankId);
+router.get('/unii/:unii', DrugController.getDrugByUnii);
+router.get('/searchDrugsByName', DrugController.searchDrugsByName);
+router.get('/searchDrugsByProductName', DrugController.searchDrugsByProductName);
 
 module.exports = router;
