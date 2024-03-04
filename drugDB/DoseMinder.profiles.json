@@ -1,0 +1,353 @@
+[{
+  "_id": {
+    "$oid": "65e5df4f94ef0deb1582445a"
+  },
+  "firstName": "Max",
+  "lastName": "Doe",
+  "email": "maxd@email.com",
+  "users": [
+    {
+      "$oid": "65e5df2c94ef0deb15824451"
+    }
+  ],
+  "avatar": "/static/media/Avatar24.bb5415afb6c0881c26ea.png",
+  "pharmacy": [],
+  "doctors": [],
+  "medications": [],
+  "abuddies": [],
+  "notifications": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "65e5e1d494ef0deb1582b9ce"
+  },
+  "firstName": "Charles",
+  "lastName": "Doe",
+  "email": "charlesd@email.com",
+  "users": [
+    {
+      "$oid": "65e5df2c94ef0deb15824451"
+    }
+  ],
+  "avatar": "/static/media/Avatar31.7652b9c3b5c3b7c59d5e.png",
+  "pharmacy": [],
+  "doctors": [],
+  "medications": [],
+  "abuddies": [],
+  "notifications": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "65e5e1ea94ef0deb1582b9dc"
+  },
+  "firstName": "Diane",
+  "lastName": "Doe",
+  "email": "sued@email.com",
+  "users": [
+    {
+      "$oid": "65e5df2c94ef0deb15824451"
+    }
+  ],
+  "avatar": "/static/media/Avatar35.855f7dbe53a40e3b0dd4.png",
+  "pharmacy": [],
+  "doctors": [],
+  "medications": [],
+  "abuddies": [],
+  "notifications": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "65e5e21794ef0deb1582b9f6"
+  },
+  "firstName": "Kiki",
+  "lastName": "Doe",
+  "email": "kikid@email.com",
+  "users": [
+    {
+      "$oid": "65e5df2c94ef0deb15824451"
+    }
+  ],
+  "avatar": "/static/media/Avatar16.2c483da1598da6aed2a4.png",
+  "pharmacy": [
+    {
+      "name": "The Shoppe",
+      "address": {
+        "street": "15 Main Street",
+        "city": "Springfield",
+        "state": "Massachusetts",
+        "zip": "14354",
+        "_id": {
+          "$oid": "65e5e38294ef0deb1582ba64"
+        }
+      },
+      "phoneNumber": "(543) 235-4354",
+      "_id": {
+        "$oid": "65e5e38294ef0deb1582ba63"
+      }
+    },
+    {
+      "name": "Max's Pharmacy",
+      "address": {
+        "street": "102 King Road",
+        "city": "Ludlow",
+        "state": "Vermont",
+        "zip": "43535",
+        "_id": {
+          "$oid": "65e5e40994ef0deb1582baca"
+        }
+      },
+      "phoneNumber": "(324) 343-3534",
+      "_id": {
+        "$oid": "65e5e40994ef0deb1582bac9"
+      }
+    }
+  ],
+  "doctors": [
+    {
+      "firstName": "Hank",
+      "lastName": "McGrath",
+      "phoneNumber": "(213) 545-5465",
+      "_id": {
+        "$oid": "65e5e59c94ef0deb1582bb78"
+      }
+    },
+    {
+      "firstName": "Elizabeth",
+      "lastName": "Kolher",
+      "phoneNumber": "(322) 346-5484",
+      "_id": {
+        "$oid": "65e5e5ec94ef0deb1582bbb5"
+      }
+    }
+  ],
+  "medications": [
+    {
+      "name": "Pain Medication",
+      "description": "For broken arm. Take when needed. Don't exceed 4 pills in 24 hours.",
+      "unitOfMeasurement": "mg",
+      "dose": 100,
+      "frequency": {
+        "time": "1970-01-01T15:00:00.000Z",
+        "timeOfDay": {
+          "morning": false,
+          "noon": false,
+          "evening": false,
+          "bedtime": false
+        },
+        "dayOfTheWeek": {
+          "sunday": false,
+          "monday": false,
+          "tuesday": false,
+          "wednesday": false,
+          "thursday": false,
+          "friday": false,
+          "saturday": false
+        },
+        "once": false,
+        "daily": false,
+        "weekly": false,
+        "monthly": false,
+        "customFrequency": "When Needed"
+      },
+      "quantity": 26,
+      "dateAdded": {
+        "$date": "2024-01-15T00:00:00.000Z"
+      },
+      "doctor": {
+        "$oid": "65e5e5ec94ef0deb1582bbb5"
+      },
+      "pharmacy": {
+        "$oid": "65e5e38294ef0deb1582ba63"
+      },
+      "associatedDrug": {
+        "$oid": "65e5ded594ef0deb15824403"
+      },
+      "_id": {
+        "$oid": "65e6013094ef0deb158a9d63"
+      },
+      "medicationIntakes": [
+        {
+          "quantity": 1,
+          "takenAt": {
+            "$date": "2024-01-15T13:00:00.000Z"
+          },
+          "_id": {
+            "$oid": "65e64cf9dad0487c95d7aef4"
+          }
+        },
+        {
+          "quantity": 1,
+          "takenAt": {
+            "$date": "2024-01-16T13:00:00.000Z"
+          },
+          "_id": {
+            "$oid": "65e64d10dad0487c95d7b6fa"
+          }
+        },
+        {
+          "quantity": 1,
+          "takenAt": {
+            "$date": "2024-01-18T01:00:00.000Z"
+          },
+          "_id": {
+            "$oid": "65e64d39dad0487c95d7c503"
+          }
+        },
+        {
+          "quantity": 1,
+          "takenAt": {
+            "$date": "2024-01-18T21:00:00.000Z"
+          },
+          "_id": {
+            "$oid": "65e64d6fb785c392c37e5e18"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Anxiety Medication",
+      "description": "For anxiety, take with 16oz water",
+      "unitOfMeasurement": "mg",
+      "dose": 15,
+      "frequency": {
+        "time": "1970-01-02T01:00:00.000Z",
+        "timeOfDay": {
+          "morning": false,
+          "noon": false,
+          "evening": false,
+          "bedtime": false
+        },
+        "dayOfTheWeek": {
+          "sunday": true,
+          "monday": true,
+          "tuesday": true,
+          "wednesday": true,
+          "thursday": true,
+          "friday": true,
+          "saturday": true
+        },
+        "daily": true,
+        "once": false,
+        "weekly": false,
+        "monthly": false
+      },
+      "quantity": 21,
+      "dateAdded": {
+        "$date": "2024-02-01T00:00:00.000Z"
+      },
+      "doctor": {
+        "$oid": "65e5e59c94ef0deb1582bb78"
+      },
+      "pharmacy": {
+        "$oid": "65e5e40994ef0deb1582bac9"
+      },
+      "associatedDrug": {
+        "$oid": "65e5ded594ef0deb1582440c"
+      },
+      "_id": {
+        "$oid": "65e6018d94ef0deb158a9ff1"
+      },
+      "medicationIntakes": [
+        {
+          "quantity": 1,
+          "takenAt": {
+            "$date": "2024-02-02T01:00:00.000Z"
+          },
+          "_id": {
+            "$oid": "65e64e22b785c392c37e7a4e"
+          }
+        },
+        {
+          "quantity": 1,
+          "takenAt": {
+            "$date": "2024-02-03T01:00:00.000Z"
+          },
+          "_id": {
+            "$oid": "65e64e32b785c392c37e7dd1"
+          }
+        },
+        {
+          "quantity": 1,
+          "takenAt": {
+            "$date": "2024-02-04T01:00:00.000Z"
+          },
+          "_id": {
+            "$oid": "65e64e8bb785c392c37e95bc"
+          }
+        },
+        {
+          "quantity": 1,
+          "takenAt": {
+            "$date": "2024-02-05T01:00:00.000Z"
+          },
+          "_id": {
+            "$oid": "65e64ec4b785c392c37ea697"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Seasonal Allergies",
+      "description": "Take when needed for seasonal allergies.",
+      "unitOfMeasurement": "mg",
+      "dose": 25,
+      "frequency": {
+        "time": "1970-01-01T23:00:00.000Z",
+        "timeOfDay": {
+          "morning": false,
+          "noon": false,
+          "evening": false,
+          "bedtime": false
+        },
+        "dayOfTheWeek": {
+          "sunday": false,
+          "monday": false,
+          "tuesday": false,
+          "wednesday": false,
+          "thursday": false,
+          "friday": false,
+          "saturday": false
+        },
+        "customFrequency": "When Needed",
+        "once": false,
+        "daily": false,
+        "weekly": false,
+        "monthly": false
+      },
+      "quantity": 15,
+      "dateAdded": {
+        "$date": "2023-11-21T00:00:00.000Z"
+      },
+      "doctor": {
+        "$oid": "65e5e59c94ef0deb1582bb78"
+      },
+      "pharmacy": {
+        "$oid": "65e5e38294ef0deb1582ba63"
+      },
+      "associatedDrug": {
+        "$oid": "65e5dec194ef0deb15824348"
+      },
+      "_id": {
+        "$oid": "65e60d2b5268484acf96420b"
+      },
+      "medicationIntakes": []
+    }
+  ],
+  "abuddies": [
+    {
+      "firstName": "Charles",
+      "lastName": "Doe",
+      "relation": "Father",
+      "email": "charlesd@email.com",
+      "phoneNumber": "(413) 545-3453",
+      "_id": {
+        "$oid": "65e5e36594ef0deb1582ba5f"
+      }
+    }
+  ],
+  "notifications": [],
+  "__v": 18
+}]
