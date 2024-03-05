@@ -5,7 +5,7 @@ function createMedicationNotification(medication, quantity, existingNotification
 
     if (quantity === 0) {
         notificationText = `${medication.name} is empty. Please refill your prescription immediately.`;
-        notificationSeverity = 'error';
+        notificationSeverity = 'high';
         notificationType = 'empty_medication';
     } else if (quantity < 5 && !notificationExists(medication.name, 'high', 'low_medication', existingNotifications)) {
         notificationText = `${medication.name} is very low. Only ${quantity} remaining. Please refill your prescription now.`;
