@@ -1,0 +1,1492 @@
+{
+	"info": {
+		"_postman_id": "bc415286-b7e3-4c21-b942-14b4e97af8bf",
+		"name": "Capstone Server",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31439256"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "signup",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"userId\", jsonData._id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"testuser@ymail.com\",\r\n    \"username\": \"testuser\",\r\n    \"password\": \"securePa$$word!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{IP}}:{{PORTB}}/signup",
+							"host": [
+								"{{IP}}"
+							],
+							"port": "{{PORTB}}",
+							"path": [
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "email login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"postman.setEnvironmentVariable(\"authToken\", responseBody);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"identifier\": \"testuser@ymail.com\",\r\n    \"password\": \"securePa$$word!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{IP}}:{{PORTB}}/login",
+							"host": [
+								"{{IP}}"
+							],
+							"port": "{{PORTB}}",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "username login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"postman.setEnvironmentVariable(\"authToken\", responseBody);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"identifier\": \"demouser\",\r\n    \"password\": \"demouser12#$\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{IP}}:{{PORTB}}/login",
+							"host": [
+								"{{IP}}"
+							],
+							"port": "{{PORTB}}",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "webauthn login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"test\",\r\n    \"password\": \"securePa$$word!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{IP}}:{{PORTB}}/auth/webauthn/login",
+							"host": [
+								"{{IP}}"
+							],
+							"port": "{{PORTB}}",
+							"path": [
+								"auth",
+								"webauthn",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "logout",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{IP}}:{{PORTB}}/logout",
+							"host": [
+								"{{IP}}"
+							],
+							"port": "{{PORTB}}",
+							"path": [
+								"logout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "getAll Users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "auth-token",
+								"value": "{{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{IP}}:{{PORTB}}/user",
+							"host": [
+								"{{IP}}"
+							],
+							"port": "{{PORTB}}",
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getOne User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "auth-token",
+								"value": "{{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{IP}}:{{PORTB}}/user/{{userId}}",
+							"host": [
+								"{{IP}}"
+							],
+							"port": "{{PORTB}}",
+							"path": [
+								"user",
+								"{{userId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update User",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "auth-token",
+								"value": "{{authToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"Max\",\r\n    \"email\": \"madmax@ymail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{IP}}:{{PORTB}}/user/{{userId}}",
+							"host": [
+								"{{IP}}"
+							],
+							"port": "{{PORTB}}",
+							"path": [
+								"user",
+								"{{userId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete User",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "auth-token",
+								"value": "{{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{IP}}:{{PORTB}}/user/{{userId}}",
+							"host": [
+								"{{IP}}"
+							],
+							"port": "{{PORTB}}",
+							"path": [
+								"user",
+								"{{userId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addProfile",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "auth-token",
+								"value": "{{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{IP}}:{{PORTB}}/user/{{userId}}/addProfile/{{profileId}}",
+							"host": [
+								"{{IP}}"
+							],
+							"port": "{{PORTB}}",
+							"path": [
+								"user",
+								"{{userId}}",
+								"addProfile",
+								"{{profileId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "removeProfile",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "auth-token",
+								"value": "{{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{IP}}:{{PORTB}}/user/{{userId}}/removeProfile/{{profileId}}",
+							"host": [
+								"{{IP}}"
+							],
+							"port": "{{PORTB}}",
+							"path": [
+								"user",
+								"{{userId}}",
+								"removeProfile",
+								"{{profileId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Profiles",
+			"item": [
+				{
+					"name": "Profile Routes",
+					"item": [
+						{
+							"name": "getAll Profiles",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{IP}}:{{PORTB}}/user/{{userId}}/profile",
+									"host": [
+										"{{IP}}"
+									],
+									"port": "{{PORTB}}",
+									"path": [
+										"user",
+										"{{userId}}",
+										"profile"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getOne Profile",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{IP}}:{{PORTB}}/user/{{userId}}/profile/{{profileId}}",
+									"host": [
+										"{{IP}}"
+									],
+									"port": "{{PORTB}}",
+									"path": [
+										"user",
+										"{{userId}}",
+										"profile",
+										"{{profileId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create Profile",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);\r",
+											"postman.setEnvironmentVariable(\"profileId\", jsonData._id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"firstName\": \"Hank\",\r\n    \"lastName\": \"Doe\",\r\n    \"email\": \"jane.doe@example.com\",\r\n    \"pharmacy\": \"Pharmacy Name\",\r\n    \"timezone\": \"EST\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{IP}}:{{PORTB}}/user/{{userId}}/profile",
+									"host": [
+										"{{IP}}"
+									],
+									"port": "{{PORTB}}",
+									"path": [
+										"user",
+										"{{userId}}",
+										"profile"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update Profile",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"firstName\": \"Clark\",\r\n    \"lastName\": \"Doe\",\r\n    \"email\": \"clark.doe@example.com\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{IP}}:{{PORTB}}/user/{{userId}}/profile/{{profileId}}",
+									"host": [
+										"{{IP}}"
+									],
+									"port": "{{PORTB}}",
+									"path": [
+										"user",
+										"{{userId}}",
+										"profile",
+										"{{profileId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete Profile",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{IP}}:{{PORTB}}/user/{{userId}}/profile/{{profileId}}",
+									"host": [
+										"{{IP}}"
+									],
+									"port": "{{PORTB}}",
+									"path": [
+										"user",
+										"{{userId}}",
+										"profile",
+										"{{profileId}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "aBuddy",
+					"item": [
+						{
+							"name": "getAll Buddies",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{IP}}:{{PORTB}}/user/{{userId}}/profile/{{profileId}}/aBuddy",
+									"host": [
+										"{{IP}}"
+									],
+									"port": "{{PORTB}}",
+									"path": [
+										"user",
+										"{{userId}}",
+										"profile",
+										"{{profileId}}",
+										"aBuddy"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getOne Buddy",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{IP}}:{{PORTB}}/user/{{userId}}/profile/{{profileId}}/aBuddy/{{buddyId}}",
+									"host": [
+										"{{IP}}"
+									],
+									"port": "{{PORTB}}",
+									"path": [
+										"user",
+										"{{userId}}",
+										"profile",
+										"{{profileId}}",
+										"aBuddy",
+										"{{buddyId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create Buddy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);\r",
+											"postman.setEnvironmentVariable(\"buddyId\", jsonData._id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"firstName\": \"John\",\r\n  \"lastName\": \"Doe\",\r\n  \"relation\": \"Friend\",\r\n  \"email\": \"john.doe@example.com\",\r\n  \"phoneNumber\": \"1234567890\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{IP}}:{{PORTB}}/user/{{userId}}/profile/{{profileId}}/aBuddy/{{buddyId}}",
+									"host": [
+										"{{IP}}"
+									],
+									"port": "{{PORTB}}",
+									"path": [
+										"user",
+										"{{userId}}",
+										"profile",
+										"{{profileId}}",
+										"aBuddy",
+										"{{buddyId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update Buddy",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"relation\": \"Best Friend\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{IP}}:{{PORTB}}/user/{{userId}}/profile/{{profileId}}/aBuddy/{{buddyId}}",
+									"host": [
+										"{{IP}}"
+									],
+									"port": "{{PORTB}}",
+									"path": [
+										"user",
+										"{{userId}}",
+										"profile",
+										"{{profileId}}",
+										"aBuddy",
+										"{{buddyId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete Buddy",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{IP}}:{{PORTB}}/user/{{userId}}/profile/{{profileId}}/aBuddy/{{buddyId}}",
+									"host": [
+										"{{IP}}"
+									],
+									"port": "{{PORTB}}",
+									"path": [
+										"user",
+										"{{userId}}",
+										"profile",
+										"{{profileId}}",
+										"aBuddy",
+										"{{buddyId}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Doctors",
+					"item": [
+						{
+							"name": "getAllDocs",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{IP}}:{{PORTB}}/user/{{userId}}/profile/{{profileId}}/doctors",
+									"host": [
+										"{{IP}}"
+									],
+									"port": "{{PORTB}}",
+									"path": [
+										"user",
+										"{{userId}}",
+										"profile",
+										"{{profileId}}",
+										"doctors"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getOne Doc",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{IP}}:{{PORTB}}/user/{{userId}}/profile/{{profileId}}/doctors/{{doctorId}}",
+									"host": [
+										"{{IP}}"
+									],
+									"port": "{{PORTB}}",
+									"path": [
+										"user",
+										"{{userId}}",
+										"profile",
+										"{{profileId}}",
+										"doctors",
+										"{{doctorId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "createDoctor",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);\r",
+											"postman.setEnvironmentVariable(\"doctorId\", jsonData._id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"firstName\": \"John\",\r\n    \"lastName\": \"Doe\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{IP}}:{{PORTB}}/user/{{userId}}/profile/{{profileId}}/doctors",
+									"host": [
+										"{{IP}}"
+									],
+									"port": "{{PORTB}}",
+									"path": [
+										"user",
+										"{{userId}}",
+										"profile",
+										"{{profileId}}",
+										"doctors"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "updateDoc",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"address\": {\r\n        \"street\": \"321 Main St\",\r\n        \"cityOrTown\": \"Northeast Kingdom\",\r\n        \"state\": \"VT\",\r\n        \"zip\": \"12345\"\r\n    },\r\n    \"phoneNumber\": \"8008765309\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{IP}}:{{PORTB}}/user/{{userId}}/profile/{{profileId}}/doctors/{{doctorId}}",
+									"host": [
+										"{{IP}}"
+									],
+									"port": "{{PORTB}}",
+									"path": [
+										"user",
+										"{{userId}}",
+										"profile",
+										"{{profileId}}",
+										"doctors",
+										"{{doctorId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deleteDoctor",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{IP}}:{{PORTB}}/user/{{userId}}/profile/{{profileId}}/doctors/{{doctorId}}",
+									"host": [
+										"{{IP}}"
+									],
+									"port": "{{PORTB}}",
+									"path": [
+										"user",
+										"{{userId}}",
+										"profile",
+										"{{profileId}}",
+										"doctors",
+										"{{doctorId}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Medications",
+					"item": [
+						{
+							"name": "Medications",
+							"item": [
+								{
+									"name": "getAll Meds",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{IP}}:{{PORTB}}/user/{{userId}}/profile/{{profileId}}/medications",
+											"host": [
+												"{{IP}}"
+											],
+											"port": "{{PORTB}}",
+											"path": [
+												"user",
+												"{{userId}}",
+												"profile",
+												"{{profileId}}",
+												"medications"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "getByPrescriber",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{IP}}:{{PORTB}}/user/{{userId}}/profile/{{profileId}}/medications",
+											"host": [
+												"{{IP}}"
+											],
+											"port": "{{PORTB}}",
+											"path": [
+												"user",
+												"{{userId}}",
+												"profile",
+												"{{profileId}}",
+												"medications"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "getOne",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{IP}}:{{PORTB}}/user/{{userId}}/profile/{{profileId}}/medications/{{medId}}/",
+											"host": [
+												"{{IP}}"
+											],
+											"port": "{{PORTB}}",
+											"path": [
+												"user",
+												"{{userId}}",
+												"profile",
+												"{{profileId}}",
+												"medications",
+												"{{medId}}",
+												""
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "getByDateAdded",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{IP}}:{{PORTB}}/user/{{userId}}/profile/{{profileId}}/medications/dateAdded/{{date}}",
+											"host": [
+												"{{IP}}"
+											],
+											"port": "{{PORTB}}",
+											"path": [
+												"user",
+												"{{userId}}",
+												"profile",
+												"{{profileId}}",
+												"medications",
+												"dateAdded",
+												"{{date}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "createMedication",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var jsonData = JSON.parse(responseBody);\r",
+													"postman.setEnvironmentVariable(\"medId\", jsonData._id);"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"name\": \"Aspirin\",\r\n    \"dose\": 2,\r\n    \"frequency\": {\r\n        \"time\": \"08:00\",\r\n        \"timeOfDay\": {\r\n            \"morning\": true,\r\n            \"noon\": false,\r\n            \"evening\": false,\r\n            \"bedtime\": false\r\n        },\r\n        \"dayOfTheWeek\": {\r\n            \"sunday\": false,\r\n            \"monday\": true,\r\n            \"tuesday\": false,\r\n            \"wednesday\": false,\r\n            \"thursday\": false,\r\n            \"friday\": false,\r\n            \"saturday\": false\r\n        },\r\n        \"daily\": false,\r\n        \"weekly\": true,\r\n        \"biWeekly\": false,\r\n        \"monthly\": false\r\n    },\r\n    \"quantity\": 30,\r\n    \"prescriber\": \"Dr. John Doe\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{IP}}:{{PORTB}}/user/{{userId}}/profile/{{profileId}}/medications",
+											"host": [
+												"{{IP}}"
+											],
+											"port": "{{PORTB}}",
+											"path": [
+												"user",
+												"{{userId}}",
+												"profile",
+												"{{profileId}}",
+												"medications"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "update Med",
+									"request": {
+										"method": "PATCH",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"dose\": 1,\r\n    \"frequency\": {\r\n        \"time\": \"16:00\",\r\n        \"daily\": false,\r\n        \"weekly\": true,\r\n        \"biWeekly\": false,\r\n        \"monthly\": false\r\n    },\r\n    \"quantity\": 10\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{IP}}:{{PORTB}}/user/{{userId}}/profile/{{profileId}}/medications/{{medId}}",
+											"host": [
+												"{{IP}}"
+											],
+											"port": "{{PORTB}}",
+											"path": [
+												"user",
+												"{{userId}}",
+												"profile",
+												"{{profileId}}",
+												"medications",
+												"{{medId}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "deleteMedication",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{IP}}:{{PORTB}}/user/{{userId}}/profile/{{profileId}}/medications/{{medId}}",
+											"host": [
+												"{{IP}}"
+											],
+											"port": "{{PORTB}}",
+											"path": [
+												"user",
+												"{{userId}}",
+												"profile",
+												"{{profileId}}",
+												"medications",
+												"{{medId}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "deleteAllMedications",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{IP}}:{{PORTB}}/user/{{userId}}/profile/{{profileId}}/medications/clear",
+											"host": [
+												"{{IP}}"
+											],
+											"port": "{{PORTB}}",
+											"path": [
+												"user",
+												"{{userId}}",
+												"profile",
+												"{{profileId}}",
+												"medications",
+												"clear"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "addDrug to medication",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"url": {
+											"raw": "{{IP}}:{{PORTB}}/user/{{userId}}/profile/{{profileId}}/medications/{{medId}}/drugs/{{drugId}}",
+											"host": [
+												"{{IP}}"
+											],
+											"port": "{{PORTB}}",
+											"path": [
+												"user",
+												"{{userId}}",
+												"profile",
+												"{{profileId}}",
+												"medications",
+												"{{medId}}",
+												"drugs",
+												"{{drugId}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "deleteDrug from medication",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{IP}}:{{PORTB}}/user/{{userId}}/profile/{{profileId}}/medications/{{medId}}/drugs/{{drugId}}",
+											"host": [
+												"{{IP}}"
+											],
+											"port": "{{PORTB}}",
+											"path": [
+												"user",
+												"{{userId}}",
+												"profile",
+												"{{profileId}}",
+												"medications",
+												"{{medId}}",
+												"drugs",
+												"{{drugId}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "toggle frequency",
+									"request": {
+										"method": "PATCH",
+										"header": [],
+										"url": {
+											"raw": "{{IP}}:{{PORTB}}/user/{{userId}}/profile/{{profileId}}/medications/{{medId}}/toggle/daily",
+											"host": [
+												"{{IP}}"
+											],
+											"port": "{{PORTB}}",
+											"path": [
+												"user",
+												"{{userId}}",
+												"profile",
+												"{{profileId}}",
+												"medications",
+												"{{medId}}",
+												"toggle",
+												"daily"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Med Intake",
+							"item": [
+								{
+									"name": "getAllIntakes",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{IP}}:{{PORTB}}/user/{{userId}}/profile/{{profileId}}/medications/{{medId}}/intake",
+											"host": [
+												"{{IP}}"
+											],
+											"port": "{{PORTB}}",
+											"path": [
+												"user",
+												"{{userId}}",
+												"profile",
+												"{{profileId}}",
+												"medications",
+												"{{medId}}",
+												"intake"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "getOneIntake",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{IP}}:{{PORTB}}/user/{{userId}}/profile/{{profileId}}/medications/{{medId}}/intake/{{intakeId}}",
+											"host": [
+												"{{IP}}"
+											],
+											"port": "{{PORTB}}",
+											"path": [
+												"user",
+												"{{userId}}",
+												"profile",
+												"{{profileId}}",
+												"medications",
+												"{{medId}}",
+												"intake",
+												"{{intakeId}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "createIntake",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var jsonData = JSON.parse(responseBody);\r",
+													"postman.setEnvironmentVariable(\"intakeId\", jsonData._id);\r",
+													"let timestamp = new Date().toISOString();\r",
+													"pm.environment.set(\"currentTimestamp\", timestamp);"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"takenAt\": \"{{currentTimestamp}}\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{IP}}:{{PORTB}}/user/{{userId}}/profile/{{profileId}}/medications/{{medId}}/intake",
+											"host": [
+												"{{IP}}"
+											],
+											"port": "{{PORTB}}",
+											"path": [
+												"user",
+												"{{userId}}",
+												"profile",
+												"{{profileId}}",
+												"medications",
+												"{{medId}}",
+												"intake"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "updateIntake",
+									"request": {
+										"method": "PATCH",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"takenAt\": \"2023-03-01T10:00:00Z\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{IP}}:{{PORTB}}/user/{{userId}}/profile/{{profileId}}/medications/{{medId}}/intake/{{intakeId}}",
+											"host": [
+												"{{IP}}"
+											],
+											"port": "{{PORTB}}",
+											"path": [
+												"user",
+												"{{userId}}",
+												"profile",
+												"{{profileId}}",
+												"medications",
+												"{{medId}}",
+												"intake",
+												"{{intakeId}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "deleteIntake",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{IP}}:{{PORTB}}/user/{{userId}}/profile/{{profileId}}/medications/{{medId}}/intake/{{intakeId}}",
+											"host": [
+												"{{IP}}"
+											],
+											"port": "{{PORTB}}",
+											"path": [
+												"user",
+												"{{userId}}",
+												"profile",
+												"{{profileId}}",
+												"medications",
+												"{{medId}}",
+												"intake",
+												"{{intakeId}}"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Drugs",
+			"item": [
+				{
+					"name": "FDA",
+					"item": [
+						{
+							"name": "getDrug",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://api.fda.gov/drug/label.json?api_key={{FDA.API}}&search=drug_interactions:caffeine&limit=5",
+									"protocol": "https",
+									"host": [
+										"api",
+										"fda",
+										"gov"
+									],
+									"path": [
+										"drug",
+										"label.json"
+									],
+									"query": [
+										{
+											"key": "api_key",
+											"value": "{{FDA.API}}"
+										},
+										{
+											"key": "search",
+											"value": "drug_interactions:caffeine"
+										},
+										{
+											"key": "limit",
+											"value": "5"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getDrug brandname",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://api.fda.gov/drug/label.json?api_key={{FDA.API}}&search=product_ndc:50580-226-51",
+									"protocol": "https",
+									"host": [
+										"api",
+										"fda",
+										"gov"
+									],
+									"path": [
+										"drug",
+										"label.json"
+									],
+									"query": [
+										{
+											"key": "api_key",
+											"value": "{{FDA.API}}"
+										},
+										{
+											"key": "search",
+											"value": "product_ndc:50580-226-51"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "getDrugs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{IP}}:{{PORTB}}/drugs",
+							"host": [
+								"{{IP}}"
+							],
+							"port": "{{PORTB}}",
+							"path": [
+								"drugs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getDrugByDrugbankId",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"drugId\", jsonData._id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{PORTB}}/drugs/drugbank-id/DB00001",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{PORTB}}",
+							"path": [
+								"drugs",
+								"drugbank-id",
+								"DB00001"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getDrugByUnii",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{PORTB}}/drugs/unii/Y43GF64R34",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{PORTB}}",
+							"path": [
+								"drugs",
+								"unii",
+								"Y43GF64R34"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getDrugInteractions",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{IP}}:{{PORTB}}/drugs/DB00001/interactions/DB06605",
+							"host": [
+								"{{IP}}"
+							],
+							"port": "{{PORTB}}",
+							"path": [
+								"drugs",
+								"DB00001",
+								"interactions",
+								"DB06605"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "searchDrugsByName",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{IP}}:{{PORTB}}/drugs/searchDrugsByName?q=Lepirudin",
+							"host": [
+								"{{IP}}"
+							],
+							"port": "{{PORTB}}",
+							"path": [
+								"drugs",
+								"searchDrugsByName"
+							],
+							"query": [
+								{
+									"key": "q",
+									"value": "Lepirudin"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "searchDrugsByProductName",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{IP}}:{{PORTB}}/drugs/searchDrugsByProductName?q=Refludan",
+							"host": [
+								"{{IP}}"
+							],
+							"port": "{{PORTB}}",
+							"path": [
+								"drugs",
+								"searchDrugsByProductName"
+							],
+							"query": [
+								{
+									"key": "q",
+									"value": "Refludan"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

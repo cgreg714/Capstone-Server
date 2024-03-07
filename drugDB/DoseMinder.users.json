@@ -1,0 +1,24 @@
+[{
+  "_id": {
+    "$oid": "65e5df2c94ef0deb15824451"
+  },
+  "username": "Testuser",
+  "password": "$2b$10$UPoiZ/nU26IaoNmtfe5MeuvNYE7UAfwBKF/.9DK9xBBmeK2EDSvTq",
+  "email": "testuser@email.com",
+  "role": "user",
+  "profiles": [
+    {
+      "$oid": "65e5df4f94ef0deb1582445a"
+    },
+    {
+      "$oid": "65e5e1d494ef0deb1582b9ce"
+    },
+    {
+      "$oid": "65e5e1ea94ef0deb1582b9dc"
+    },
+    {
+      "$oid": "65e5e21794ef0deb1582b9f6"
+    }
+  ],
+  "__v": 4
+}]
